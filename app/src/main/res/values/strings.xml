@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WeatherAndroid</string>
+    <string name="sign_in_sign_up">Sign in / Sign up</string>
+    <string name="enter_your_login">Enter your login</string>
+    <string name="sign_in">Sign in</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="or_login_with">or login with</string>
+</resources>
