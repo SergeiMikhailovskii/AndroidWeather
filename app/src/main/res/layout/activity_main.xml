@@ -29,7 +29,8 @@
             android:src="@mipmap/logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sign_in_tv" />
+            app:layout_constraintTop_toBottomOf="@id/sign_in_tv"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/enter_login_tv"
