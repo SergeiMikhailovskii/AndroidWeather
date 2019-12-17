@@ -136,11 +136,12 @@
         <Button
             android:id="@+id/twitter_btn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:text="@string/twitter"
-            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintDimensionRatio="w,1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toBottomOf="@id/login_with_tv" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -153,11 +154,12 @@
         <Button
             android:id="@+id/facebook_btn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:text="@string/facebook"
-            app:layout_constraintStart_toStartOf="@id/guideline5"
+            app:layout_constraintDimensionRatio="w,1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline6"
+            app:layout_constraintStart_toStartOf="@id/guideline5"
             app:layout_constraintTop_toBottomOf="@id/login_with_tv" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -170,12 +172,12 @@
         <Button
             android:id="@+id/google_btn"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
+            android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:text="@string/google"
-            app:layout_constraintStart_toStartOf="@id/guideline7"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/guideline8"
+            app:layout_constraintStart_toStartOf="@id/guideline7"
             app:layout_constraintTop_toBottomOf="@id/login_with_tv" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -205,8 +207,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.9" />
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
