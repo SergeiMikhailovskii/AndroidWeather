@@ -8,4 +8,9 @@
     <string name="twitter">Twitter</string>
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
+
+    <!--    Facebook-->
+    <string name="facebook_app_id">744178116083202</string>
+    <string name="fb_login_protocol_scheme">fb744178116083202</string>
+
 </resources>

@@ -218,5 +218,12 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.7" />
 
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/fb_login_btn"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
