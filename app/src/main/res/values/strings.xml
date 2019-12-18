@@ -12,5 +12,9 @@
     <!--    Facebook-->
     <string name="facebook_app_id">744178116083202</string>
     <string name="fb_login_protocol_scheme">fb744178116083202</string>
+    <string name="forecast">Forecast</string>
+    <string name="shop">Shop</string>
+    <string name="settings">Settings</string>
+    <string name="map">Map</string>
 
 </resources>

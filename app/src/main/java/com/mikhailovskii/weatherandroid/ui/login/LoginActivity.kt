@@ -47,8 +47,8 @@ class LoginActivity : AppCompatActivity() {
 
         fb_login_btn.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
-                Log.d("FBTAG", "facebook:onSuccess:$result")
-                Toast.makeText(applicationContext, "Success", Toast.LENGTH_SHORT).show()
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                startActivity(intent)
             }
 
             override fun onCancel() {
@@ -89,6 +89,8 @@ class LoginActivity : AppCompatActivity() {
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
             Toast.makeText(this, account.displayName.toString(), Toast.LENGTH_LONG).show()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         } else {
             Toast.makeText(this, "Not signed in", Toast.LENGTH_LONG).show()
         }
