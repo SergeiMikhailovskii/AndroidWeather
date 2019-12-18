@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "15897429804",
-    "firebase_url": "https://androidweather-7abfc.firebaseio.com",
-    "project_id": "androidweather-7abfc",
-    "storage_bucket": "androidweather-7abfc.appspot.com"
+    "project_number": "1077938080640",
+    "firebase_url": "https://androidweather-960fb.firebaseio.com",
+    "project_id": "androidweather-960fb",
+    "storage_bucket": "androidweather-960fb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:15897429804:android:9460eada368e7355444e89",
+        "mobilesdk_app_id": "1:1077938080640:android:827c4c081341e2c0884f65",
         "android_client_info": {
           "package_name": "com.mikhailovskii.weatherandroid"
         }
       },
       "oauth_client": [
         {
-          "client_id": "15897429804-nav377kfq6q4ue4k3rolljaph35e7lc9.apps.googleusercontent.com",
+          "client_id": "1077938080640-gntnv3p9l0ld23a3t3nb1or0qdndgnpr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB7hLrOBfJeUIhYD3RfVuUoJeoS4Z4F3LI"
+          "current_key": "AIzaSyBl42HKlmukddrhPtl3_2jvVbGc5rcYN2I"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "15897429804-nav377kfq6q4ue4k3rolljaph35e7lc9.apps.googleusercontent.com",
+              "client_id": "1077938080640-gntnv3p9l0ld23a3t3nb1or0qdndgnpr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

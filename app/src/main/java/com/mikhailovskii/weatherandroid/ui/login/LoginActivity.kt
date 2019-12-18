@@ -15,13 +15,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.mikhailovskii.weatherandroid.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var googleSignInClient: GoogleSignInClient
-    private val RC_SIGN_IN = 1000
+    private var mGoogleSignInClient: GoogleSignInClient? = null
+    private var mAuth: FirebaseAuth? = null
+    private val RC_SIGN_IN = 9001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,41 +61,58 @@ class LoginActivity : AppCompatActivity() {
         })
 
         // Google
+        mAuth = FirebaseAuth.getInstance()
+        val currentUser = mAuth!!.currentUser
+        Log.d("currentUser", currentUser.toString())
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-
-        google_login_btn.setOnClickListener {
-            val intent = googleSignInClient.signInIntent
-            startActivityForResult(intent, RC_SIGN_IN)
-        }
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
         google_btn.setOnClickListener {
-            google_login_btn.performClick()
-            Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_SHORT).show()
+            signIn()
+        }
+
+    }
+
+    private fun signIn() {
+        val signInIntent = mGoogleSignInClient!!.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    private fun updateUI(account: GoogleSignInAccount?) {
+        if (account != null) {
+            Toast.makeText(this, account.displayName.toString(), Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "Not signed in", Toast.LENGTH_LONG).show()
         }
     }
 
-    override fun startActivityForResult(intent: Intent?, requestCode: Int) {
-        super.startActivityForResult(intent, requestCode)
-
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
-            handleSignInResult(task)
-        }
+    override fun onStart() {
+        super.onStart()
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        updateUI(account)
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            Log.i("GOOGLEAUTH", "Success")
+            updateUI(account)
         } catch (e: ApiException) {
-            Log.i("GOOGLEAUTH", "Failed")
+            updateUI(null)
         }
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+        }
+    }
+
 
 }
