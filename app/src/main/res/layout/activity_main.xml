@@ -220,9 +220,16 @@
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/fb_login_btn"
-            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
+            tools:ignore="MissingConstraints" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_login_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
             tools:ignore="MissingConstraints" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
