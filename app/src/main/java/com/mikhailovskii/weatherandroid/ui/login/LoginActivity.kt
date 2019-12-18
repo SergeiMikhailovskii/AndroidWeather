@@ -17,6 +17,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.mikhailovskii.weatherandroid.R
+import com.mikhailovskii.weatherandroid.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -31,6 +32,8 @@ class LoginActivity : AppCompatActivity() {
 
         sign_in_btn.setOnClickListener {
             println(login_et.text.toString() + " " + password_et.text.toString())
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
 
 
