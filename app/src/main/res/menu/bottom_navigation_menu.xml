@@ -3,18 +3,22 @@
 
     <item
         android:id="@+id/forecast_item"
+        android:icon="@drawable/ic_weather"
         android:title="@string/forecast" />
 
     <item
         android:id="@+id/shop_item"
+        android:icon="@drawable/ic_shop"
         android:title="@string/shop" />
 
     <item
         android:id="@+id/map_item"
+        android:icon="@drawable/ic_map"
         android:title="@string/map" />
 
     <item
         android:id="@+id/settings_item"
+        android:icon="@drawable/ic_settings"
         android:title="@string/settings" />
 
 </menu>
