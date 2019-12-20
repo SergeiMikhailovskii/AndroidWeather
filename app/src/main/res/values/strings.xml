@@ -26,5 +26,7 @@
     <!--    Twitter-->
     <string name="twitter_api_key" translatable="false">vkuSEp0mMdmCiOIAvSQLrKfM2</string>
     <string name="twitter_api_secret" translatable="false">mXBMgDXxOUPy1SwiFlSf4JYJTsDCzG9aRoCf5vE8rJs1Z9X9rK</string>
+    <string name="weather_description_sample">Clear sky</string>
+    <string name="temperature_sample">25 ˚C</string>
 
 </resources>
