@@ -36,5 +36,8 @@
     <string name="humidity_sample">50 %</string>
     <string name="precipitation_sample">20 %</string>
     <string name="wind_sample">SW 11 mps</string>
+    <string name="first_day_sample">Tuesday</string>
+    <string name="second_day_sample">Wednesday</string>
+    <string name="third_day_sample">Thursday</string>
 
 </resources>
