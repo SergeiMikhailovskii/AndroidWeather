@@ -20,7 +20,7 @@
     <string name="map">Map</string>
 
     <!--    Map screen-->
-    <string name="city_name_sample">Munich, Bayern</string>
+    <string name="city_name_sample">📍 Munich, Bayern</string>
     <string name="date_sample">December 18.12.2019</string>
 
     <!--    Twitter-->
@@ -28,5 +28,13 @@
     <string name="twitter_api_secret" translatable="false">mXBMgDXxOUPy1SwiFlSf4JYJTsDCzG9aRoCf5vE8rJs1Z9X9rK</string>
     <string name="weather_description_sample">Clear sky</string>
     <string name="temperature_sample">25 ˚C</string>
+    <string name="feels_like">Feels like</string>
+    <string name="humidity">Humidity</string>
+    <string name="precipitation">Precipitation</string>
+    <string name="wind">Wind</string>
+    <string name="temp_sample">30 ˚C</string>
+    <string name="humidity_sample">50 %</string>
+    <string name="precipitation_sample">20 %</string>
+    <string name="wind_sample">SW 11 mps</string>
 
 </resources>
