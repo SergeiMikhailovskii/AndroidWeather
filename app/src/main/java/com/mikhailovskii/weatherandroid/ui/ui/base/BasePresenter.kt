@@ -1,4 +1,4 @@
-package com.mikhailovskii.weatherandroid.ui.base
+package com.mikhailovskii.weatherandroid.ui.ui.base
 
 open class BasePresenter<View> : MvpPresenter<View> {
 

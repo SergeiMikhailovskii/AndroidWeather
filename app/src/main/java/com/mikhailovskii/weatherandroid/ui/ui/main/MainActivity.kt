@@ -1,4 +1,4 @@
-package com.mikhailovskii.weatherandroid.ui.main
+package com.mikhailovskii.weatherandroid.ui.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
