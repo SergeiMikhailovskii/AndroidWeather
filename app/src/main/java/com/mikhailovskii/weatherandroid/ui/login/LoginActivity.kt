@@ -16,8 +16,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.OAuthProvider
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.ui.main.MainActivity
+import com.twitter.sdk.android.core.*
+import com.twitter.sdk.android.core.identity.TwitterAuthClient
+import com.twitter.sdk.android.core.models.User
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -25,10 +29,15 @@ class LoginActivity : AppCompatActivity() {
     private var mGoogleSignInClient: GoogleSignInClient? = null
     private var mAuth: FirebaseAuth? = null
     private val RC_SIGN_IN = 9001
+    private var twitterAuthClient: TwitterAuthClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        val callbackManager = CallbackManager.Factory.create()
+        val email = "email"
+
 
         sign_in_btn.setOnClickListener {
             println(login_et.text.toString() + " " + password_et.text.toString())
@@ -36,14 +45,10 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         // Facebook
         facebook_btn.setOnClickListener { fb_login_btn.performClick() }
 
-        val callbackManager = CallbackManager.Factory.create()
-        val email = "email"
-
-        fb_login_btn.setReadPermissions(listOf(email))
+        fb_login_btn.setPermissions(listOf(email))
 
         fb_login_btn.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
@@ -79,6 +84,57 @@ class LoginActivity : AppCompatActivity() {
             signIn()
         }
 
+        // Twitter
+        val provider = OAuthProvider.newBuilder("twitter.com")
+        provider.addCustomParameter("lang", "en")
+
+        twitter_btn.setOnClickListener {
+            val config = TwitterConfig.Builder(this)
+                .logger(DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(TwitterAuthConfig(resources.getString(R.string.twitter_api_key), resources.getString(R.string.twitter_api_secret)))
+                .debug(true)
+                .build()
+            Twitter.initialize(config)
+
+            twitterAuthClient = TwitterAuthClient()
+
+            val twitterActiveSession = TwitterCore.getInstance().sessionManager.activeSession
+
+            if (twitterActiveSession == null) {
+                twitterAuthClient!!.authorize(this, object:Callback<TwitterSession>() {
+                    override fun success(result: Result<TwitterSession>?) {
+                        val twitterSession = result?.data
+                        getTwitterData(twitterSession)
+                    }
+
+                    override fun failure(exception: TwitterException?) {
+                        Log.e("TwitterTAG", "Failed: ${exception?.message}")
+                    }
+
+                })
+            } else {
+                getTwitterData(twitterActiveSession)
+            }
+
+        }
+
+
+    }
+
+    private fun getTwitterData(twitterSession: TwitterSession?) {
+        val twitterApiClient = TwitterApiClient(twitterSession)
+        val getUserCall = twitterApiClient.accountService.verifyCredentials(true, false, true)
+        getUserCall.enqueue(object:Callback<User>() {
+            override fun success(result: Result<User>?) {
+                val socialId = result?.data?.id
+                Log.i("TwitterTAG", "$socialId id")
+            }
+
+            override fun failure(exception: TwitterException?) {
+                Log.e("TwitterTAG", "Failed: ${exception?.message}")
+            }
+
+        })
     }
 
     private fun signIn() {
@@ -116,6 +172,10 @@ class LoginActivity : AppCompatActivity() {
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
+        }
+
+        if (twitterAuthClient != null) {
+            twitterAuthClient!!.onActivityResult(requestCode, resultCode, data)
         }
     }
 

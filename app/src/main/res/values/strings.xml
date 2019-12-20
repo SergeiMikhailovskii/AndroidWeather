@@ -12,11 +12,19 @@
     <!--    Facebook-->
     <string name="facebook_app_id">744178116083202</string>
     <string name="fb_login_protocol_scheme">fb744178116083202</string>
+
+    <!--    Bottom Menu-->
     <string name="forecast">Forecast</string>
     <string name="shop">Shop</string>
     <string name="settings">Settings</string>
     <string name="map">Map</string>
+
+    <!--    Map screen-->
     <string name="city_name_sample">Munich, Bayern</string>
     <string name="date_sample">December 18.12.2019</string>
+
+    <!--    Twitter-->
+    <string name="twitter_api_key" translatable="false">vkuSEp0mMdmCiOIAvSQLrKfM2</string>
+    <string name="twitter_api_secret" translatable="false">mXBMgDXxOUPy1SwiFlSf4JYJTsDCzG9aRoCf5vE8rJs1Z9X9rK</string>
 
 </resources>
