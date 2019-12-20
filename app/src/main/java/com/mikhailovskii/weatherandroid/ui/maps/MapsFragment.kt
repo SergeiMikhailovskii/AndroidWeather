@@ -1,4 +1,4 @@
-package com.mikhailovskii.weatherandroid.ui.ui.maps
+package com.mikhailovskii.weatherandroid.ui.maps
 
 
 import android.os.Bundle

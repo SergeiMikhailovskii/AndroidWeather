@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
-        <activity android:name="com.mikhailovskii.weatherandroid.ui.ui.main.MainActivity" />
+        <activity android:name="com.mikhailovskii.weatherandroid.ui.main.MainActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -36,7 +36,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name="com.mikhailovskii.weatherandroid.ui.ui.login.LoginActivity">
+        <activity android:name="com.mikhailovskii.weatherandroid.ui.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

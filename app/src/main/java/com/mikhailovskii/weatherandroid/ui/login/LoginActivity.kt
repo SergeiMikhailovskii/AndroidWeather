@@ -1,4 +1,4 @@
-package com.mikhailovskii.weatherandroid.ui.ui.login
+package com.mikhailovskii.weatherandroid.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -18,7 +18,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
 import com.mikhailovskii.weatherandroid.R
-import com.mikhailovskii.weatherandroid.ui.ui.main.MainActivity
+import com.mikhailovskii.weatherandroid.ui.main.MainActivity
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import com.twitter.sdk.android.core.models.User
