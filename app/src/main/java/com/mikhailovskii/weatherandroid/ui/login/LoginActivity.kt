@@ -46,6 +46,74 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // Facebook
+        initFacebookAuthorization(email, callbackManager)
+
+        // Google
+        initGoogleAuthorization()
+
+        // Twitter
+        initTwitterAuthorization()
+
+    }
+
+    private fun initTwitterAuthorization() {
+        val provider = OAuthProvider.newBuilder("twitter.com")
+        provider.addCustomParameter("lang", "en")
+
+        twitter_btn.setOnClickListener {
+            val config = TwitterConfig.Builder(this)
+                .logger(DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(
+                    TwitterAuthConfig(
+                        resources.getString(R.string.twitter_api_key),
+                        resources.getString(R.string.twitter_api_secret)
+                    )
+                )
+                .debug(true)
+                .build()
+            Twitter.initialize(config)
+
+            twitterAuthClient = TwitterAuthClient()
+
+            val twitterActiveSession = TwitterCore.getInstance().sessionManager.activeSession
+
+            if (twitterActiveSession == null) {
+                twitterAuthClient!!.authorize(this, object : Callback<TwitterSession>() {
+                    override fun success(result: Result<TwitterSession>?) {
+                        val twitterSession = result?.data
+                        getTwitterData(twitterSession)
+                    }
+
+                    override fun failure(exception: TwitterException?) {
+                        Log.e("TwitterTAG", "Failed: ${exception?.message}")
+                    }
+
+                })
+            } else {
+                getTwitterData(twitterActiveSession)
+            }
+
+        }
+    }
+
+    private fun initGoogleAuthorization() {
+        mAuth = FirebaseAuth.getInstance()
+        val currentUser = mAuth!!.currentUser
+        Log.d("currentUser", currentUser.toString())
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        google_btn.setOnClickListener {
+            signIn()
+        }
+    }
+
+    private fun initFacebookAuthorization(email: String, callbackManager: CallbackManager?) {
         facebook_btn.setOnClickListener { fb_login_btn.performClick() }
 
         fb_login_btn.setPermissions(listOf(email))
@@ -67,58 +135,6 @@ class LoginActivity : AppCompatActivity() {
             }
 
         })
-
-        // Google
-        mAuth = FirebaseAuth.getInstance()
-        val currentUser = mAuth!!.currentUser
-        Log.d("currentUser", currentUser.toString())
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        google_btn.setOnClickListener {
-            signIn()
-        }
-
-        // Twitter
-        val provider = OAuthProvider.newBuilder("twitter.com")
-        provider.addCustomParameter("lang", "en")
-
-        twitter_btn.setOnClickListener {
-            val config = TwitterConfig.Builder(this)
-                .logger(DefaultLogger(Log.DEBUG))
-                .twitterAuthConfig(TwitterAuthConfig(resources.getString(R.string.twitter_api_key), resources.getString(R.string.twitter_api_secret)))
-                .debug(true)
-                .build()
-            Twitter.initialize(config)
-
-            twitterAuthClient = TwitterAuthClient()
-
-            val twitterActiveSession = TwitterCore.getInstance().sessionManager.activeSession
-
-            if (twitterActiveSession == null) {
-                twitterAuthClient!!.authorize(this, object:Callback<TwitterSession>() {
-                    override fun success(result: Result<TwitterSession>?) {
-                        val twitterSession = result?.data
-                        getTwitterData(twitterSession)
-                    }
-
-                    override fun failure(exception: TwitterException?) {
-                        Log.e("TwitterTAG", "Failed: ${exception?.message}")
-                    }
-
-                })
-            } else {
-                getTwitterData(twitterActiveSession)
-            }
-
-        }
-
-
     }
 
     private fun getTwitterData(twitterSession: TwitterSession?) {
