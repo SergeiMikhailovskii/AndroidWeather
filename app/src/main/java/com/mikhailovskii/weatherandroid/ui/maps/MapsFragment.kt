@@ -2,16 +2,13 @@ package com.mikhailovskii.weatherandroid.ui.maps
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
 import com.mikhailovskii.weatherandroid.R
+import kotlinx.android.synthetic.main.fragment_maps.*
 
-/**
- * A simple [Fragment] subclass.
- */
 class MapsFragment : Fragment() {
 
     override fun onCreateView(
@@ -22,5 +19,12 @@ class MapsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        map_view.onCreate(savedInstanceState)
+        map_view.getMapAsync {
+        }
+
+    }
 }

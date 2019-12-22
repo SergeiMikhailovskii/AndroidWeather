@@ -13,7 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".ui.main.MainActivity"></activity>
+
+        <uses-library android:name="com.google.android.maps" />
+
+        <activity android:name=".ui.main.MainActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAPWYWAau9qrdWdMc5meFMUqrkla2ccPp0" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
