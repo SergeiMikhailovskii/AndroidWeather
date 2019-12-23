@@ -20,7 +20,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAPWYWAau9qrdWdMc5meFMUqrkla2ccPp0" />
+            android:value="AIzaSyDxQv6jAbbFOusJYN3rhmtORLbKw12vAnE" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
