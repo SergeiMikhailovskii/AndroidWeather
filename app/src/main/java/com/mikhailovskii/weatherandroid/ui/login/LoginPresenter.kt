@@ -1,7 +1,8 @@
 package com.mikhailovskii.weatherandroid.ui.login
 
 import android.os.Bundle
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.mikhailovskii.weatherandroid.data.entities.User
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 
