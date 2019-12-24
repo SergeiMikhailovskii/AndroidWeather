@@ -6,7 +6,7 @@ import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.LoginPresenter {
 
     override fun saveUserData(bundle: Bundle) {
-
+        view?.onLoggedIn()
     }
 
 }

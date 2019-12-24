@@ -24,25 +24,32 @@ import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import com.twitter.sdk.android.core.models.User
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
     private var mGoogleSignInClient: GoogleSignInClient? = null
     private var mAuth: FirebaseAuth? = null
     private val RC_SIGN_IN = 9001
     private var twitterAuthClient: TwitterAuthClient? = null
+    private val presenter = LoginPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        presenter.attachView(this)
 
         val callbackManager = CallbackManager.Factory.create()
         val email = "email"
 
 
         sign_in_btn.setOnClickListener {
-            println(login_et.text.toString() + " " + password_et.text.toString())
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+//            println(login_et.text.toString() + " " + password_et.text.toString())
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
+            val bundle = Bundle()
+            bundle.putString("login", login_et.text.toString())
+            bundle.putString("password", password_et.text.toString())
+            presenter.saveUserData(bundle)
         }
 
         // Facebook
@@ -54,6 +61,40 @@ class LoginActivity : AppCompatActivity() {
         // Twitter
         initTwitterAuthorization()
 
+    }
+
+    override fun onLoggedIn() {
+        startActivity(Intent(this, MainActivity::class.java))
+    }
+
+    override fun onLoginFailed() {
+
+    }
+
+    override fun showEmptyState(value: Boolean) {
+
+    }
+
+    override fun showLoadingIndicator(value: Boolean) {
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            handleSignInResult(task)
+        }
+
+        if (twitterAuthClient != null) {
+            twitterAuthClient!!.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        updateUI(account)
     }
 
     private fun initTwitterAuthorization() {
@@ -168,12 +209,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        val account = GoogleSignIn.getLastSignedInAccount(this)
-        updateUI(account)
-    }
-
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
@@ -182,18 +217,5 @@ class LoginActivity : AppCompatActivity() {
             updateUI(null)
         }
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
-        }
-
-        if (twitterAuthClient != null) {
-            twitterAuthClient!!.onActivityResult(requestCode, resultCode, data)
-        }
-    }
-
 
 }
