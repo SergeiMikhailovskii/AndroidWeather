@@ -3,10 +3,14 @@ package com.mikhailovskii.weatherandroid.ui.maps
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -29,6 +33,26 @@ class MapsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initMapView(savedInstanceState)
+
+        city_et.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                val city = city_et.text
+
+                val coord = getLocationFromAddress(city.toString())
+
+                if (coord != null) {
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord))
+                }
+                true
+            } else {
+                false
+            }
+        }
+
+    }
+
+    private fun initMapView(savedInstanceState: Bundle?) {
         map_view.onCreate(savedInstanceState)
         map_view.getMapAsync { googleMap ->
             run {
@@ -65,5 +89,26 @@ class MapsFragment : Fragment() {
                 map_view.onResume()
             }
         }
+    }
+
+    private fun getLocationFromAddress(strAddress: String): LatLng? {
+        val coder = Geocoder(context)
+        val address: List<Address>?
+        var p1: LatLng? = null
+
+        address = coder.getFromLocationName(strAddress, 5)
+
+        if (address == null) {
+            return null
+        }
+
+        try {
+            val location = address[0]
+            p1 = LatLng(location.latitude, location.longitude)
+        } catch (e: IndexOutOfBoundsException) {
+            Toast.makeText(context, "City not found", Toast.LENGTH_SHORT).show()
+        }
+
+        return p1
     }
 }
