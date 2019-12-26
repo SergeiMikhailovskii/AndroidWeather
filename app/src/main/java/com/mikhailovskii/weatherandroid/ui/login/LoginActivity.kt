@@ -19,10 +19,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.ui.main.MainActivity
+import com.mikhailovskii.weatherandroid.util.toast
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import com.twitter.sdk.android.core.models.User
 import kotlinx.android.synthetic.main.activity_login.*
+import timber.log.Timber
 
 class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
@@ -43,9 +45,6 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
 
         sign_in_btn.setOnClickListener {
-//            println(login_et.text.toString() + " " + password_et.text.toString())
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
             val bundle = Bundle()
             bundle.putString("login", login_et.text.toString())
             bundle.putString("password", password_et.text.toString())
@@ -68,7 +67,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     }
 
     override fun onLoginFailed() {
-
+        toast("Login failed")
     }
 
     override fun showEmptyState(value: Boolean) {
@@ -126,7 +125,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
                     }
 
                     override fun failure(exception: TwitterException?) {
-                        Log.e("TwitterTAG", "Failed: ${exception?.message}")
+                        Timber.e("Failed: ${exception?.message}")
                     }
 
                 })
@@ -140,7 +139,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     private fun initGoogleAuthorization() {
         mAuth = FirebaseAuth.getInstance()
         val currentUser = mAuth!!.currentUser
-        Log.d("currentUser", currentUser.toString())
+        Timber.d(currentUser.toString())
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -166,12 +165,12 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
             }
 
             override fun onCancel() {
-                Log.d("FBTAG", "facebook:onCancel")
+                Timber.d("facebook:onCancel")
                 Toast.makeText(applicationContext, "Cancel", Toast.LENGTH_SHORT).show()
             }
 
             override fun onError(error: FacebookException?) {
-                Log.d("FBTAG", "facebook:onError", error)
+                Timber.d("facebook:onError $error")
                 Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
             }
 
@@ -184,11 +183,11 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         getUserCall.enqueue(object:Callback<User>() {
             override fun success(result: Result<User>?) {
                 val socialId = result?.data?.id
-                Log.i("TwitterTAG", "$socialId id")
+                Timber.i("$socialId id")
             }
 
             override fun failure(exception: TwitterException?) {
-                Log.e("TwitterTAG", "Failed: ${exception?.message}")
+                Timber.e("Failed: ${exception?.message}")
             }
 
         })
