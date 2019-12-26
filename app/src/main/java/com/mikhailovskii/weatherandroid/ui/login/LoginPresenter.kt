@@ -55,7 +55,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
     }
 
     override fun logInWithTwitter(result: Result<com.twitter.sdk.android.core.models.User>?) {
-        val user = User(login = result?.data?.email.let { "" }, twitterKey = result?.data?.idStr)
+        val user = User(login = result?.data?.email, twitterKey = result?.data?.idStr, icon = result?.data?.profileImageUrl)
         database.child("users").push().setValue(user)
 
         view?.onLoggedIn()
