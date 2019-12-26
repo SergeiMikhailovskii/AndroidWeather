@@ -166,12 +166,12 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
             override fun onCancel() {
                 Timber.d("facebook:onCancel")
-                Toast.makeText(applicationContext, "Cancel", Toast.LENGTH_SHORT).show()
+                toast("Cancel")
             }
 
             override fun onError(error: FacebookException?) {
                 Timber.d("facebook:onError $error")
-                Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+                toast("Error")
             }
 
         })
