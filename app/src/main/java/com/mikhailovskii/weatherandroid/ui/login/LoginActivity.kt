@@ -200,11 +200,11 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
-            Toast.makeText(this, account.displayName.toString(), Toast.LENGTH_LONG).show()
+            toast(account.displayName.toString())
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else {
-            Toast.makeText(this, "Not signed in", Toast.LENGTH_LONG).show()
+            toast("Not signed in")
         }
     }
 
