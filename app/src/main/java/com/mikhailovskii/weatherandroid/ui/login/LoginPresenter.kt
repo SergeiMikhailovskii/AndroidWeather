@@ -3,8 +3,10 @@ package com.mikhailovskii.weatherandroid.ui.login
 import android.os.Bundle
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.mikhailovskii.weatherandroid.AndroidWeatherApp
 import com.mikhailovskii.weatherandroid.data.entities.User
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
+import com.mikhailovskii.weatherandroid.util.Preference
 
 class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.LoginPresenter {
 
@@ -19,6 +21,8 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
         val user = User(login = login, password = password)
 
         database.child("users").push().setValue(user)
+
+        Preference.getInstance(AndroidWeatherApp.appContext).user = user
 
         view?.onLoggedIn()
 

@@ -3,6 +3,7 @@ package com.mikhailovskii.weatherandroid
 import android.app.Application
 import android.content.Context
 import com.facebook.stetho.Stetho
+import timber.log.Timber
 
 class AndroidWeatherApp : Application() {
 
@@ -13,6 +14,8 @@ class AndroidWeatherApp : Application() {
         instance = this
 
         initStetho()
+
+        Timber.plant(Timber.DebugTree())
 
     }
 
