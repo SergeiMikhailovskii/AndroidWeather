@@ -6,6 +6,7 @@ data class User(
     var password: String? = "",
     var twitterKey: String? = "",
     var facebookKey: String? = "",
-    var googleKey: String? = ""
+    var googleKey: String? = "",
+    var icon:String? = ""
 
 )
