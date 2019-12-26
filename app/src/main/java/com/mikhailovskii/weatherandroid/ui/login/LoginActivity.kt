@@ -184,6 +184,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
             override fun success(result: Result<User>?) {
                 val socialId = result?.data?.id
                 Timber.i("$socialId id")
+                presenter.logInWithTwitter(result)
             }
 
             override fun failure(exception: TwitterException?) {
