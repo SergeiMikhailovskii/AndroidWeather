@@ -38,25 +38,29 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                         Timber.i("LOGIN ${userData?.login}")
                     }
 
+                    Preference.getInstance(AndroidWeatherApp.appContext).user = user
+
+                    view?.onLoggedIn()
+
                 } else {
                     Timber.e("NO SUCH USER $login $password")
 
                     database.child("users").push().setValue(user)
+
+                    view?.onLoginFailed()
                 }
 
             }
 
         })
 
-        Preference.getInstance(AndroidWeatherApp.appContext).user = user
-
-        view?.onLoggedIn()
-
     }
 
     override fun logInWithTwitter(result: Result<com.twitter.sdk.android.core.models.User>?) {
         val user = User(login = result?.data?.email, twitterKey = result?.data?.idStr, icon = result?.data?.profileImageUrl)
         database.child("users").push().setValue(user)
+
+        Preference.getInstance(AndroidWeatherApp.appContext).user = user
 
         view?.onLoggedIn()
     }
