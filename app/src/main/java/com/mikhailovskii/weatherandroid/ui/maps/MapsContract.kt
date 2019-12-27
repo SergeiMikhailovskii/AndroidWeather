@@ -15,7 +15,7 @@ interface MapsContract {
 
     interface MapsPresenter : MvpPresenter<MapsView> {
 
-        fun getDataByLocation(lat: String, lon: String)
+        fun getDataByLocation(lat: Double, lon: Double)
 
     }
 

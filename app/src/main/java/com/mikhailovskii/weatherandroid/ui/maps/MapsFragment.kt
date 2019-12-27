@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_maps.*
 class MapsFragment : Fragment(), MapsContract.MapsView {
 
     private lateinit var googleMap: GoogleMap
+    private val presenter = MapsPresenter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,15 +36,15 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
         initMapView(savedInstanceState)
 
-        city_et.setOnEditorActionListener { v, actionId, event ->
+        city_et.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 val city = city_et.text
 
                 val coord = getLocationFromAddress(city.toString())
 
-                if (coord != null) {
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord))
-                }
+                presenter.getDataByLocation(coord?.latitude!!, coord.longitude)
+
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord))
                 true
             } else {
                 false
