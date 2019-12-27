@@ -157,9 +157,9 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         fb_login_btn.setPermissions(listOf(email))
 
         fb_login_btn.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+
             override fun onSuccess(result: LoginResult?) {
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
+                presenter.logInWithFacebook(result)
             }
 
             override fun onCancel() {
@@ -179,6 +179,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         val twitterApiClient = TwitterApiClient(twitterSession)
         val getUserCall = twitterApiClient.accountService.verifyCredentials(true, false, true)
         getUserCall.enqueue(object : Callback<User>() {
+
             override fun success(result: Result<User>?) {
                 val socialId = result?.data?.id
                 Timber.i("$socialId id")

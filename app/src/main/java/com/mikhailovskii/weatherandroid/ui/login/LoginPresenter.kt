@@ -1,6 +1,11 @@
 package com.mikhailovskii.weatherandroid.ui.login
 
 import android.os.Bundle
+import androidx.core.os.bundleOf
+import com.facebook.AccessToken
+import com.facebook.GraphRequest
+import com.facebook.Profile
+import com.facebook.login.LoginResult
 import com.google.firebase.database.*
 import com.mikhailovskii.weatherandroid.AndroidWeatherApp
 import com.mikhailovskii.weatherandroid.data.entities.User
@@ -65,8 +70,38 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
         view?.onLoggedIn()
     }
 
-    override fun logInWithFacebook() {
+    override fun logInWithFacebook(result: LoginResult?) {
+        val request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken()){_, response ->
 
+            if (response.jsonObject != null && Profile.getCurrentProfile() != null) {
+                val data = response.jsonObject
+                var id: String? = ""
+                var icon: String? = ""
+                val name: String? = Profile.getCurrentProfile().name
+
+                if (data.has(FB_ID_PERMISSION)) {
+                    id = response.jsonObject.getString(FB_ID_PERMISSION)
+                    icon = "https://graph.facebook.com/v2.2/$id/picture?height=120&type=normal"
+                }
+
+                val user = User(login = name, facebookKey = id, icon = icon)
+                database.child("users").push().setValue(user)
+
+                Preference.getInstance(AndroidWeatherApp.appContext).user = user
+
+                view?.onLoggedIn()
+
+            }
+        }
+
+        val parameters = bundleOf("fields" to FB_EMAIL_PERMISSION)
+        request.parameters = parameters
+        request.executeAsync()
+    }
+
+    companion object {
+        private const val FB_ID_PERMISSION = "id"
+        private const val FB_EMAIL_PERMISSION = "email"
     }
 
 }
