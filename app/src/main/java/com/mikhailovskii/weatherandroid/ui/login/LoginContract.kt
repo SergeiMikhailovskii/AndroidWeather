@@ -22,6 +22,8 @@ interface LoginContract {
 
         fun logInWithTwitter(result: Result<User>?)
 
+        fun logInWithFacebook()
+
     }
 
 }

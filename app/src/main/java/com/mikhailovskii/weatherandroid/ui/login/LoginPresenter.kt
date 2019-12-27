@@ -57,12 +57,16 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
     }
 
     override fun logInWithTwitter(result: Result<com.twitter.sdk.android.core.models.User>?) {
-        val user = User(login = result?.data?.email, twitterKey = result?.data?.idStr, icon = result?.data?.profileImageUrl)
+        val user = User(login = result?.data?.name, twitterKey = result?.data?.idStr, icon = result?.data?.profileImageUrl)
         database.child("users").push().setValue(user)
 
         Preference.getInstance(AndroidWeatherApp.appContext).user = user
 
         view?.onLoggedIn()
+    }
+
+    override fun logInWithFacebook() {
+
     }
 
 }

@@ -3,7 +3,6 @@ package com.mikhailovskii.weatherandroid.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -40,10 +39,6 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
         presenter.attachView(this)
 
-        val callbackManager = CallbackManager.Factory.create()
-        val email = "email"
-
-
         sign_in_btn.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("login", login_et.text.toString())
@@ -52,7 +47,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         }
 
         // Facebook
-        initFacebookAuthorization(email, callbackManager)
+        initFacebookAuthorization()
 
         // Google
         initGoogleAuthorization()
@@ -153,7 +148,10 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         }
     }
 
-    private fun initFacebookAuthorization(email: String, callbackManager: CallbackManager?) {
+    private fun initFacebookAuthorization() {
+        val callbackManager = CallbackManager.Factory.create()
+        val email = "email"
+
         facebook_btn.setOnClickListener { fb_login_btn.performClick() }
 
         fb_login_btn.setPermissions(listOf(email))
@@ -180,7 +178,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     private fun getTwitterData(twitterSession: TwitterSession?) {
         val twitterApiClient = TwitterApiClient(twitterSession)
         val getUserCall = twitterApiClient.accountService.verifyCredentials(true, false, true)
-        getUserCall.enqueue(object:Callback<User>() {
+        getUserCall.enqueue(object : Callback<User>() {
             override fun success(result: Result<User>?) {
                 val socialId = result?.data?.id
                 Timber.i("$socialId id")
