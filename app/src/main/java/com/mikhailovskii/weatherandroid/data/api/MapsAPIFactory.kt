@@ -24,10 +24,9 @@ class MapsAPIFactory private constructor() {
         logging.level = HttpLoggingInterceptor.Level.BODY
         httpClient.addInterceptor(logging)
 
-        httpClient.addInterceptor{chain ->
+        httpClient.addInterceptor { chain ->
             val original = chain.request()
             val requestBuilder = original.newBuilder()
-                .header(API_KEY_HEADER, API_KEY_VALUE)
                 .build()
 
             chain.proceed(requestBuilder)
@@ -46,9 +45,11 @@ class MapsAPIFactory private constructor() {
 
         private const val BASE_URL = "https://maps.googleapis.com"
 
-        private const val API_KEY_HEADER = "key"
+        private var instance: MapsAPIFactory? = null
 
-        private const val API_KEY_VALUE = "AIzaSyDxQv6jAbbFOusJYN3rhmtORLbKw12vAnE"
+        fun getInstance(): MapsAPIFactory {
+            return instance ?: MapsAPIFactory()
+        }
 
     }
 
