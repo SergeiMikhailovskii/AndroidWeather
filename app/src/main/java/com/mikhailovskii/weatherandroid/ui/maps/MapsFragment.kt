@@ -19,7 +19,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.mikhailovskii.weatherandroid.R
 import kotlinx.android.synthetic.main.fragment_maps.*
 
-class MapsFragment : Fragment() {
+class MapsFragment : Fragment(), MapsContract.MapsView {
 
     private lateinit var googleMap: GoogleMap
 
@@ -49,6 +49,22 @@ class MapsFragment : Fragment() {
                 false
             }
         }
+
+    }
+
+    override fun onDataLoaded() {
+
+    }
+
+    override fun onLoadingFailed() {
+
+    }
+
+    override fun showEmptyState(value: Boolean) {
+
+    }
+
+    override fun showLoadingIndicator(value: Boolean) {
 
     }
 
@@ -111,4 +127,5 @@ class MapsFragment : Fragment() {
 
         return p1
     }
+
 }
