@@ -168,7 +168,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
             }
 
             override fun onError(error: FacebookException?) {
-                Timber.d("facebook:onError $error")
+                Timber.e("facebook:onError $error")
                 toast("Error")
             }
 
