@@ -6,6 +6,7 @@ import com.facebook.AccessToken
 import com.facebook.GraphRequest
 import com.facebook.Profile
 import com.facebook.login.LoginResult
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.database.*
 import com.mikhailovskii.weatherandroid.AndroidWeatherApp
 import com.mikhailovskii.weatherandroid.data.entities.User
@@ -97,6 +98,20 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
         val parameters = bundleOf("fields" to FB_EMAIL_PERMISSION)
         request.parameters = parameters
         request.executeAsync()
+    }
+
+    override fun logInWithGoogle(result: GoogleSignInAccount?) {
+        println(result?.displayName)
+        println(result?.photoUrl)
+        println(result?.email)
+
+        val user = User(login = result?.displayName, googleKey = result?.idToken, icon = result?.photoUrl.toString())
+        database.child("users").push().setValue(user)
+
+        Preference.getInstance(AndroidWeatherApp.appContext).user = user
+
+
+        view?.onLoggedIn()
     }
 
     companion object {

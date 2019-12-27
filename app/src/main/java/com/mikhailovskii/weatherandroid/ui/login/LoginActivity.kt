@@ -209,12 +209,8 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account = completedTask.getResult(ApiException::class.java)
-            updateUI(account)
-        } catch (e: ApiException) {
-            updateUI(null)
-        }
+        presenter.logInWithGoogle(completedTask.result)
+
     }
 
 }

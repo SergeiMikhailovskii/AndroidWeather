@@ -2,6 +2,7 @@ package com.mikhailovskii.weatherandroid.ui.login
 
 import android.os.Bundle
 import com.facebook.login.LoginResult
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.mikhailovskii.weatherandroid.ui.base.MvpPresenter
 import com.mikhailovskii.weatherandroid.ui.base.MvpView
 import com.twitter.sdk.android.core.Result
@@ -24,6 +25,8 @@ interface LoginContract {
         fun logInWithTwitter(result: Result<User>?)
 
         fun logInWithFacebook(result: LoginResult?)
+
+        fun logInWithGoogle(result: GoogleSignInAccount?)
 
     }
 
