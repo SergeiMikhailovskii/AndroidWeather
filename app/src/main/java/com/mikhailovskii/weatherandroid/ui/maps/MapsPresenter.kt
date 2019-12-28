@@ -10,7 +10,7 @@ class MapsPresenter : BasePresenter<MapsContract.MapsView>(), MapsContract.MapsP
     val mapsApi = MapsAPIFactory.getInstance().apiService
 
     override fun getDataByLocation(lat: Double, lon: Double) {
-        compositeDisposable.add(mapsApi.getLocation(lat = lat.toString(), lon = lon.toString())
+        compositeDisposable.add(mapsApi.getLocation("$lat,$lon")
             .subscribeOn(Schedulers.io())
             .doOnSubscribe { view?.showLoadingIndicator(true) }
             .observeOn(AndroidSchedulers.mainThread())

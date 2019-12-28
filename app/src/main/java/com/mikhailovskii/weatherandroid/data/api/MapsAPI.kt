@@ -3,14 +3,12 @@ package com.mikhailovskii.weatherandroid.data.api
 import com.mikhailovskii.weatherandroid.data.entities.MapResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface MapsAPI {
-
-    @GET("/maps/api/geocode/json?latlng={lat},{lon}&sensor=false&key=${API_KEY}")
+    @GET("/maps/api/geocode/json?sensor=false&key=${API_KEY}")
     fun getLocation(
-        @Path("lat") lat: String,
-        @Path("lon") lon: String
+        @Query("latlng") latlng: String
     ): Observable<MapResponse>
 
     companion object {
