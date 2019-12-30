@@ -2,6 +2,7 @@ package com.mikhailovskii.weatherandroid.ui.forecast
 
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,13 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val gradientDrawable = GradientDrawable(
+            GradientDrawable.Orientation.TL_BR,
+            intArrayOf(0xff0f7d71.toInt(), 0xff0e725b.toInt())
+        )
+
+        scrollView.background = gradientDrawable
 
         val calendar = Calendar.getInstance(TimeZone.getDefault())
         val date = "${calendar.getDisplayName(
