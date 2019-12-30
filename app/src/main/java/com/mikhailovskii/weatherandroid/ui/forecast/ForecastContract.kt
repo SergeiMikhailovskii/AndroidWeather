@@ -20,5 +20,3 @@ interface ForecastContract {
     }
 
 }
-
-// key 8df903ce56f6d18245e72f380beb297d
