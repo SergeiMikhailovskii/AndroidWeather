@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.mikhailovskii.weatherandroid.R
 import kotlinx.android.synthetic.main.fragment_maps.*
+import java.util.*
 
 class MapsFragment : Fragment(), MapsContract.MapsView {
 
@@ -36,6 +37,17 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         super.onViewCreated(view, savedInstanceState)
 
         initMapView(savedInstanceState)
+
+        val calendar = Calendar.getInstance(TimeZone.getDefault())
+        val date = "${calendar.getDisplayName(
+            Calendar.DAY_OF_WEEK,
+            Calendar.LONG, Locale.getDefault()
+        )}," +
+                " ${calendar.get(Calendar.DATE)}." +
+                "${calendar.get(Calendar.MONTH) + 1}." +
+                "${calendar.get(Calendar.YEAR)}"
+
+        date_tv.text = date
 
         city_et.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
