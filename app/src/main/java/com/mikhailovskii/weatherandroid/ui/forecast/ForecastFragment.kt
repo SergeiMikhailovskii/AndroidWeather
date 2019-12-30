@@ -9,14 +9,24 @@ import android.view.ViewGroup
 
 import com.mikhailovskii.weatherandroid.R
 
-class ForecastFragment : Fragment() {
+class ForecastFragment : Fragment(), ForecastContract.ForecastView {
+
+    private val presenter = ForecastPresenter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        presenter.attachView(this)
         return inflater.inflate(R.layout.fragment_forecast, container, false)
+    }
+
+    override fun showEmptyState(value: Boolean) {
+
+    }
+
+    override fun showLoadingIndicator(value: Boolean) {
+
     }
 
 
