@@ -42,7 +42,7 @@ class WeatherAPIFactory private constructor() {
     }
 
     companion object {
-        private const val BASE_URL = "api.openweathermap.org"
+        private const val BASE_URL = "http://api.openweathermap.org"
 
         private var instance: WeatherAPIFactory? = null
 

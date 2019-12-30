@@ -4,12 +4,13 @@ import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface WeatherAPI {
 
-    @GET("/data/2.5/forecast?q={city}&apikey=$API_KEY")
+    @GET("/data/2.5/forecast?apikey=$API_KEY")
     suspend fun getCurrentCityWeather(
-        @Path("city") city: String
+        @Query("q") city: String
     ): Response<WeatherResponse>
 
 

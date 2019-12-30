@@ -45,6 +45,8 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
                 "${calendar.get(Calendar.YEAR)}"
 
         date_tv.text = date
+
+        presenter.getCurrentCityWeather("Minsk")
     }
 
     override fun onCurrentCityWeatherLoaded() {
