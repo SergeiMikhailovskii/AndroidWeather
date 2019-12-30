@@ -28,6 +28,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        presenter.attachView(this)
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
@@ -53,8 +54,8 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
     }
 
-    override fun onDataLoaded() {
-
+    override fun onDataLoaded(result: String) {
+        city_tv.text = result
     }
 
     override fun onLoadingFailed() {

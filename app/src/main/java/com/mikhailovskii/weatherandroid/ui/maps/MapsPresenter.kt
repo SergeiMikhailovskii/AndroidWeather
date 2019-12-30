@@ -15,7 +15,12 @@ class MapsPresenter : BasePresenter<MapsContract.MapsView>(), MapsContract.MapsP
             .doOnSubscribe { view?.showLoadingIndicator(true) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
-                println(result?.results?.get(0)?.addressComponents?.get(0)?.shortName)
+
+                val data = "\uD83D\uDCCD ${result?.results?.get(0)?.addressComponents?.get(2)?.shortName}, " +
+                        "${result?.results?.get(0)?.addressComponents?.get(5)?.longName}"
+
+                view?.onDataLoaded(data)
+
             }, {
                 view?.onLoadingFailed()
             })

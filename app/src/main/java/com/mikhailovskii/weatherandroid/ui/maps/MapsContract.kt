@@ -7,7 +7,7 @@ interface MapsContract {
 
     interface MapsView : MvpView {
 
-        fun onDataLoaded()
+        fun onDataLoaded(result: String)
 
         fun onLoadingFailed()
 
