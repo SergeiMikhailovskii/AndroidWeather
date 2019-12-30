@@ -3,7 +3,6 @@ package com.mikhailovskii.weatherandroid.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -19,10 +18,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.ui.main.MainActivity
+import com.mikhailovskii.weatherandroid.util.toast
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import com.twitter.sdk.android.core.models.User
 import kotlinx.android.synthetic.main.activity_login.*
+import timber.log.Timber
 
 class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
@@ -38,14 +39,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
         presenter.attachView(this)
 
-        val callbackManager = CallbackManager.Factory.create()
-        val email = "email"
-
-
         sign_in_btn.setOnClickListener {
-//            println(login_et.text.toString() + " " + password_et.text.toString())
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
             val bundle = Bundle()
             bundle.putString("login", login_et.text.toString())
             bundle.putString("password", password_et.text.toString())
@@ -53,7 +47,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         }
 
         // Facebook
-        initFacebookAuthorization(email, callbackManager)
+        initFacebookAuthorization()
 
         // Google
         initGoogleAuthorization()
@@ -68,7 +62,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     }
 
     override fun onLoginFailed() {
-
+        toast("Login failed")
     }
 
     override fun showEmptyState(value: Boolean) {
@@ -126,7 +120,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
                     }
 
                     override fun failure(exception: TwitterException?) {
-                        Log.e("TwitterTAG", "Failed: ${exception?.message}")
+                        Timber.e("Failed: ${exception?.message}")
                     }
 
                 })
@@ -140,7 +134,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     private fun initGoogleAuthorization() {
         mAuth = FirebaseAuth.getInstance()
         val currentUser = mAuth!!.currentUser
-        Log.d("currentUser", currentUser.toString())
+        Timber.d(currentUser.toString())
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -154,25 +148,28 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         }
     }
 
-    private fun initFacebookAuthorization(email: String, callbackManager: CallbackManager?) {
+    private fun initFacebookAuthorization() {
+        val callbackManager = CallbackManager.Factory.create()
+        val email = "email"
+
         facebook_btn.setOnClickListener { fb_login_btn.performClick() }
 
         fb_login_btn.setPermissions(listOf(email))
 
         fb_login_btn.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+
             override fun onSuccess(result: LoginResult?) {
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
+                presenter.logInWithFacebook(result)
             }
 
             override fun onCancel() {
-                Log.d("FBTAG", "facebook:onCancel")
-                Toast.makeText(applicationContext, "Cancel", Toast.LENGTH_SHORT).show()
+                Timber.d("facebook:onCancel")
+                toast("Cancel")
             }
 
             override fun onError(error: FacebookException?) {
-                Log.d("FBTAG", "facebook:onError", error)
-                Toast.makeText(applicationContext, "Error", Toast.LENGTH_SHORT).show()
+                Timber.e("facebook:onError $error")
+                toast("Error")
             }
 
         })
@@ -181,14 +178,16 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     private fun getTwitterData(twitterSession: TwitterSession?) {
         val twitterApiClient = TwitterApiClient(twitterSession)
         val getUserCall = twitterApiClient.accountService.verifyCredentials(true, false, true)
-        getUserCall.enqueue(object:Callback<User>() {
+        getUserCall.enqueue(object : Callback<User>() {
+
             override fun success(result: Result<User>?) {
                 val socialId = result?.data?.id
-                Log.i("TwitterTAG", "$socialId id")
+                Timber.i("$socialId id")
+                presenter.logInWithTwitter(result)
             }
 
             override fun failure(exception: TwitterException?) {
-                Log.e("TwitterTAG", "Failed: ${exception?.message}")
+                Timber.e("Failed: ${exception?.message}")
             }
 
         })
@@ -201,21 +200,17 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
-            Toast.makeText(this, account.displayName.toString(), Toast.LENGTH_LONG).show()
+            toast(account.displayName.toString())
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else {
-            Toast.makeText(this, "Not signed in", Toast.LENGTH_LONG).show()
+            toast("Not signed in")
         }
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
-        try {
-            val account = completedTask.getResult(ApiException::class.java)
-            updateUI(account)
-        } catch (e: ApiException) {
-            updateUI(null)
-        }
+        presenter.logInWithGoogle(completedTask.result)
+
     }
 
 }
