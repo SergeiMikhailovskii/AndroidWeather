@@ -1,4 +1,4 @@
-package com.mikhailovskii.weatherandroid.data.api
+package com.mikhailovskii.weatherandroid.data.api.maps
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
@@ -48,7 +48,8 @@ class MapsAPIFactory private constructor() {
         private var instance: MapsAPIFactory? = null
 
         fun getInstance(): MapsAPIFactory {
-            return instance ?: MapsAPIFactory()
+            return instance
+                ?: MapsAPIFactory()
         }
 
     }

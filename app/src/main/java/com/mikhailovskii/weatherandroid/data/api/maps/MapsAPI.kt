@@ -1,4 +1,4 @@
-package com.mikhailovskii.weatherandroid.data.api
+package com.mikhailovskii.weatherandroid.data.api.maps
 
 import com.mikhailovskii.weatherandroid.data.entities.MapResponse
 import retrofit2.Response
@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface MapsAPI {
-    @GET("/maps/api/geocode/json?sensor=false&key=${API_KEY}")
+    @GET("/maps/api/geocode/json?sensor=false&key=$API_KEY")
     suspend fun getLocation(
         @Query("latlng") latlng: String
     ): Response<MapResponse>
