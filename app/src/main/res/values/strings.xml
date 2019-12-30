@@ -39,5 +39,6 @@
     <string name="first_day_sample">Tuesday</string>
     <string name="second_day_sample">Wednesday</string>
     <string name="third_day_sample">Thursday</string>
+    <string name="munich">Munich</string>
 
 </resources>

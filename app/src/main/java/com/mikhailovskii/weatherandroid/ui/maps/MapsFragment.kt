@@ -3,6 +3,7 @@ package com.mikhailovskii.weatherandroid.ui.maps
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.drawable.GradientDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
@@ -35,6 +36,15 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val gradientDrawable = GradientDrawable(
+            GradientDrawable.Orientation.TL_BR,
+            intArrayOf(0xff69c8ea.toInt(), 0xff66c0e1.toInt())
+        )
+
+        scrollView.background = gradientDrawable
+
+        city_et.setBackgroundColor(0xff69C0E6.toInt())
 
         initMapView(savedInstanceState)
 
