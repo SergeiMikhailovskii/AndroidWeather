@@ -47,6 +47,14 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         date_tv.text = date
     }
 
+    override fun onCurrentCityWeatherLoaded() {
+
+    }
+
+    override fun onCurrentCityWeatherFailed() {
+
+    }
+
     override fun showEmptyState(value: Boolean) {
 
     }

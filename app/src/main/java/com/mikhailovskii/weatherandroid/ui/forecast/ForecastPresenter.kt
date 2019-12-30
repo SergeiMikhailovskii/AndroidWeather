@@ -4,6 +4,8 @@ import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 
 class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(), ForecastContract.ForecastPresenter {
 
+    override fun getCurrentCityWeather(city: String) {
 
+    }
 
 }
