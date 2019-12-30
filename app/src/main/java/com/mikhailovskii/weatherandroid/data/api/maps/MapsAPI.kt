@@ -1,6 +1,6 @@
 package com.mikhailovskii.weatherandroid.data.api.maps
 
-import com.mikhailovskii.weatherandroid.data.entities.MapResponse
+import com.mikhailovskii.weatherandroid.data.entities.maps.MapResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
