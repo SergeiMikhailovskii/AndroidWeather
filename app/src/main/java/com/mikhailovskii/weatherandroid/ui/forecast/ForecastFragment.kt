@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.mikhailovskii.weatherandroid.R
+import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
 import kotlinx.android.synthetic.main.fragment_forecast.*
 import java.util.*
 
@@ -49,8 +50,13 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         presenter.getCurrentCityWeather("Minsk")
     }
 
-    override fun onCurrentCityWeatherLoaded() {
-
+    @SuppressLint("SetTextI18n")
+    override fun onCurrentCityWeatherLoaded(response: WeatherResponse?) {
+        weather_description_tv.text = response?.overcast?.get(0)?.mainInfo
+        temperature_tv.text = "${response?.weatherTemp?.temp?.minus(273)?.toInt()} ˚C"
+        humidity_value_tv.text = "${response?.weatherTemp?.humidity} %"
+        precipitation_value_tv.text = "${response?.weatherTemp?.pressure}"
+        feels_like_value_tv.text = "${response?.weatherTemp?.feelsLike?.minus(273)?.toInt()} ˚C"
     }
 
     override fun onCurrentCityWeatherFailed() {

@@ -18,10 +18,7 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(), Foreca
                 if (response.isSuccessful) {
                     val result = response.body()
 
-                    val data = result?.weatherTemp?.temp!!
-
-
-
+                    view?.onCurrentCityWeatherLoaded(result)
                 }
             }
         }
