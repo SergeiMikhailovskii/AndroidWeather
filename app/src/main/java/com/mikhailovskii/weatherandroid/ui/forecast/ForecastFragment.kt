@@ -47,6 +47,8 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
         date_tv.text = date
 
+        presenter.getCityFromPreferences()
+
         presenter.getCurrentCityWeather("Minsk")
     }
 
@@ -57,10 +59,20 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         humidity_value_tv.text = "${response?.weatherTemp?.humidity} %"
         precipitation_value_tv.text = "${response?.weatherTemp?.pressure}"
         feels_like_value_tv.text = "${response?.weatherTemp?.feelsLike?.minus(273)?.toInt()} ˚C"
-        wind_value_tv.text = "${getWindDirection(response?.wind?.degree!!)} ${response.wind?.speed!!} kph"
+        wind_value_tv.text =
+            "${getWindDirection(response?.wind?.degree!!)} ${response.wind?.speed!!} kph"
     }
 
     override fun onCurrentCityWeatherFailed() {
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onCityFromPreferencesLoaded(response: String?) {
+        city_tv.text = "\uD83D\uDCCD $response"
+    }
+
+    override fun onCityFromPreferencesFailed() {
 
     }
 
@@ -83,7 +95,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
             degree > 247.5 -> {
                 return "W"
             }
-            degree> 202.5 -> {
+            degree > 202.5 -> {
                 return "SW"
             }
             degree > 157.5 -> {

@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 
 class MapsPresenter : BasePresenter<MapsContract.MapsView>(), MapsContract.MapsPresenter {
 
-    val mapsApi = MapsAPIFactory.getInstance().apiService
+    private val mapsApi = MapsAPIFactory.getInstance().apiService
 
     override fun getDataByLocation(lat: Double, lon: Double) {
         CoroutineScope(Dispatchers.IO).launch {
