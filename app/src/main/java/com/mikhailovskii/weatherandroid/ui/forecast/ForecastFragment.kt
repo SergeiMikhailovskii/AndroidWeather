@@ -57,6 +57,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         humidity_value_tv.text = "${response?.weatherTemp?.humidity} %"
         precipitation_value_tv.text = "${response?.weatherTemp?.pressure}"
         feels_like_value_tv.text = "${response?.weatherTemp?.feelsLike?.minus(273)?.toInt()} ˚C"
+        wind_value_tv.text = "${getWindDirection(response?.wind?.degree!!)} ${response.wind?.speed!!} kph"
     }
 
     override fun onCurrentCityWeatherFailed() {
@@ -69,6 +70,38 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
     override fun showLoadingIndicator(value: Boolean) {
 
+    }
+
+    private fun getWindDirection(degree: Int): String {
+        when {
+            degree > 337.5 -> {
+                return "N"
+            }
+            degree > 292.5 -> {
+                return "NW"
+            }
+            degree > 247.5 -> {
+                return "W"
+            }
+            degree> 202.5 -> {
+                return "SW"
+            }
+            degree > 157.5 -> {
+                return "S"
+            }
+            degree > 122.5 -> {
+                return "SE"
+            }
+            degree > 67.5 -> {
+                return "E"
+            }
+            degree > 22.5 -> {
+                return "NE"
+            }
+            else -> {
+                return "N"
+            }
+        }
     }
 
 
