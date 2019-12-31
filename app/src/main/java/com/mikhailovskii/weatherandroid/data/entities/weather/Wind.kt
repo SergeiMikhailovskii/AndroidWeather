@@ -7,7 +7,7 @@ data class Wind(
 
     @SerializedName("speed")
     @Expose
-    var speed: Int? = null,
+    var speed: Double? = null,
 
     @SerializedName("deg")
     @Expose
