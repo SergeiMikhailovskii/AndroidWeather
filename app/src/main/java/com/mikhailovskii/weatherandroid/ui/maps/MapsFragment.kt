@@ -3,6 +3,7 @@ package com.mikhailovskii.weatherandroid.ui.maps
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.drawable.GradientDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.mikhailovskii.weatherandroid.R
 import kotlinx.android.synthetic.main.fragment_maps.*
+import java.util.*
 
 class MapsFragment : Fragment(), MapsContract.MapsView {
 
@@ -35,7 +37,27 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val gradientDrawable = GradientDrawable(
+            GradientDrawable.Orientation.TL_BR,
+            intArrayOf(0xff69c8ea.toInt(), 0xff66c0e1.toInt())
+        )
+
+        scrollView.background = gradientDrawable
+
+        city_et.setBackgroundColor(0xff69C0E6.toInt())
+
         initMapView(savedInstanceState)
+
+        val calendar = Calendar.getInstance(TimeZone.getDefault())
+        val date = "${calendar.getDisplayName(
+            Calendar.DAY_OF_WEEK,
+            Calendar.LONG, Locale.getDefault()
+        )}," +
+                " ${calendar.get(Calendar.DATE)}." +
+                "${calendar.get(Calendar.MONTH) + 1}." +
+                "${calendar.get(Calendar.YEAR)}"
+
+        date_tv.text = date
 
         city_et.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {

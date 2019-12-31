@@ -1,4 +1,4 @@
-package com.mikhailovskii.weatherandroid.data.entities
+package com.mikhailovskii.weatherandroid.data.entities.maps
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

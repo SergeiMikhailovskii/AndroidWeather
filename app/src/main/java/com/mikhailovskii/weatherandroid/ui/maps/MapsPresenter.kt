@@ -1,6 +1,6 @@
 package com.mikhailovskii.weatherandroid.ui.maps
 
-import com.mikhailovskii.weatherandroid.data.api.MapsAPIFactory
+import com.mikhailovskii.weatherandroid.data.api.maps.MapsAPIFactory
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

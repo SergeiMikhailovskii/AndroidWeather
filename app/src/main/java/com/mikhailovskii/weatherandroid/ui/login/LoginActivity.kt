@@ -1,6 +1,7 @@
 package com.mikhailovskii.weatherandroid.ui.login
 
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +39,13 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         setContentView(R.layout.activity_login)
 
         presenter.attachView(this)
+
+        val gradientDrawable = GradientDrawable(
+            GradientDrawable.Orientation.TL_BR,
+            intArrayOf(0xff69c3e6.toInt(), 0xff556f9f.toInt())
+        )
+
+        scrollView.background = gradientDrawable
 
         sign_in_btn.setOnClickListener {
             val bundle = Bundle()
