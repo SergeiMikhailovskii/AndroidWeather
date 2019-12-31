@@ -11,6 +11,10 @@ data class WeatherResponse(
 
     @SerializedName("weather")
     @Expose
-    var overcast: List<Overcast>? = null
+    var overcast: List<Overcast>? = null,
+
+    @SerializedName("wind")
+    @Expose
+    var wind: Wind? = null
 
 )
