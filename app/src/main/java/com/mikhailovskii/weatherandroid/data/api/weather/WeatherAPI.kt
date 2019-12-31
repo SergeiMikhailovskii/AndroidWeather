@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface WeatherAPI {
 
-    @GET("/data/2.5/forecast?apikey=$API_KEY")
+    @GET("/data/2.5/weather?apikey=$API_KEY")
     suspend fun getCurrentCityWeather(
         @Query("q") city: String
     ): Response<WeatherResponse>

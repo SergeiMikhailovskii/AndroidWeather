@@ -20,7 +20,7 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(), Foreca
 
                     val data = result?.weatherTemp?.temp!!
 
-                    println("$data WEATHER")
+
 
                 }
             }
