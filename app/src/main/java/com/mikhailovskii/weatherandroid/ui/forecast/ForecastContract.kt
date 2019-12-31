@@ -20,7 +20,7 @@ interface ForecastContract {
 
     interface ForecastPresenter : MvpPresenter<ForecastView> {
 
-        fun getCurrentCityWeather(city: String)
+        fun getCurrentCityWeather()
 
         fun getCityFromPreferences()
 

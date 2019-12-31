@@ -9,12 +9,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(), ForecastContract.ForecastPresenter {
+class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
+    ForecastContract.ForecastPresenter {
 
     private val weatherApi = WeatherAPIFactory.getInstance().apiService
 
-    override fun getCurrentCityWeather(city: String) {
+    override fun getCurrentCityWeather() {
         CoroutineScope(Dispatchers.IO).launch {
+            var city = Preference.getInstance(AndroidWeatherApp.appContext).location ?: "Minsk"
+            city = city.replace("\\s".toRegex(), "")
+
             val response = weatherApi.getCurrentCityWeather(city)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
