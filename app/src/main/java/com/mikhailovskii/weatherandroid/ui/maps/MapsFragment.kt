@@ -19,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.mikhailovskii.weatherandroid.R
+import com.mikhailovskii.weatherandroid.util.toast
 import kotlinx.android.synthetic.main.fragment_maps.*
 import java.util.*
 
@@ -85,7 +86,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     }
 
     override fun onLoadingFailed() {
-
+        toast("Loading failed!")
     }
 
     @SuppressLint("SetTextI18n")

@@ -18,14 +18,20 @@ class MapsPresenter : BasePresenter<MapsContract.MapsView>(), MapsContract.MapsP
             val response = mapsApi.getLocation("$lat,$lon")
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
-                    val result = response.body()
 
-                    val data = "${result?.results?.get(0)?.addressComponents?.get(2)?.shortName}, " +
-                            "${result?.results?.get(0)?.addressComponents?.get(5)?.longName}"
+                    try {
+                        val result = response.body()
 
-                    saveLocationToPreferences(data)
+                        val data = "${result?.results?.get(0)?.addressComponents?.get(2)?.shortName}, " +
+                                "${result?.results?.get(0)?.addressComponents?.get(5)?.longName}"
 
-                    view?.onDataLoaded(data)
+                        saveLocationToPreferences(data)
+
+                        view?.onDataLoaded(data)
+                    } catch (e: IndexOutOfBoundsException) {
+                        view?.onLoadingFailed()
+                    }
+
                 } else {
                     view?.onLoadingFailed()
                 }
