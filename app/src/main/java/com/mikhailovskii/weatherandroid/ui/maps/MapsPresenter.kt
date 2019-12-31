@@ -1,7 +1,9 @@
 package com.mikhailovskii.weatherandroid.ui.maps
 
+import com.mikhailovskii.weatherandroid.AndroidWeatherApp
 import com.mikhailovskii.weatherandroid.data.api.maps.MapsAPIFactory
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
+import com.mikhailovskii.weatherandroid.util.Preference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,8 +20,10 @@ class MapsPresenter : BasePresenter<MapsContract.MapsView>(), MapsContract.MapsP
                 if (response.isSuccessful) {
                     val result = response.body()
 
-                    val data = "\uD83D\uDCCD ${result?.results?.get(0)?.addressComponents?.get(2)?.shortName}, " +
+                    val data = "${result?.results?.get(0)?.addressComponents?.get(2)?.shortName}, " +
                             "${result?.results?.get(0)?.addressComponents?.get(5)?.longName}"
+
+                    saveLocationToPreferences(data)
 
                     view?.onDataLoaded(data)
                 } else {
@@ -27,6 +31,10 @@ class MapsPresenter : BasePresenter<MapsContract.MapsView>(), MapsContract.MapsP
                 }
             }
         }
+    }
+
+    private fun saveLocationToPreferences(location: String) {
+        Preference.getInstance(AndroidWeatherApp.appContext).location = location
     }
 
 }

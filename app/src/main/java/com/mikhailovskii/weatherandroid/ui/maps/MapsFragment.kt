@@ -2,6 +2,7 @@ package com.mikhailovskii.weatherandroid.ui.maps
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.drawable.GradientDrawable
 import android.location.Address
@@ -76,8 +77,9 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onDataLoaded(result: String) {
-        city_tv.text = result
+        city_tv.text = "\uD83D\uDCCD $result"
     }
 
     override fun onLoadingFailed() {
