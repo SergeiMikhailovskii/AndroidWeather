@@ -60,6 +60,8 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
         date_tv.text = date
 
+        presenter.getCityFromPreferences()
+
         city_et.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 val city = city_et.text
@@ -83,6 +85,15 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     }
 
     override fun onLoadingFailed() {
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onCityFromPreferencesLoaded(response: String?) {
+        city_tv.text = "\uD83D\uDCCD $response"
+    }
+
+    override fun onCityFromPreferencesFailed() {
 
     }
 

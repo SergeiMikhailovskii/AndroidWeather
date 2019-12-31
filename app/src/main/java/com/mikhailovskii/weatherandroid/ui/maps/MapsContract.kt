@@ -11,11 +11,17 @@ interface MapsContract {
 
         fun onLoadingFailed()
 
+        fun onCityFromPreferencesLoaded(response: String?)
+
+        fun onCityFromPreferencesFailed()
+
     }
 
     interface MapsPresenter : MvpPresenter<MapsView> {
 
         fun getDataByLocation(lat: Double, lon: Double)
+
+        fun getCityFromPreferences()
 
     }
 

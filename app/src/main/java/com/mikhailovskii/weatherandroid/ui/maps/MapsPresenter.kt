@@ -33,6 +33,11 @@ class MapsPresenter : BasePresenter<MapsContract.MapsView>(), MapsContract.MapsP
         }
     }
 
+    override fun getCityFromPreferences() {
+        val location = Preference.getInstance(AndroidWeatherApp.appContext).location
+        view?.onCityFromPreferencesLoaded(location)
+    }
+
     private fun saveLocationToPreferences(location: String) {
         Preference.getInstance(AndroidWeatherApp.appContext).location = location
     }
