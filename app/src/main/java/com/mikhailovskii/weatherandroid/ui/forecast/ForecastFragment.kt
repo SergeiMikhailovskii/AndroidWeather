@@ -8,10 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.gson.JsonSyntaxException
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
-import com.mikhailovskii.weatherandroid.util.toast
 import kotlinx.android.synthetic.main.fragment_forecast.*
 import java.util.*
 
@@ -63,6 +61,14 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         feels_like_value_tv.text = "${response?.weatherTemp?.feelsLike?.minus(273)?.toInt()} ˚C"
         wind_value_tv.text =
             "${getWindDirection(response?.wind?.degree!!)} ${response.wind?.speed!!} kph"
+
+        if (response.overcast?.get(0)?.icon!!.contains("02", ignoreCase = true)
+            || response.overcast?.get(0)?.icon!!.contains("03", ignoreCase = true)
+            || response.overcast?.get(0)?.icon!!.contains("04", ignoreCase = true)
+        ) {
+            weather_iv.setImageResource(R.drawable.few_clouds)
+        }
+
     }
 
     override fun onCurrentCityWeatherFailed() {
