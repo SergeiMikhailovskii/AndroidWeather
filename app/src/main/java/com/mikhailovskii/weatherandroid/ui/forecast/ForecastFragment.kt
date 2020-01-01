@@ -68,6 +68,18 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
             || response.overcast?.get(0)?.icon!!.contains("04", ignoreCase = true)
         ) {
             weather_iv.setImageResource(R.drawable.few_clouds)
+        } else if (response.overcast?.get(0)?.icon!!.contains("01", ignoreCase = true)
+            || response.overcast?.get(0)?.icon!!.contains("13", ignoreCase = true)
+        ) {
+            weather_iv.setImageResource(R.drawable.snow)
+        } else if (response.overcast?.get(0)?.icon!!.contains("09", ignoreCase = true)) {
+            weather_iv.setImageResource(R.drawable.shower_rain)
+        } else if (response.overcast?.get(0)?.icon!!.contains("10", ignoreCase = true)) {
+            weather_iv.setImageResource(R.drawable.rain)
+        } else if (response.overcast?.get(0)?.icon!!.contains("11", ignoreCase = true)) {
+            weather_iv.setImageResource(R.drawable.thunderstorm)
+        } else if (response.overcast?.get(0)?.icon!!.contains("50", ignoreCase = true)) {
+            weather_iv.setImageResource(R.drawable.mist)
         }
 
     }
