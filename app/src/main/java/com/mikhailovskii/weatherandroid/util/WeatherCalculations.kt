@@ -1,5 +1,9 @@
 package com.mikhailovskii.weatherandroid.util
 
+import android.annotation.SuppressLint
+import java.text.SimpleDateFormat
+import java.util.*
+
 fun getWindDirection(degree: Int): String {
     when {
         degree > 337.5 -> {
@@ -30,4 +34,12 @@ fun getWindDirection(degree: Int): String {
             return "N"
         }
     }
+}
+
+@SuppressLint("SimpleDateFormat")
+fun getDateFromSeconds(seconds: Int): String {
+    val simpleDateFormat = SimpleDateFormat("E HH:mm")
+    val date = Date((seconds * 1000).toLong())
+
+    return simpleDateFormat.format(date)
 }
