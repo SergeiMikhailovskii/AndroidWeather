@@ -3,7 +3,7 @@ package com.mikhailovskii.weatherandroid.data.diffutil
 import androidx.recyclerview.widget.DiffUtil
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 
-class MovieDiffUtilCallback(
+class WeatherDiffUtilCallback(
     private val oldList: List<WeatherElement>,
     private val newList: List<WeatherElement>
 ) : DiffUtil.Callback() {

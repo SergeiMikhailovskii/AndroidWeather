@@ -8,8 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikhailovskii.weatherandroid.R
+import com.mikhailovskii.weatherandroid.data.diffutil.WeatherDiffUtilCallback
+import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
 import com.mikhailovskii.weatherandroid.ui.adapter.WeatherAdapter
 import com.mikhailovskii.weatherandroid.util.getWindDirection
@@ -58,6 +61,8 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         presenter.getCityFromPreferences()
 
         presenter.getCurrentCityWeather()
+
+        presenter.getCityForecast()
     }
 
     @SuppressLint("SetTextI18n")
@@ -101,6 +106,19 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     }
 
     override fun onCityFromPreferencesFailed() {
+
+    }
+
+    override fun onWeatherForecastLoaded(weatherList: List<WeatherElement>) {
+        val weatherDiffUtilCallback = WeatherDiffUtilCallback(weatherList, adapter?.weatherList!!)
+        val weatherDiffResult = DiffUtil.calculateDiff(weatherDiffUtilCallback)
+        adapter?.setData(weatherList)
+        adapter?.let {
+            weatherDiffResult.dispatchUpdatesTo(it)
+        }
+    }
+
+    override fun onWeatherForecastFailed() {
 
     }
 

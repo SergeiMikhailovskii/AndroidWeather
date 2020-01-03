@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.weather_element.view.*
 
 class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
-    private val weatherList = ArrayList<WeatherElement>()
+    val weatherList = ArrayList<WeatherElement>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
