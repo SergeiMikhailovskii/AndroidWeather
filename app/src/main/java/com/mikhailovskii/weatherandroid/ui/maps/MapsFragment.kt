@@ -27,6 +27,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
     private lateinit var googleMap: GoogleMap
     private val presenter = MapsPresenter()
+    private var currentLocation = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,8 +83,9 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onDataLoaded(result: String) {
-        city_tv.text = "\uD83D\uDCCD $result"
+    override fun onDataLoaded(response: String) {
+        city_tv.text = "\uD83D\uDCCD $response"
+        currentLocation = response
     }
 
     override fun onLoadingFailed() {
@@ -93,6 +95,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     @SuppressLint("SetTextI18n")
     override fun onCityFromPreferencesLoaded(response: String?) {
         city_tv.text = "\uD83D\uDCCD $response"
+        currentLocation = response ?: "Minsk"
     }
 
     override fun onCityFromPreferencesFailed() {
@@ -138,8 +141,8 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                 uiSettings.isCompassEnabled = true
                 uiSettings.isZoomControlsEnabled = true
 
-                val latLng = LatLng(40.0, (-74).toDouble())
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8.0f))
+                val latLng = getLocationFromAddress(currentLocation)
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10.0f))
                 googleMap.isMyLocationEnabled = true
                 map_view.onResume()
             }
