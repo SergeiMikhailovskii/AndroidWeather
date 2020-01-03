@@ -10,12 +10,12 @@ import com.mikhailovskii.weatherandroid.data.entities.User
 class Preference @SuppressLint("CommitPrefEdits")
 private constructor(context: Context) {
 
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(context)
     private val editor: SharedPreferences.Editor
 
 
     init {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         editor = sharedPreferences.edit()
     }
 
@@ -25,9 +25,16 @@ private constructor(context: Context) {
             editor.putString(PREF_USER, Gson().toJson(user)).commit()
         }
 
+    var location: String?
+        get() = sharedPreferences.getString(PREF_LOCATION, null)
+        set(location) {
+            editor.putString(PREF_LOCATION, location).commit()
+        }
+
     companion object {
 
         private const val PREF_USER = "PREF_USER"
+        private const val PREF_LOCATION = "PREF_LOCATION"
 
         private var instance: Preference? = null
 

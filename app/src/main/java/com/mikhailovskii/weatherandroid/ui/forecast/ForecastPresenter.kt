@@ -1,18 +1,24 @@
 package com.mikhailovskii.weatherandroid.ui.forecast
 
+import com.mikhailovskii.weatherandroid.AndroidWeatherApp
 import com.mikhailovskii.weatherandroid.data.api.weather.WeatherAPIFactory
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
+import com.mikhailovskii.weatherandroid.util.Preference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(), ForecastContract.ForecastPresenter {
+class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
+    ForecastContract.ForecastPresenter {
 
-    val weatherApi = WeatherAPIFactory.getInstance().apiService
+    private val weatherApi = WeatherAPIFactory.getInstance().apiService
 
-    override fun getCurrentCityWeather(city: String) {
+    override fun getCurrentCityWeather() {
         CoroutineScope(Dispatchers.IO).launch {
+            var city = Preference.getInstance(AndroidWeatherApp.appContext).location ?: "Minsk"
+            city = city.replace("\\s".toRegex(), "")
+
             val response = weatherApi.getCurrentCityWeather(city)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
@@ -22,6 +28,11 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(), Foreca
                 }
             }
         }
+    }
+
+    override fun getCityFromPreferences() {
+        val location = Preference.getInstance(AndroidWeatherApp.appContext).location
+        view?.onCityFromPreferencesLoaded(location)
     }
 
 }

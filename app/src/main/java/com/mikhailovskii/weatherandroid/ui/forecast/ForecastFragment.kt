@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
+import com.mikhailovskii.weatherandroid.util.getWindDirection
 import kotlinx.android.synthetic.main.fragment_forecast.*
 import java.util.*
 
@@ -25,7 +26,6 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         return inflater.inflate(R.layout.fragment_forecast, container, false)
     }
 
-    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -47,7 +47,9 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
         date_tv.text = date
 
-        presenter.getCurrentCityWeather("Minsk")
+        presenter.getCityFromPreferences()
+
+        presenter.getCurrentCityWeather()
     }
 
     @SuppressLint("SetTextI18n")
@@ -57,10 +59,40 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         humidity_value_tv.text = "${response?.weatherTemp?.humidity} %"
         precipitation_value_tv.text = "${response?.weatherTemp?.pressure}"
         feels_like_value_tv.text = "${response?.weatherTemp?.feelsLike?.minus(273)?.toInt()} ˚C"
-        wind_value_tv.text = "${getWindDirection(response?.wind?.degree!!)} ${response.wind?.speed!!} kph"
+        wind_value_tv.text =
+            "${getWindDirection(response?.wind?.degree ?: 0)} ${response?.wind?.speed!!} kph"
+
+        if (response.overcast?.get(0)?.icon!!.contains("02", ignoreCase = true)
+            || response.overcast?.get(0)?.icon!!.contains("03", ignoreCase = true)
+            || response.overcast?.get(0)?.icon!!.contains("04", ignoreCase = true)
+        ) {
+            weather_iv.setImageResource(R.drawable.few_clouds)
+        } else if (response.overcast?.get(0)?.icon!!.contains("01", ignoreCase = true)
+            || response.overcast?.get(0)?.icon!!.contains("13", ignoreCase = true)
+        ) {
+            weather_iv.setImageResource(R.drawable.snow)
+        } else if (response.overcast?.get(0)?.icon!!.contains("09", ignoreCase = true)) {
+            weather_iv.setImageResource(R.drawable.shower_rain)
+        } else if (response.overcast?.get(0)?.icon!!.contains("10", ignoreCase = true)) {
+            weather_iv.setImageResource(R.drawable.rain)
+        } else if (response.overcast?.get(0)?.icon!!.contains("11", ignoreCase = true)) {
+            weather_iv.setImageResource(R.drawable.thunderstorm)
+        } else if (response.overcast?.get(0)?.icon!!.contains("50", ignoreCase = true)) {
+            weather_iv.setImageResource(R.drawable.mist)
+        }
+
     }
 
     override fun onCurrentCityWeatherFailed() {
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onCityFromPreferencesLoaded(response: String?) {
+        city_tv.text = "\uD83D\uDCCD $response"
+    }
+
+    override fun onCityFromPreferencesFailed() {
 
     }
 
@@ -71,38 +103,5 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     override fun showLoadingIndicator(value: Boolean) {
 
     }
-
-    private fun getWindDirection(degree: Int): String {
-        when {
-            degree > 337.5 -> {
-                return "N"
-            }
-            degree > 292.5 -> {
-                return "NW"
-            }
-            degree > 247.5 -> {
-                return "W"
-            }
-            degree> 202.5 -> {
-                return "SW"
-            }
-            degree > 157.5 -> {
-                return "S"
-            }
-            degree > 122.5 -> {
-                return "SE"
-            }
-            degree > 67.5 -> {
-                return "E"
-            }
-            degree > 22.5 -> {
-                return "NE"
-            }
-            else -> {
-                return "N"
-            }
-        }
-    }
-
 
 }

@@ -2,6 +2,7 @@ package com.mikhailovskii.weatherandroid.ui.maps
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.drawable.GradientDrawable
 import android.location.Address
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.mikhailovskii.weatherandroid.R
+import com.mikhailovskii.weatherandroid.util.toast
 import kotlinx.android.synthetic.main.fragment_maps.*
 import java.util.*
 
@@ -25,6 +27,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
     private lateinit var googleMap: GoogleMap
     private val presenter = MapsPresenter()
+    private var currentLocation = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,16 +62,17 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
         date_tv.text = date
 
+        presenter.getCityFromPreferences()
+
+
         city_et.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 val city = city_et.text
 
                 val coord = getLocationFromAddress(city.toString())
 
-                presenter.getDataByLocation(coord?.latitude!!, coord.longitude)
-
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord))
-                true
+                false   // If return value is true keyboard won't pop
             } else {
                 false
             }
@@ -76,11 +80,18 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
     }
 
-    override fun onDataLoaded(result: String) {
-        city_tv.text = result
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.saveLocationToPreferences(currentLocation)
     }
 
-    override fun onLoadingFailed() {
+    @SuppressLint("SetTextI18n")
+    override fun onCityFromPreferencesLoaded(response: String?) {
+        currentLocation = response ?: "Minsk"
+        city_tv.text = "\uD83D\uDCCD $currentLocation"
+    }
+
+    override fun onCityFromPreferencesFailed() {
 
     }
 
@@ -123,14 +134,15 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                 uiSettings.isCompassEnabled = true
                 uiSettings.isZoomControlsEnabled = true
 
-                val latLng = LatLng(40.0, (-74).toDouble())
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+                val latLng = getLocationFromAddress(currentLocation)
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10.0f))
                 googleMap.isMyLocationEnabled = true
                 map_view.onResume()
             }
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getLocationFromAddress(strAddress: String): LatLng? {
         val coder = Geocoder(context)
         val address: List<Address>?
@@ -145,6 +157,14 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         try {
             val location = address[0]
             p1 = LatLng(location.latitude, location.longitude)
+
+            currentLocation = if (location.locality != null) {
+                "${location.locality}, ${location.countryName}"
+            } else {
+                location.countryName
+            }
+
+            city_tv.text = "\uD83D\uDCCD $currentLocation"
         } catch (e: IndexOutOfBoundsException) {
             Toast.makeText(context, "City not found", Toast.LENGTH_SHORT).show()
         }

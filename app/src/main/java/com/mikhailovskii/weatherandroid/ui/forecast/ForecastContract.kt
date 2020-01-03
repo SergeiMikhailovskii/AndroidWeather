@@ -12,11 +12,17 @@ interface ForecastContract {
 
         fun onCurrentCityWeatherFailed()
 
+        fun onCityFromPreferencesLoaded(response: String?)
+
+        fun onCityFromPreferencesFailed()
+
     }
 
     interface ForecastPresenter : MvpPresenter<ForecastView> {
 
-        fun getCurrentCityWeather(city: String)
+        fun getCurrentCityWeather()
+
+        fun getCityFromPreferences()
 
     }
 
