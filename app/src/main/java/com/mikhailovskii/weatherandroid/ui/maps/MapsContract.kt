@@ -7,10 +7,6 @@ interface MapsContract {
 
     interface MapsView : MvpView {
 
-        fun onDataLoaded(response: String)
-
-        fun onLoadingFailed()
-
         fun onCityFromPreferencesLoaded(response: String?)
 
         fun onCityFromPreferencesFailed()
@@ -19,9 +15,9 @@ interface MapsContract {
 
     interface MapsPresenter : MvpPresenter<MapsView> {
 
-        fun getDataByLocation(lat: Double, lon: Double)
-
         fun getCityFromPreferences()
+
+        fun saveLocationToPreferences(location: String)
 
     }
 

@@ -26,7 +26,6 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         return inflater.inflate(R.layout.fragment_forecast, container, false)
     }
 
-    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,7 +60,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         precipitation_value_tv.text = "${response?.weatherTemp?.pressure}"
         feels_like_value_tv.text = "${response?.weatherTemp?.feelsLike?.minus(273)?.toInt()} ˚C"
         wind_value_tv.text =
-            "${getWindDirection(response?.wind?.degree!!)} ${response.wind?.speed!!} kph"
+            "${getWindDirection(response?.wind?.degree ?: 0)} ${response?.wind?.speed!!} kph"
 
         if (response.overcast?.get(0)?.icon!!.contains("02", ignoreCase = true)
             || response.overcast?.get(0)?.icon!!.contains("03", ignoreCase = true)

@@ -71,8 +71,6 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
                 val coord = getLocationFromAddress(city.toString())
 
-                presenter.getDataByLocation(coord?.latitude!!, coord.longitude)
-
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord))
                 false   // If return value is true keyboard won't pop
             } else {
@@ -82,20 +80,15 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun onDataLoaded(response: String) {
-        city_tv.text = "\uD83D\uDCCD $response"
-        currentLocation = response
-    }
-
-    override fun onLoadingFailed() {
-        toast("Loading failed!")
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.saveLocationToPreferences(currentLocation)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onCityFromPreferencesLoaded(response: String?) {
-        city_tv.text = "\uD83D\uDCCD $response"
         currentLocation = response ?: "Minsk"
+        city_tv.text = "\uD83D\uDCCD $currentLocation"
     }
 
     override fun onCityFromPreferencesFailed() {
@@ -149,6 +142,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getLocationFromAddress(strAddress: String): LatLng? {
         val coder = Geocoder(context)
         val address: List<Address>?
@@ -163,6 +157,14 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         try {
             val location = address[0]
             p1 = LatLng(location.latitude, location.longitude)
+
+            currentLocation = if (location.locality != null) {
+                "${location.locality}, ${location.countryName}"
+            } else {
+                location.countryName
+            }
+
+            city_tv.text = "\uD83D\uDCCD $currentLocation"
         } catch (e: IndexOutOfBoundsException) {
             Toast.makeText(context, "City not found", Toast.LENGTH_SHORT).show()
         }
