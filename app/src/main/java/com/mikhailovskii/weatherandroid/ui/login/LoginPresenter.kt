@@ -22,8 +22,8 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
 
     override fun saveUserData(bundle: Bundle) {
 
-        val login = bundle.getString("login")
-        val password = bundle.getString("password")
+        val login = bundle.getString(LOGIN_KEY)
+        val password = bundle.getString(PASSWORD_KEY)
 
         val user = User(login = login, password = password)
 
@@ -118,6 +118,9 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
     companion object {
         private const val FB_ID_PERMISSION = "id"
         private const val FB_EMAIL_PERMISSION = "email"
+
+        const val LOGIN_KEY = "login"
+        const val PASSWORD_KEY = "password"
     }
 
 }

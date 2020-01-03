@@ -50,8 +50,8 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
         sign_in_btn.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString("login", login_et.text.toString())
-            bundle.putString("password", password_et.text.toString())
+            bundle.putString(LoginPresenter.LOGIN_KEY, login_et.text.toString())
+            bundle.putString(LoginPresenter.PASSWORD_KEY, password_et.text.toString())
             presenter.saveUserData(bundle)
         }
 
