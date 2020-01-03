@@ -57,7 +57,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         weather_description_tv.text = response?.overcast?.get(0)?.mainInfo
         temperature_tv.text = "${response?.weatherTemp?.temp?.minus(273)?.toInt()} ˚C"
         humidity_value_tv.text = "${response?.weatherTemp?.humidity} %"
-        precipitation_value_tv.text = "${response?.weatherTemp?.pressure}"
+        pressure_value_tv.text = "${response?.weatherTemp?.pressure}"
         feels_like_value_tv.text = "${response?.weatherTemp?.feelsLike?.minus(273)?.toInt()} ˚C"
         wind_value_tv.text =
             "${getWindDirection(response?.wind?.degree ?: 0)} ${response?.wind?.speed!!} kph"
