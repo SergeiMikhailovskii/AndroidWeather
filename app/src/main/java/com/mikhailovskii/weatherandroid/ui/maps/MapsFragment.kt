@@ -139,7 +139,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                 uiSettings.isZoomControlsEnabled = true
 
                 val latLng = LatLng(40.0, (-74).toDouble())
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 8.0f))
                 googleMap.isMyLocationEnabled = true
                 map_view.onResume()
             }
