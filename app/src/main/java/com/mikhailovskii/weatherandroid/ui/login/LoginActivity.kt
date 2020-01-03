@@ -64,6 +64,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         // Twitter
         initTwitterAuthorization()
 
+        presenter.checkUserLogged()
     }
 
     override fun onLoggedIn() {

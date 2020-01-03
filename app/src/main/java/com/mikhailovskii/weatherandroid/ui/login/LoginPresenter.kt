@@ -109,6 +109,12 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
         view?.onLoggedIn()
     }
 
+    override fun checkUserLogged() {
+        if (Preference.getInstance(AndroidWeatherApp.appContext).user != null) {
+            view?.onLoggedIn()
+        }
+    }
+
     companion object {
         private const val FB_ID_PERMISSION = "id"
         private const val FB_EMAIL_PERMISSION = "email"
