@@ -13,13 +13,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.ui.main.MainActivity
-import com.mikhailovskii.weatherandroid.util.toast
+import com.mikhailovskii.weatherandroid.util.showErrorToast
+import com.mikhailovskii.weatherandroid.util.showInfoToast
+import com.mikhailovskii.weatherandroid.util.showWarningToast
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import com.twitter.sdk.android.core.models.User
@@ -70,7 +71,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     }
 
     override fun onLoginFailed() {
-        toast("Login failed")
+        showErrorToast("Login failed")
     }
 
     override fun showEmptyState(value: Boolean) {
@@ -172,12 +173,12 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
             override fun onCancel() {
                 Timber.d("facebook:onCancel")
-                toast("Cancel")
+                showWarningToast("Cancel")
             }
 
             override fun onError(error: FacebookException?) {
                 Timber.e("facebook:onError $error")
-                toast("Error")
+                showErrorToast("Error")
             }
 
         })
@@ -208,11 +209,11 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
-            toast(account.displayName.toString())
+            showInfoToast(account.displayName.toString())
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else {
-            toast("Not signed in")
+            showWarningToast("Not signed in")
         }
     }
 

@@ -12,14 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.mikhailovskii.weatherandroid.R
-import com.mikhailovskii.weatherandroid.util.toast
+import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_maps.*
 import java.util.*
 
@@ -166,7 +165,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
             city_tv.text = "\uD83D\uDCCD $currentLocation"
         } catch (e: IndexOutOfBoundsException) {
-            Toast.makeText(context, "City not found", Toast.LENGTH_SHORT).show()
+            showErrorToast("City not found")
         }
 
         return p1
