@@ -32,19 +32,30 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
     }
 
     override fun getCityFromPreferences() {
-        val location = Preference.getInstance(AndroidWeatherApp.appContext).location
+        val location = Preference.getInstance(AndroidWeatherApp.appContext).location ?: "Minsk"
         view?.onCityFromPreferencesLoaded(location)
     }
 
     override fun getCityForecast() {
-        val list = ArrayList<WeatherElement>()
-        list.add(WeatherElement(day = "Monday", temp = 0))
-        list.add(WeatherElement(day = "Tuesday", temp = 1))
-        list.add(WeatherElement(day = "Wednesday", temp = 2))
-        list.add(WeatherElement(day = "Thursday", temp = 3))
-        list.add(WeatherElement(day = "Friday", temp = 4))
+        CoroutineScope(Dispatchers.IO).launch {
+            var city = Preference.getInstance(AndroidWeatherApp.appContext).location ?: "Minsk"
+            city = city.replace("\\s".toRegex(), "")
 
-        view?.onWeatherForecastLoaded(list)
+            val response = weatherApi.getCityForecast(city)
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    val list = ArrayList<WeatherElement>()
+                    result?.weatherList?.forEach { element ->
+                        val temp = element.weatherTemp?.temp?.toInt()?.minus(273)
+                        list.add(WeatherElement(day = element.date, temp = temp))
+                    }
+                    view?.onWeatherForecastLoaded(list)
+                } else {
+                    view?.onWeatherForecastFailed()
+                }
+            }
+        }
     }
 
 }

@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName
 
 data class WeatherResponse(
 
+    @SerializedName("dt")
+    @Expose
+    var date: String? = null,
+
     @SerializedName("main")
     @Expose
     var weatherTemp: WeatherTemp? = null,
