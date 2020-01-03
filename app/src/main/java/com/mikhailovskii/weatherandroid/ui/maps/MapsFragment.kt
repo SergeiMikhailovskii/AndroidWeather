@@ -63,6 +63,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
         presenter.getCityFromPreferences()
 
+
         city_et.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
                 val city = city_et.text
@@ -72,7 +73,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                 presenter.getDataByLocation(coord?.latitude!!, coord.longitude)
 
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord))
-                true
+                false   // If return value is true keyboard won't pop
             } else {
                 false
             }
