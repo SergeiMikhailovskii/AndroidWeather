@@ -101,15 +101,10 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
     }
 
     override fun logInWithGoogle(result: GoogleSignInAccount?) {
-        println(result?.displayName)
-        println(result?.photoUrl)
-        println(result?.email)
-
         val user = User(login = result?.displayName, googleKey = result?.idToken, icon = result?.photoUrl.toString())
         database.child("users").push().setValue(user)
 
         Preference.getInstance(AndroidWeatherApp.appContext).user = user
-
 
         view?.onLoggedIn()
     }
