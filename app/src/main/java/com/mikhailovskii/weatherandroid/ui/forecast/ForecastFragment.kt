@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
+import com.mikhailovskii.weatherandroid.ui.adapter.WeatherAdapter
 import com.mikhailovskii.weatherandroid.util.getWindDirection
 import kotlinx.android.synthetic.main.fragment_forecast.*
 import java.util.*
@@ -17,6 +19,7 @@ import java.util.*
 class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
     private val presenter = ForecastPresenter()
+    private var adapter: WeatherAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +31,11 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        weather_list.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        adapter = WeatherAdapter()
+        weather_list.adapter = adapter
 
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TL_BR,
