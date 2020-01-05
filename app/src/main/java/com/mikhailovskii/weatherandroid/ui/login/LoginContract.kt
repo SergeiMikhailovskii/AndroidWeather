@@ -28,6 +28,8 @@ interface LoginContract {
 
         fun logInWithGoogle(result: GoogleSignInAccount?)
 
+        fun checkUserLogged()
+
     }
 
 }

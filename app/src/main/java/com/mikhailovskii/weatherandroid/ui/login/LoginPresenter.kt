@@ -22,8 +22,8 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
 
     override fun saveUserData(bundle: Bundle) {
 
-        val login = bundle.getString("login")
-        val password = bundle.getString("password")
+        val login = bundle.getString(LOGIN_KEY)
+        val password = bundle.getString(PASSWORD_KEY)
 
         val user = User(login = login, password = password)
 
@@ -63,7 +63,11 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
     }
 
     override fun logInWithTwitter(result: Result<com.twitter.sdk.android.core.models.User>?) {
-        val user = User(login = result?.data?.name, twitterKey = result?.data?.idStr, icon = result?.data?.profileImageUrl)
+        val user = User(
+            login = result?.data?.name,
+            twitterKey = result?.data?.idStr,
+            icon = result?.data?.profileImageUrl
+        )
         database.child("users").push().setValue(user)
 
         Preference.getInstance(AndroidWeatherApp.appContext).user = user
@@ -72,28 +76,29 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
     }
 
     override fun logInWithFacebook(result: LoginResult?) {
-        val request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken()){_, response ->
+        val request =
+            GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken()) { _, response ->
 
-            if (response.jsonObject != null && Profile.getCurrentProfile() != null) {
-                val data = response.jsonObject
-                var id: String? = ""
-                var icon: String? = ""
-                val name: String? = Profile.getCurrentProfile().name
+                if (response.jsonObject != null && Profile.getCurrentProfile() != null) {
+                    val data = response.jsonObject
+                    var id: String? = ""
+                    var icon: String? = ""
+                    val name: String? = Profile.getCurrentProfile().name
 
-                if (data.has(FB_ID_PERMISSION)) {
-                    id = response.jsonObject.getString(FB_ID_PERMISSION)
-                    icon = "https://graph.facebook.com/v2.2/$id/picture?height=120&type=normal"
+                    if (data.has(FB_ID_PERMISSION)) {
+                        id = response.jsonObject.getString(FB_ID_PERMISSION)
+                        icon = "https://graph.facebook.com/v2.2/$id/picture?height=120&type=normal"
+                    }
+
+                    val user = User(login = name, facebookKey = id, icon = icon)
+                    database.child("users").push().setValue(user)
+
+                    Preference.getInstance(AndroidWeatherApp.appContext).user = user
+
+                    view?.onLoggedIn()
+
                 }
-
-                val user = User(login = name, facebookKey = id, icon = icon)
-                database.child("users").push().setValue(user)
-
-                Preference.getInstance(AndroidWeatherApp.appContext).user = user
-
-                view?.onLoggedIn()
-
             }
-        }
 
         val parameters = bundleOf("fields" to FB_EMAIL_PERMISSION)
         request.parameters = parameters
@@ -101,22 +106,30 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
     }
 
     override fun logInWithGoogle(result: GoogleSignInAccount?) {
-        println(result?.displayName)
-        println(result?.photoUrl)
-        println(result?.email)
-
-        val user = User(login = result?.displayName, googleKey = result?.idToken, icon = result?.photoUrl.toString())
+        val user = User(
+            login = result?.displayName,
+            googleKey = result?.idToken,
+            icon = result?.photoUrl.toString()
+        )
         database.child("users").push().setValue(user)
 
         Preference.getInstance(AndroidWeatherApp.appContext).user = user
 
-
         view?.onLoggedIn()
+    }
+
+    override fun checkUserLogged() {
+        if (Preference.getInstance(AndroidWeatherApp.appContext).user != null) {
+            view?.onLoggedIn()
+        }
     }
 
     companion object {
         private const val FB_ID_PERMISSION = "id"
         private const val FB_EMAIL_PERMISSION = "email"
+
+        const val LOGIN_KEY = "login"
+        const val PASSWORD_KEY = "password"
     }
 
 }
