@@ -49,7 +49,7 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
                     val list = ArrayList<WeatherElement>()
                     result?.weatherList?.forEach { element ->
                         val temp = element.weatherTemp?.temp?.toInt()?.minus(273)
-                        val date = element.date?.toInt()
+                        val date = element.date
 
                         list.add(WeatherElement(day = getDateFromSeconds(date ?: 0), temp = temp))
                     }

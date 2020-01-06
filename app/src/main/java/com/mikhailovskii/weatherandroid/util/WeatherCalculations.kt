@@ -37,9 +37,9 @@ fun getWindDirection(degree: Int): String {
 }
 
 @SuppressLint("SimpleDateFormat")
-fun getDateFromSeconds(seconds: Int): String {
+fun getDateFromSeconds(seconds: Long): String {
     val simpleDateFormat = SimpleDateFormat("E HH:mm")
-    val date = Date((seconds * 1000).toLong())
+    val date = Date(seconds * 1000)
 
     return simpleDateFormat.format(date)
 }

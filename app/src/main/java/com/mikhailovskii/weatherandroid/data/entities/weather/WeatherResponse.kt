@@ -7,7 +7,7 @@ data class WeatherResponse(
 
     @SerializedName("dt")
     @Expose
-    var date: String? = null,
+    var date: Long? = null,
 
     @SerializedName("main")
     @Expose
