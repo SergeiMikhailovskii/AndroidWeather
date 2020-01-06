@@ -2,6 +2,7 @@ package com.mikhailovskii.weatherandroid.ui.forecast
 
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.diffutil.WeatherDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
@@ -116,6 +122,25 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         adapter?.let {
             weatherDiffResult.dispatchUpdatesTo(it)
         }
+
+        val entries = arrayListOf(
+            Entry(0f, 10000f),
+            Entry(1f, 20000f),
+            Entry(2f, 30000f),
+            Entry(3f, 40000f),
+            Entry(4f, 50000f)
+        )
+
+        val lineDataSet = LineDataSet(entries, "Label")
+        lineDataSet.color = Color.RED
+        lineDataSet.setDrawValues(false)
+
+        val data = LineData(lineDataSet)
+
+        line_chart.data = data
+
+        line_chart.invalidate()
+
     }
 
     override fun onWeatherForecastFailed() {
