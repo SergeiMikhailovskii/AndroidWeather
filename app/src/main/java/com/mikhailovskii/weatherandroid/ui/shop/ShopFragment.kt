@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.diffutil.StickersDiffUtilCallback
@@ -34,6 +35,12 @@ class ShopFragment : Fragment(), ShopContract.ShopView {
         stickers_list.layoutManager = LinearLayoutManager(context)
         adapter = StickersAdapter()
         stickers_list.adapter = adapter
+        stickers_list.addItemDecoration(
+            DividerItemDecoration(
+                activity,
+                DividerItemDecoration.VERTICAL
+            )
+        )
 
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TL_BR,
