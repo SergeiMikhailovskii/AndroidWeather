@@ -1,4 +1,6 @@
 package com.mikhailovskii.weatherandroid.ui.shop
 
-class ShopPresenter {
+import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
+
+class ShopPresenter: BasePresenter<ShopContract.ShopView>(), ShopContract.ShopPresenter {
 }
