@@ -11,3 +11,11 @@ class XAxisFormatter(var weatherList: List<WeatherElement>) : ValueFormatter() {
     }
 
 }
+
+class YAxisFormatter : ValueFormatter() {
+
+    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+        return "$value ˚C"
+    }
+
+}

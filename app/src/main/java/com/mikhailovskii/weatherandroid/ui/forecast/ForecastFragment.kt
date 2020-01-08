@@ -11,12 +11,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.ValueFormatter
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.diffutil.WeatherDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
@@ -136,6 +134,8 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
         line_chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         line_chart.xAxis.valueFormatter = XAxisFormatter(weatherList)
+
+        line_chart.axisLeft.valueFormatter = YAxisFormatter()
 
         val data = LineData(lineDataSet)
 
