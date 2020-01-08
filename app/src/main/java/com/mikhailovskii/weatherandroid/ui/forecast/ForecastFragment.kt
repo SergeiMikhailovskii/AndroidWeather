@@ -2,6 +2,7 @@ package com.mikhailovskii.weatherandroid.ui.forecast
 
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.diffutil.WeatherDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
@@ -116,6 +121,37 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         adapter?.let {
             weatherDiffResult.dispatchUpdatesTo(it)
         }
+
+        val entries = ArrayList<Entry>()
+
+        for (i in weatherList.indices) {
+            entries.add(Entry(i.toFloat(), weatherList[i].temp?.toFloat() ?: 0f))
+        }
+
+        val lineDataSet = LineDataSet(entries, "")
+        lineDataSet.color = Color.RED
+        lineDataSet.setDrawValues(false)
+
+        line_chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        line_chart.xAxis.valueFormatter = XAxisFormatter(weatherList)
+        line_chart.xAxis.axisLineColor = Color.WHITE
+        line_chart.xAxis.textColor = Color.WHITE
+
+        line_chart.axisLeft.valueFormatter = YAxisFormatter()
+        line_chart.axisLeft.textColor = Color.WHITE
+        line_chart.axisLeft.zeroLineColor = Color.WHITE
+        line_chart.axisLeft.axisLineColor = Color.WHITE
+
+        line_chart.setGridBackgroundColor(Color.WHITE)
+
+        val data = LineData(lineDataSet)
+
+        line_chart.data = data
+        line_chart.legend.isEnabled = false
+        line_chart.description.isEnabled = false
+        line_chart.axisRight.isEnabled = false
+        line_chart.invalidate()
+
     }
 
     override fun onWeatherForecastFailed() {

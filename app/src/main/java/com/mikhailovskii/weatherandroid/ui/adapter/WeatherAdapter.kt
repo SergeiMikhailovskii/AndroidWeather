@@ -1,5 +1,6 @@
 package com.mikhailovskii.weatherandroid.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,9 +39,10 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        @SuppressLint("SetTextI18n")
         fun bindData(element: WeatherElement) {
             itemView.day_tv.text = element.day
-            itemView.value_tv.text = element.temp.toString()
+            itemView.value_tv.text = "${element.temp} ˚C"
         }
 
     }
