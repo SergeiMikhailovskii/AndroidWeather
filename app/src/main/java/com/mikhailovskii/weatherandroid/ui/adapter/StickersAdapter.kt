@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.StickerElement
+import com.mikhailovskii.weatherandroid.util.showInfoToast
 import kotlinx.android.synthetic.main.sticker_element.view.*
 
 class StickersAdapter(
@@ -53,6 +54,10 @@ class StickersAdapter(
             Glide.with(itemView.context).load(element.image).into(itemView.sticker_iv)
             itemView.sticker_name_tv.text = element.title
             itemView.sticker_price_tv.text = "$ ${element.price}"
+
+            itemView.buy_btn.setOnClickListener {
+                showInfoToast("Purchase succeed!")
+            }
 
             itemView.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
