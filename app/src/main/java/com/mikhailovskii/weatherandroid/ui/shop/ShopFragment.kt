@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikhailovskii.weatherandroid.R
+import com.mikhailovskii.weatherandroid.data.diffutil.StickersDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.StickerElement
 import com.mikhailovskii.weatherandroid.ui.adapter.StickersAdapter
 import kotlinx.android.synthetic.main.fragment_shop.*
@@ -39,10 +41,17 @@ class ShopFragment : Fragment(), ShopContract.ShopView {
         )
 
         stickers_list.background = gradientDrawable
+
+        presenter.getStickerList()
     }
 
     override fun onStickerListLoaded(stickers: List<StickerElement>) {
-
+        val stickersDiffUtilCallback = StickersDiffUtilCallback(stickers, adapter?.stickersList!!)
+        val stickerDiffResult = DiffUtil.calculateDiff(stickersDiffUtilCallback)
+        adapter?.setData(stickers)
+        adapter?.let {
+            stickerDiffResult.dispatchUpdatesTo(it)
+        }
     }
 
     override fun onStickerListFailed() {

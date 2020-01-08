@@ -1,5 +1,6 @@
 package com.mikhailovskii.weatherandroid.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,8 +40,11 @@ class StickersAdapter : RecyclerView.Adapter<StickersAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        @SuppressLint("SetTextI18n")
         fun bindData(element: StickerElement) {
             Glide.with(itemView.context).load(element.icon).into(itemView.sticker_iv)
+            itemView.sticker_name_tv.text = element.title
+            itemView.sticker_price_tv.text = "$ ${element.price}"
         }
 
     }
