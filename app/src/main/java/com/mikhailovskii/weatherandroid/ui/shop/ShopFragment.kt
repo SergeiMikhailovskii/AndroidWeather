@@ -14,9 +14,10 @@ import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.diffutil.StickersDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.StickerElement
 import com.mikhailovskii.weatherandroid.ui.adapter.StickersAdapter
+import com.mikhailovskii.weatherandroid.util.showInfoToast
 import kotlinx.android.synthetic.main.fragment_shop.*
 
-class ShopFragment : Fragment(), ShopContract.ShopView {
+class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemClickListener {
 
     private val presenter = ShopPresenter()
     private var adapter: StickersAdapter? = null
@@ -33,7 +34,7 @@ class ShopFragment : Fragment(), ShopContract.ShopView {
         super.onViewCreated(view, savedInstanceState)
 
         stickers_list.layoutManager = LinearLayoutManager(context)
-        adapter = StickersAdapter()
+        adapter = StickersAdapter(this)
         stickers_list.adapter = adapter
         stickers_list.addItemDecoration(
             DividerItemDecoration(
@@ -73,5 +74,8 @@ class ShopFragment : Fragment(), ShopContract.ShopView {
 
     }
 
+    override fun onItemClicked(position: Int, item: StickerElement) {
+        showInfoToast("Stickers collection is shown")
+    }
 
 }

@@ -10,7 +10,9 @@ import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.StickerElement
 import kotlinx.android.synthetic.main.sticker_element.view.*
 
-class StickersAdapter : RecyclerView.Adapter<StickersAdapter.ViewHolder>() {
+class StickersAdapter(
+    private val onItemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<StickersAdapter.ViewHolder>() {
 
     val stickersList = ArrayList<StickerElement>()
 
@@ -25,7 +27,7 @@ class StickersAdapter : RecyclerView.Adapter<StickersAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(stickersList[position])
+        holder.bindData(stickersList[position], onItemClickListener)
     }
 
     override fun getItemId(position: Int): Long {
@@ -38,13 +40,25 @@ class StickersAdapter : RecyclerView.Adapter<StickersAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
+    interface OnItemClickListener {
+
+        fun onItemClicked(position: Int, item: StickerElement)
+
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         @SuppressLint("SetTextI18n")
-        fun bindData(element: StickerElement) {
+        fun bindData(element: StickerElement, onItemClickListener: OnItemClickListener) {
             Glide.with(itemView.context).load(element.image).into(itemView.sticker_iv)
             itemView.sticker_name_tv.text = element.title
             itemView.sticker_price_tv.text = "$ ${element.price}"
+
+            itemView.setOnClickListener {
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    onItemClickListener.onItemClicked(adapterPosition, element)
+                }
+            }
         }
 
     }
