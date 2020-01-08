@@ -26,7 +26,7 @@ class StickersDiffUtilCallback(
         val oldStickerElement = oldList[oldItemPosition]
         val newStickerElement = newList[newItemPosition]
         return oldStickerElement.title == newStickerElement.title
-                && oldStickerElement.icon == newStickerElement.icon
+                && oldStickerElement.image == newStickerElement.image
                 && oldStickerElement.price == newStickerElement.price
     }
 

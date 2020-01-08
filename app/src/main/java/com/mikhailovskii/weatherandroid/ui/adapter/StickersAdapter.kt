@@ -42,7 +42,7 @@ class StickersAdapter : RecyclerView.Adapter<StickersAdapter.ViewHolder>() {
 
         @SuppressLint("SetTextI18n")
         fun bindData(element: StickerElement) {
-            Glide.with(itemView.context).load(element.icon).into(itemView.sticker_iv)
+            Glide.with(itemView.context).load(element.image).into(itemView.sticker_iv)
             itemView.sticker_name_tv.text = element.title
             itemView.sticker_price_tv.text = "$ ${element.price}"
         }
