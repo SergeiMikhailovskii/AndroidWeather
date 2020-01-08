@@ -134,8 +134,15 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
         line_chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         line_chart.xAxis.valueFormatter = XAxisFormatter(weatherList)
+        line_chart.xAxis.axisLineColor = Color.WHITE
+        line_chart.xAxis.textColor = Color.WHITE
 
         line_chart.axisLeft.valueFormatter = YAxisFormatter()
+        line_chart.axisLeft.textColor = Color.WHITE
+        line_chart.axisLeft.zeroLineColor = Color.WHITE
+        line_chart.axisLeft.axisLineColor = Color.WHITE
+
+        line_chart.setGridBackgroundColor(Color.WHITE)
 
         val data = LineData(lineDataSet)
 
