@@ -159,11 +159,3 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     }
 
 }
-
-class XAxisFormatter(var weatherList: List<WeatherElement>) : ValueFormatter() {
-
-    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-        return weatherList[value.toInt()].day ?: ""
-    }
-
-}
