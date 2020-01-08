@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.StickerElement
+import kotlinx.android.synthetic.main.sticker_element.view.*
 
 class StickersAdapter : RecyclerView.Adapter<StickersAdapter.ViewHolder>() {
 
@@ -25,10 +27,20 @@ class StickersAdapter : RecyclerView.Adapter<StickersAdapter.ViewHolder>() {
         holder.bindData(stickersList[position])
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    fun setData(stickersList: List<StickerElement>) {
+        this.stickersList.clear()
+        this.stickersList.addAll(stickersList)
+        notifyDataSetChanged()
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bindData(element: StickerElement) {
-
+            Glide.with(itemView.context).load(element.icon).into(itemView.sticker_iv)
         }
 
     }
