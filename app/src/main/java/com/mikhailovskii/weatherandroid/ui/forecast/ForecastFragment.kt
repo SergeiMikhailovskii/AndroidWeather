@@ -151,7 +151,6 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         line_chart.description.isEnabled = false
         line_chart.axisRight.isEnabled = false
         line_chart.invalidate()
-
     }
 
     override fun onWeatherForecastFailed() {

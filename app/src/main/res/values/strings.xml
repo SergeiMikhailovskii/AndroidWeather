@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">WeatherAndroid</string>
+
+    <!--    Login screen-->
     <string name="sign_in_sign_up">Sign in / Sign up</string>
     <string name="enter_your_login">Enter your login</string>
     <string name="sign_in">Sign in</string>
@@ -26,6 +28,8 @@
     <!--    Twitter-->
     <string name="twitter_api_key" translatable="false">vkuSEp0mMdmCiOIAvSQLrKfM2</string>
     <string name="twitter_api_secret" translatable="false">mXBMgDXxOUPy1SwiFlSf4JYJTsDCzG9aRoCf5vE8rJs1Z9X9rK</string>
+
+    <!--    Forecast-->
     <string name="weather_description_sample">Clear sky</string>
     <string name="temperature_sample">25 ˚C</string>
     <string name="feels_like">Feels like</string>
@@ -40,5 +44,6 @@
     <string name="second_day_sample">Wednesday</string>
     <string name="third_day_sample">Thursday</string>
     <string name="munich">Munich</string>
+    <string name="buy">Buy</string>
 
 </resources>
