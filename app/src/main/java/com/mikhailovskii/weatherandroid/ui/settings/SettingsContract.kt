@@ -12,11 +12,17 @@ interface SettingsContract {
 
         fun onUserDataFailed()
 
+        fun onInitialUserDataLoaded(user: User?)
+
+        fun onInitialUserDataFailed()
+
     }
 
     interface SettingsPresenter : MvpPresenter<SettingsView> {
 
         fun saveEditedUserInfo(user: User?)
+
+        fun getInitialUserData()
 
     }
 

@@ -11,7 +11,6 @@ import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.User
 import com.mikhailovskii.weatherandroid.util.showSuccessToast
 import kotlinx.android.synthetic.main.fragment_settings.*
-import kotlinx.android.synthetic.main.fragment_settings.scrollView
 
 class SettingsFragment : Fragment(), SettingsContract.SettingsView {
 
@@ -54,6 +53,8 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
             presenter.saveEditedUserInfo(user)
         }
 
+        presenter.getInitialUserData()
+
     }
 
     override fun onUserDataSaved() {
@@ -61,6 +62,23 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     }
 
     override fun onUserDataFailed() {
+
+    }
+
+    override fun onInitialUserDataLoaded(user: User?) {
+        location_et.setText(user?.location)
+        login_et.setText(user?.login)
+        change_password_et.setText(user?.password)
+
+        if (user?.preferredUnit == 0) {
+            celsius_rb.isChecked = true
+        } else {
+            fahrenheit_rb.isChecked = true
+        }
+
+    }
+
+    override fun onInitialUserDataFailed() {
 
     }
 

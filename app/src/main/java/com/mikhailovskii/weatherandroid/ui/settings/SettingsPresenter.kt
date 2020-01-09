@@ -13,6 +13,11 @@ class SettingsPresenter : BasePresenter<SettingsContract.SettingsView>(),
         view?.onUserDataSaved()
     }
 
+    override fun getInitialUserData() {
+        val user = Preference.getInstance(AndroidWeatherApp.appContext).user
+        view?.onInitialUserDataLoaded(user)
+    }
+
     private fun saveUserDataToPreferences(user: User?) {
         Preference.getInstance(AndroidWeatherApp.appContext).user = user
     }
