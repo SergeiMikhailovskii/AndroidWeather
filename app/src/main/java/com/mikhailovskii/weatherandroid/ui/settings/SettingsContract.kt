@@ -1,6 +1,6 @@
 package com.mikhailovskii.weatherandroid.ui.settings
 
-import android.os.Bundle
+import com.mikhailovskii.weatherandroid.data.entities.User
 import com.mikhailovskii.weatherandroid.ui.base.MvpPresenter
 import com.mikhailovskii.weatherandroid.ui.base.MvpView
 
@@ -16,7 +16,7 @@ interface SettingsContract {
 
     interface SettingsPresenter : MvpPresenter<SettingsView> {
 
-        fun saveEditedUserInfo(bundle: Bundle)
+        fun saveEditedUserInfo(user: User?)
 
     }
 

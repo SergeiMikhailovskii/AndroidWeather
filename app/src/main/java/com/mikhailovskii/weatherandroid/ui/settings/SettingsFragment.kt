@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.mikhailovskii.weatherandroid.R
+import com.mikhailovskii.weatherandroid.data.entities.User
 import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.fragment_settings.scrollView
 
 class SettingsFragment : Fragment(), SettingsContract.SettingsView {
 
@@ -33,6 +35,24 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
         )
 
         scrollView.background = gradientDrawable
+
+        save_btn.setOnClickListener {
+            val user = User()
+            user.login = login_et.text.toString()
+            user.password = change_password_et.text.toString()
+            user.location = location_et.text.toString()
+
+            val checkedRadioButtonId = units_rg.checkedRadioButtonId
+
+            if (checkedRadioButtonId == R.id.celsius_rb) {
+                user.preferredUnit = 0
+            } else if (checkedRadioButtonId == R.id.fahrenheit_rb) {
+                user.preferredUnit = 1
+            }
+
+            presenter.saveEditedUserInfo(user)
+        }
+
     }
 
     override fun onUserDataSaved() {
