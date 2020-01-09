@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.mikhailovskii.weatherandroid.AndroidWeatherApp
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import kotlinx.android.synthetic.main.weather_element.view.*
@@ -41,6 +42,8 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
         @SuppressLint("SetTextI18n")
         fun bindData(element: WeatherElement) {
+            itemView.weather_element_layout.layoutParams.width =
+                (AndroidWeatherApp.appContext.resources.displayMetrics.widthPixels * 0.25).toInt()
             itemView.day_tv.text = element.day
             itemView.value_tv.text = "${element.temp} ˚C"
         }
