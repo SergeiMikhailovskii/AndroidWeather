@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : Fragment(), SettingsContract.SettingsView {
 
+    private val presenter = SettingsPresenter()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -22,12 +24,23 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        presenter.attachView(this)
+
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TL_BR,
             intArrayOf(0xffa35043.toInt(), 0xffcd7d5c.toInt())
         )
 
         scrollView.background = gradientDrawable
+    }
+
+    override fun onUserDataSaved() {
+
+    }
+
+    override fun onUserDataFailed() {
+
     }
 
     override fun showEmptyState(value: Boolean) {
