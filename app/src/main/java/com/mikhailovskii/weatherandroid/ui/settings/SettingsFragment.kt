@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.User
+import com.mikhailovskii.weatherandroid.util.showSuccessToast
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kotlinx.android.synthetic.main.fragment_settings.scrollView
 
@@ -56,7 +57,7 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     }
 
     override fun onUserDataSaved() {
-
+        showSuccessToast("Data updated!")
     }
 
     override fun onUserDataFailed() {

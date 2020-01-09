@@ -10,6 +10,7 @@ class SettingsPresenter : BasePresenter<SettingsContract.SettingsView>(),
 
     override fun saveEditedUserInfo(user: User?) {
         saveUserDataToPreferences(user)
+        view?.onUserDataSaved()
     }
 
     private fun saveUserDataToPreferences(user: User?) {
