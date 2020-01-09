@@ -45,5 +45,15 @@
     <string name="third_day_sample">Thursday</string>
     <string name="munich">Munich</string>
     <string name="buy">Buy</string>
+    <string name="change_location">Change location</string>
+    <string name="change_stickers_pack">Change stickers pack</string>
+    <string name="change_unit">Change unit</string>
+    <string name="celsius">˚C</string>
+    <string name="fahrenheit">˚F</string>
+    <string name="change_account_info">Change account info</string>
+    <string name="login">Login</string>
+    <string name="user">User</string>
+    <string name="change_password">Change password</string>
+    <string name="save">Save</string>
 
 </resources>
