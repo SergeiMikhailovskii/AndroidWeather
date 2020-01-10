@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.ui.forecast.ForecastFragment
 import com.mikhailovskii.weatherandroid.ui.maps.MapsFragment
+import com.mikhailovskii.weatherandroid.ui.settings.SettingsFragment
 import com.mikhailovskii.weatherandroid.ui.shop.ShopFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -38,6 +39,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.map_item -> {
                     menuItem.isChecked = true
                     fragment = MapsFragment()
+                }
+                R.id.settings_item -> {
+                    menuItem.isChecked = true
+                    fragment = SettingsFragment()
                 }
             }
 

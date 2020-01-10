@@ -7,12 +7,14 @@ import com.mikhailovskii.weatherandroid.util.Preference
 class MapsPresenter : BasePresenter<MapsContract.MapsView>(), MapsContract.MapsPresenter {
 
     override fun getCityFromPreferences() {
-        val location = Preference.getInstance(AndroidWeatherApp.appContext).location
+        val location = Preference.getInstance(AndroidWeatherApp.appContext).user?.location
         view?.onCityFromPreferencesLoaded(location)
     }
 
     override fun saveLocationToPreferences(location: String) {
-        Preference.getInstance(AndroidWeatherApp.appContext).location = location
+        val user = Preference.getInstance(AndroidWeatherApp.appContext).user
+        user?.location = location
+        Preference.getInstance(AndroidWeatherApp.appContext).user = user
     }
 
 }

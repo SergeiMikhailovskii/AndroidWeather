@@ -7,6 +7,8 @@ data class User(
     var twitterKey: String? = "",
     var facebookKey: String? = "",
     var googleKey: String? = "",
-    var icon:String? = ""
+    var icon: String? = "",
+    var preferredUnit: Int? = 0,
+    var location: String? = ""
 
 )

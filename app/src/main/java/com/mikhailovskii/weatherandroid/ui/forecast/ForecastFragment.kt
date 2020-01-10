@@ -40,6 +40,8 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity?.window?.statusBarColor = 0xff0f7d71.toInt()
+
         weather_list.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         adapter = WeatherAdapter()

@@ -33,6 +33,8 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity?.window?.statusBarColor = 0xff3f5fa4.toInt()
+
         stickers_list.layoutManager = LinearLayoutManager(context)
         adapter = StickersAdapter(this)
         stickers_list.adapter = adapter

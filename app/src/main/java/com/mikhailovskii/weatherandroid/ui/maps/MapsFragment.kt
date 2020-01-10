@@ -39,6 +39,8 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity?.window?.statusBarColor = 0xff69c8ea.toInt()
+
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TL_BR,
             intArrayOf(0xff69c8ea.toInt(), 0xff66c0e1.toInt())
