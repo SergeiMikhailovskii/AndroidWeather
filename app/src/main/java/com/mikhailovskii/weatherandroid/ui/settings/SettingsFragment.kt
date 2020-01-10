@@ -27,6 +27,8 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity?.window?.statusBarColor = 0xffa35043.toInt()
+
         presenter.attachView(this)
 
         val gradientDrawable = GradientDrawable(
