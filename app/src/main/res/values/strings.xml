@@ -56,5 +56,6 @@
     <string name="change_password">Change password</string>
     <string name="save">Save</string>
     <string name="location">Location</string>
+    <string name="password">Password</string>
 
 </resources>

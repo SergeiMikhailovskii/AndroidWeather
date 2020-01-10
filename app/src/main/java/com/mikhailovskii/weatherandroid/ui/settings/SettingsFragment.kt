@@ -40,8 +40,8 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
 
         save_btn.setOnClickListener {
             val user = User()
-            user.login = login_et.text.toString()
-            user.password = change_password_et.text.toString()
+            user.login = login_tiet.text.toString()
+            user.password = change_password_tiet.text.toString()
             user.location = location_tiet.text.toString()
 
             val checkedRadioButtonId = units_rg.checkedRadioButtonId
@@ -69,8 +69,8 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
 
     override fun onInitialUserDataLoaded(user: User?) {
         location_tiet.setText(user?.location)
-        login_et.setText(user?.login)
-        change_password_et.setText(user?.password)
+        login_tiet.setText(user?.login)
+        change_password_tiet.setText(user?.password)
 
         if (user?.preferredUnit == 0) {
             celsius_rb.isChecked = true
