@@ -23,21 +23,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/location_et"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/location_til"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:hint="@string/city_name_sample"
-            android:inputType="textCapSentences"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
+            android:hint="@string/location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/change_location_tv"
-            tools:ignore="Autofill,TextFields" />
+            app:layout_constraintTop_toBottomOf="@id/change_location_tv">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/location_tiet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/change_stickers_pack_tv"
@@ -48,7 +51,7 @@
             android:text="@string/change_stickers_pack"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/location_et" />
+            app:layout_constraintTop_toBottomOf="@id/location_til" />
 
         <TextView
             android:id="@+id/change_unit_tv"

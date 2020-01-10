@@ -42,7 +42,7 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
             val user = User()
             user.login = login_et.text.toString()
             user.password = change_password_et.text.toString()
-            user.location = location_et.text.toString()
+            user.location = location_tiet.text.toString()
 
             val checkedRadioButtonId = units_rg.checkedRadioButtonId
 
@@ -68,7 +68,7 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     }
 
     override fun onInitialUserDataLoaded(user: User?) {
-        location_et.setText(user?.location)
+        location_tiet.setText(user?.location)
         login_et.setText(user?.login)
         change_password_et.setText(user?.password)
 
@@ -91,6 +91,5 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     override fun showLoadingIndicator(value: Boolean) {
 
     }
-
 
 }
