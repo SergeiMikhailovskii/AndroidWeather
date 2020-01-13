@@ -15,7 +15,7 @@ import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.diffutil.StickersDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.StickerPack
 import com.mikhailovskii.weatherandroid.ui.adapter.StickersAdapter
-import com.mikhailovskii.weatherandroid.ui.sticker_purchase.StickerPurchase
+import com.mikhailovskii.weatherandroid.ui.sticker_purchase.StickerPurchaseActivity
 import kotlinx.android.synthetic.main.fragment_shop.*
 
 class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemClickListener {
@@ -78,7 +78,7 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
     }
 
     override fun onItemClicked(position: Int, item: StickerPack) {
-        val intent = Intent(context, StickerPurchase::class.java)
+        val intent = Intent(context, StickerPurchaseActivity::class.java)
         startActivity(intent)
     }
 
