@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.diffutil.StickersDiffUtilCallback
-import com.mikhailovskii.weatherandroid.data.entities.StickerElement
+import com.mikhailovskii.weatherandroid.data.entities.StickerPack
 import com.mikhailovskii.weatherandroid.ui.adapter.StickersAdapter
 import com.mikhailovskii.weatherandroid.util.showInfoToast
 import kotlinx.android.synthetic.main.fragment_shop.*
@@ -55,7 +55,7 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
         presenter.getStickerList()
     }
 
-    override fun onStickerListLoaded(stickers: List<StickerElement>) {
+    override fun onStickerListLoaded(stickers: List<StickerPack>) {
         val stickersDiffUtilCallback = StickersDiffUtilCallback(stickers, adapter?.stickersList!!)
         val stickerDiffResult = DiffUtil.calculateDiff(stickersDiffUtilCallback)
         adapter?.setData(stickers)
@@ -76,7 +76,7 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
 
     }
 
-    override fun onItemClicked(position: Int, item: StickerElement) {
+    override fun onItemClicked(position: Int, item: StickerPack) {
         showInfoToast("Stickers collection is shown")
     }
 

@@ -1,7 +1,7 @@
 package com.mikhailovskii.weatherandroid.ui.shop
 
 import com.google.firebase.database.*
-import com.mikhailovskii.weatherandroid.data.entities.StickerElement
+import com.mikhailovskii.weatherandroid.data.entities.StickerPack
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 import timber.log.Timber
 
@@ -11,7 +11,7 @@ class ShopPresenter : BasePresenter<ShopContract.ShopView>(), ShopContract.ShopP
     private lateinit var query: Query
 
     override fun getStickerList() {
-        val stickers = ArrayList<StickerElement>()
+        val stickers = ArrayList<StickerPack>()
 
         query = database.child("stickers")
         query.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -26,7 +26,7 @@ class ShopPresenter : BasePresenter<ShopContract.ShopView>(), ShopContract.ShopP
                     val stickersFirebase = snapshot.children
 
                     stickersFirebase.forEach { data ->
-                        val sticker = data.getValue(StickerElement::class.java)
+                        val sticker = data.getValue(StickerPack::class.java)
                         stickers.add(sticker!!)
                     }
 
