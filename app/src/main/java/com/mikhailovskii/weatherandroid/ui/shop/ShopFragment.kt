@@ -1,6 +1,7 @@
 package com.mikhailovskii.weatherandroid.ui.shop
 
 
+import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +15,7 @@ import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.diffutil.StickersDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.StickerPack
 import com.mikhailovskii.weatherandroid.ui.adapter.StickersAdapter
-import com.mikhailovskii.weatherandroid.util.showInfoToast
+import com.mikhailovskii.weatherandroid.ui.sticker_purchase.StickerPurchase
 import kotlinx.android.synthetic.main.fragment_shop.*
 
 class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemClickListener {
@@ -77,7 +78,8 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
     }
 
     override fun onItemClicked(position: Int, item: StickerPack) {
-        showInfoToast("Stickers collection is shown")
+        val intent = Intent(context, StickerPurchase::class.java)
+        startActivity(intent)
     }
 
 }
