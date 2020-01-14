@@ -3,6 +3,8 @@ package com.mikhailovskii.weatherandroid.ui.sticker_purchase
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.mikhailovskii.weatherandroid.R
+import com.mikhailovskii.weatherandroid.data.entities.StickerPack
+import com.mikhailovskii.weatherandroid.util.showSuccessToast
 
 class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.StickerPurchaseView {
 
@@ -16,6 +18,14 @@ class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.Sti
 
         val name = intent.getStringExtra(EXTRA_NAME)
 
+        presenter.getStickerPackByName(name!!)
+    }
+
+    override fun onStickerPackByNameLoaded(stickerPack: StickerPack) {
+
+    }
+
+    override fun onStickerPackByNameFailed() {
 
     }
 
