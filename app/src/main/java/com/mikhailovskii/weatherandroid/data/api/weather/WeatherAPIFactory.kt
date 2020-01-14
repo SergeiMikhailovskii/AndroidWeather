@@ -7,14 +7,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-class WeatherAPIFactory private constructor() {
+object WeatherAPIFactory {
 
-    private val retrofit: Retrofit
+    private const val BASE_URL = "http://api.openweathermap.org"
 
-    val apiService: WeatherAPI
-        get() = retrofit.create(WeatherAPI::class.java)
+    var apiService: WeatherAPI = createRetrofit()
 
-    init {
+    private fun createRetrofit(): WeatherAPI {
         val httpClient = OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS)
             .writeTimeout(10, TimeUnit.SECONDS)
@@ -32,24 +31,15 @@ class WeatherAPIFactory private constructor() {
             chain.proceed(requestBuilder)
         }
 
-        retrofit = Retrofit.Builder()
+        val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(httpClient.build())
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
+        return retrofit.create(WeatherAPI::class.java)
     }
 
-    companion object {
-        private const val BASE_URL = "http://api.openweathermap.org"
-
-        private var instance: WeatherAPIFactory? = null
-
-        fun getInstance(): WeatherAPIFactory {
-            return instance ?: WeatherAPIFactory()
-        }
-
-    }
 
 }

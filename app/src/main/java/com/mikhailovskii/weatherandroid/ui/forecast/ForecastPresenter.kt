@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
     ForecastContract.ForecastPresenter {
 
-    private val weatherApi = WeatherAPIFactory.getInstance().apiService
+    private val weatherApi = WeatherAPIFactory.apiService
 
     override fun getCurrentCityWeather() {
         CoroutineScope(Dispatchers.IO).launch {
