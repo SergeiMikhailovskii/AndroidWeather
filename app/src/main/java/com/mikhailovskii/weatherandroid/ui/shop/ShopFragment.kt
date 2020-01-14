@@ -79,6 +79,10 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
 
     override fun onItemClicked(position: Int, item: StickerPack) {
         val intent = Intent(context, StickerPurchaseActivity::class.java)
+        intent.putExtra(
+            StickerPurchaseActivity.EXTRA_NAME,
+            adapter?.stickersList?.get(position)?.title
+        )
         startActivity(intent)
     }
 
