@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mikhailovskii.weatherandroid.R
@@ -15,7 +16,7 @@ class StickersAdapter(
     private val onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<StickersAdapter.ViewHolder>() {
 
-    val stickersList = ArrayList<StickerPack>()
+    var stickersList: List<StickerPack> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
@@ -36,9 +37,10 @@ class StickersAdapter(
     }
 
     fun setData(stickersList: List<StickerPack>) {
-        this.stickersList.clear()
-        this.stickersList.addAll(stickersList)
-        notifyDataSetChanged()
+        val stickerDiffResult =
+            DiffUtil.calculateDiff(StickersDiffUtilCallback(this.stickersList, stickersList))
+        this.stickersList = stickersList
+        stickerDiffResult.dispatchUpdatesTo(this)
     }
 
     interface OnItemClickListener {
