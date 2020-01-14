@@ -8,11 +8,7 @@ class WeatherDiffUtilCallback(
     private val newList: List<WeatherElement>
 ) : DiffUtil.Callback() {
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldWeatherElement = oldList[oldItemPosition]
-        val newWeatherElement = newList[newItemPosition]
-        return oldWeatherElement.day == newWeatherElement.day
-    }
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = true
 
     override fun getOldListSize(): Int {
         return oldList.size
