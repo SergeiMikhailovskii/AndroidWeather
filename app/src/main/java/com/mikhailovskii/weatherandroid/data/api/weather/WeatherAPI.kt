@@ -10,13 +10,13 @@ interface WeatherAPI {
 
     @GET("/data/2.5/weather?")
     suspend fun getCurrentCityWeather(
-        @Query("apikey") API_KEY: String,
+        @Query("apikey") apiKey: String,
         @Query("q") city: String
     ): Response<WeatherResponse>
 
     @GET("/data/2.5/forecast?")
     suspend fun getCityForecast(
-        @Query("apikey") API_KEY: String,
+        @Query("apikey") apiKey: String,
         @Query("q") city: String
     ): Response<WeatherListResponse>
 
