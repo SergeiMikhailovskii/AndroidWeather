@@ -8,18 +8,16 @@ import retrofit2.http.Query
 
 interface WeatherAPI {
 
-    @GET("/data/2.5/weather?apikey=$API_KEY")
+    @GET("/data/2.5/weather?")
     suspend fun getCurrentCityWeather(
+        @Query("apikey") API_KEY: String,
         @Query("q") city: String
     ): Response<WeatherResponse>
 
-    @GET("/data/2.5/forecast?apikey=$API_KEY")
+    @GET("/data/2.5/forecast?")
     suspend fun getCityForecast(
+        @Query("apikey") API_KEY: String,
         @Query("q") city: String
     ): Response<WeatherListResponse>
-
-    companion object {
-        private const val API_KEY = "8df903ce56f6d18245e72f380beb297d"
-    }
 
 }

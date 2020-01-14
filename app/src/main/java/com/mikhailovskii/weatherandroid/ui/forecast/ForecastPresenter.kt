@@ -1,6 +1,7 @@
 package com.mikhailovskii.weatherandroid.ui.forecast
 
 import com.mikhailovskii.weatherandroid.AndroidWeatherApp
+import com.mikhailovskii.weatherandroid.BuildConfig
 import com.mikhailovskii.weatherandroid.data.api.weather.WeatherAPIFactory
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
@@ -18,10 +19,11 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
 
     override fun getCurrentCityWeather() {
         CoroutineScope(Dispatchers.IO).launch {
-            var city = Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
+            var city =
+                Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
             city = city.replace("\\s".toRegex(), "")
 
-            val response = weatherApi.getCurrentCityWeather(city)
+            val response = weatherApi.getCurrentCityWeather(BuildConfig.WEATHER_API_KEY, city)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     val result = response.body()
@@ -33,16 +35,18 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
     }
 
     override fun getCityFromPreferences() {
-        val location = Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
+        val location =
+            Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
         view?.onCityFromPreferencesLoaded(location)
     }
 
     override fun getCityForecast() {
         CoroutineScope(Dispatchers.IO).launch {
-            var city = Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
+            var city =
+                Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
             city = city.replace("\\s".toRegex(), "")
 
-            val response = weatherApi.getCityForecast(city)
+            val response = weatherApi.getCityForecast(BuildConfig.WEATHER_API_KEY, city)
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     val result = response.body()
