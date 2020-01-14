@@ -16,7 +16,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.mikhailovskii.weatherandroid.R
-import com.mikhailovskii.weatherandroid.data.diffutil.WeatherDiffUtilCallback
+import com.mikhailovskii.weatherandroid.ui.adapter.WeatherDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
 import com.mikhailovskii.weatherandroid.ui.adapter.WeatherAdapter
@@ -117,7 +117,11 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     }
 
     override fun onWeatherForecastLoaded(weatherList: List<WeatherElement>) {
-        val weatherDiffUtilCallback = WeatherDiffUtilCallback(weatherList, adapter?.weatherList!!)
+        val weatherDiffUtilCallback =
+            WeatherDiffUtilCallback(
+                weatherList,
+                adapter?.weatherList!!
+            )
         val weatherDiffResult = DiffUtil.calculateDiff(weatherDiffUtilCallback)
         adapter?.setData(weatherList)
         adapter?.let {

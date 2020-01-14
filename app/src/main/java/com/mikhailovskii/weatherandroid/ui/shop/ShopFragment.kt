@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikhailovskii.weatherandroid.R
-import com.mikhailovskii.weatherandroid.data.diffutil.StickersDiffUtilCallback
+import com.mikhailovskii.weatherandroid.ui.adapter.StickersDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.StickerPack
 import com.mikhailovskii.weatherandroid.ui.adapter.StickersAdapter
 import com.mikhailovskii.weatherandroid.ui.sticker_purchase.StickerPurchaseActivity
@@ -57,7 +57,11 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
     }
 
     override fun onStickerListLoaded(stickers: List<StickerPack>) {
-        val stickersDiffUtilCallback = StickersDiffUtilCallback(stickers, adapter?.stickersList!!)
+        val stickersDiffUtilCallback =
+            StickersDiffUtilCallback(
+                stickers,
+                adapter?.stickersList!!
+            )
         val stickerDiffResult = DiffUtil.calculateDiff(stickersDiffUtilCallback)
         adapter?.setData(stickers)
         adapter?.let {

@@ -1,4 +1,4 @@
-package com.mikhailovskii.weatherandroid.data.diffutil
+package com.mikhailovskii.weatherandroid.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
