@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -43,7 +44,10 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TL_BR,
-            intArrayOf(0xff69c3e6.toInt(), 0xff556f9f.toInt())
+            intArrayOf(
+                ContextCompat.getColor(applicationContext, R.color.forecastGradientTopLeft),
+                ContextCompat.getColor(applicationContext, R.color.forecastGradientBottomRight)
+            )
         )
 
         scrollView.background = gradientDrawable

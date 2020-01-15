@@ -8,15 +8,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.mikhailovskii.weatherandroid.R
-import com.mikhailovskii.weatherandroid.ui.adapter.WeatherDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
 import com.mikhailovskii.weatherandroid.ui.adapter.WeatherAdapter
@@ -40,7 +39,8 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.window?.statusBarColor = 0xff0f7d71.toInt()
+        activity?.window?.statusBarColor =
+            ContextCompat.getColor(context!!, R.color.forecastStatusBar)
 
         weather_list.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -49,7 +49,10 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TL_BR,
-            intArrayOf(0xff0f7d71.toInt(), 0xff0e725b.toInt())
+            intArrayOf(
+                ContextCompat.getColor(context!!, R.color.forecastGradientTopLeft),
+                ContextCompat.getColor(context!!, R.color.forecastGradientBottomRight)
+            )
         )
 
         scrollView.background = gradientDrawable

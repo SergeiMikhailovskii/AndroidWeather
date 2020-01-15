@@ -7,12 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikhailovskii.weatherandroid.R
-import com.mikhailovskii.weatherandroid.ui.adapter.StickersDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.StickerPack
 import com.mikhailovskii.weatherandroid.ui.adapter.StickersAdapter
 import com.mikhailovskii.weatherandroid.ui.sticker_purchase.StickerPurchaseActivity
@@ -35,7 +34,8 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
 
         presenter.attachView(this)
 
-        activity?.window?.statusBarColor = 0xff3f5fa4.toInt()
+        activity?.window?.statusBarColor =
+            ContextCompat.getColor(context!!, R.color.shopStatusBar)
 
         stickers_list.layoutManager = LinearLayoutManager(context)
         adapter = StickersAdapter(this)
@@ -49,7 +49,10 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
 
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TL_BR,
-            intArrayOf(0xff3f5fa4.toInt(), 0xff17253e.toInt())
+            intArrayOf(
+                ContextCompat.getColor(context!!, R.color.shopGradientTopLeft),
+                ContextCompat.getColor(context!!, R.color.shopGradientBottomRight)
+            )
         )
 
         stickers_list.background = gradientDrawable

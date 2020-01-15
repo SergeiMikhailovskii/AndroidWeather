@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.User
@@ -27,13 +28,17 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.window?.statusBarColor = 0xffa35043.toInt()
+        activity?.window?.statusBarColor =
+            ContextCompat.getColor(context!!, R.color.settingsStatusBar)
 
         presenter.attachView(this)
 
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TL_BR,
-            intArrayOf(0xffa35043.toInt(), 0xffcd7d5c.toInt())
+            intArrayOf(
+                ContextCompat.getColor(context!!, R.color.settingsGradientTopLeft),
+                ContextCompat.getColor(context!!, R.color.settingsGradientBottomRight)
+            )
         )
 
         scrollView.background = gradientDrawable

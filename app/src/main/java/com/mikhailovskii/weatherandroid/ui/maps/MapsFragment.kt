@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -39,16 +40,26 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.window?.statusBarColor = 0xff69c8ea.toInt()
+        activity?.window?.statusBarColor =
+            ContextCompat.getColor(context!!, R.color.mapsStatusBar)
+
 
         val gradientDrawable = GradientDrawable(
             GradientDrawable.Orientation.TL_BR,
-            intArrayOf(0xff69c8ea.toInt(), 0xff66c0e1.toInt())
+            intArrayOf(
+                ContextCompat.getColor(context!!, R.color.mapsGradientTopLeft),
+                ContextCompat.getColor(context!!, R.color.mapsGradientBottomRight)
+            )
         )
 
         scrollView.background = gradientDrawable
 
-        city_et.setBackgroundColor(0xff69C0E6.toInt())
+        city_et.setBackgroundColor(
+            ContextCompat.getColor(
+                context!!,
+                R.color.mapsCityEditBackground
+            )
+        )
 
         initMapView(savedInstanceState)
 
