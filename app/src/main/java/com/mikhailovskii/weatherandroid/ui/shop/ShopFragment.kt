@@ -57,16 +57,7 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
     }
 
     override fun onStickerListLoaded(stickers: List<StickerPack>) {
-        val stickersDiffUtilCallback =
-            StickersDiffUtilCallback(
-                stickers,
-                adapter?.stickersList!!
-            )
-        val stickerDiffResult = DiffUtil.calculateDiff(stickersDiffUtilCallback)
         adapter?.setData(stickers)
-        adapter?.let {
-            stickerDiffResult.dispatchUpdatesTo(it)
-        }
     }
 
     override fun onStickerListFailed() {
