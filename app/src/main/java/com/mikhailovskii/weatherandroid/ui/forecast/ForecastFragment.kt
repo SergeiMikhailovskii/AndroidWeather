@@ -117,16 +117,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     }
 
     override fun onWeatherForecastLoaded(weatherList: List<WeatherElement>) {
-        val weatherDiffUtilCallback =
-            WeatherDiffUtilCallback(
-                weatherList,
-                adapter?.weatherList!!
-            )
-        val weatherDiffResult = DiffUtil.calculateDiff(weatherDiffUtilCallback)
         adapter?.setData(weatherList)
-        adapter?.let {
-            weatherDiffResult.dispatchUpdatesTo(it)
-        }
 
         val entries = ArrayList<Entry>()
 

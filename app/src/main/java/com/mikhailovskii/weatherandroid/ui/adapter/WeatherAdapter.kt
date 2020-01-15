@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.mikhailovskii.weatherandroid.AndroidWeatherApp
 import com.mikhailovskii.weatherandroid.R
@@ -12,7 +13,7 @@ import kotlinx.android.synthetic.main.weather_element.view.*
 
 class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
-    val weatherList = ArrayList<WeatherElement>()
+    private var weatherList: List<WeatherElement> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
@@ -33,9 +34,10 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
     }
 
     fun setData(weatherList: List<WeatherElement>) {
-        this.weatherList.clear()
-        this.weatherList.addAll(weatherList)
-        notifyDataSetChanged()
+        val weatherDiffResult =
+            DiffUtil.calculateDiff(WeatherDiffUtilCallback(weatherList, this.weatherList))
+        this.weatherList = weatherList
+        weatherDiffResult.dispatchUpdatesTo(this)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
