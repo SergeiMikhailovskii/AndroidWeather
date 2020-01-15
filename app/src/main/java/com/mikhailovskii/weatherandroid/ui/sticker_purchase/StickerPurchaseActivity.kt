@@ -39,6 +39,7 @@ class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.Sti
         }
 
         adapter?.setData(stickersList)
+
         title_tv.text = stickerPack.title
         buy_btn.text = "${stickerPack.price} $"
 
