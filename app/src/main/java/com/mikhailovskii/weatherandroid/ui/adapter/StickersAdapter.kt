@@ -53,7 +53,12 @@ class StickersAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bindData(element: StickerPack, onItemClickListener: OnItemClickListener) {
-            Glide.with(itemView.context).load(element.stickers?.get(0)).into(itemView.sticker_iv)
+
+            if (element.stickers?.isNotEmpty()!!) {
+                Glide.with(itemView.context).load(element.stickers?.get(0))
+                    .into(itemView.sticker_iv)
+            }
+
             itemView.sticker_name_tv.text = element.title
             itemView.sticker_price_tv.text = "$ ${element.price}"
 
