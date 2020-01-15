@@ -27,12 +27,13 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        presenter.attachView(this)
         return inflater.inflate(R.layout.fragment_shop, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        presenter.attachView(this)
 
         activity?.window?.statusBarColor = 0xff3f5fa4.toInt()
 
