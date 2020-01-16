@@ -3,7 +3,7 @@ package com.mikhailovskii.weatherandroid.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.weather_element.view.*
 
 class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
-    private var weatherList: List<WeatherElement> = ArrayList()
+    private val differ = AsyncListDiffer<WeatherElement>(this, WeatherDiffUtilCallback())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
@@ -20,11 +20,11 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return weatherList.size
+        return differ.currentList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(weatherList[position])
+        holder.bindData(differ.currentList[position])
     }
 
     override fun getItemId(position: Int): Long {
@@ -32,10 +32,7 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
     }
 
     fun setData(weatherList: List<WeatherElement>) {
-        val weatherDiffResult =
-            DiffUtil.calculateDiff(WeatherDiffUtilCallback(weatherList, this.weatherList))
-        this.weatherList = weatherList
-        weatherDiffResult.dispatchUpdatesTo(this)
+        differ.submitList(weatherList)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

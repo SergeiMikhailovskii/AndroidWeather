@@ -3,26 +3,13 @@ package com.mikhailovskii.weatherandroid.ui.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 
-class WeatherDiffUtilCallback(
-    private val oldList: List<WeatherElement>,
-    private val newList: List<WeatherElement>
-) : DiffUtil.Callback() {
+class WeatherDiffUtilCallback : DiffUtil.ItemCallback<WeatherElement>() {
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = true
+    override fun areItemsTheSame(oldItem: WeatherElement, newItem: WeatherElement): Boolean = true
 
-    override fun getOldListSize(): Int {
-        return oldList.size
-    }
-
-    override fun getNewListSize(): Int {
-        return newList.size
-    }
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldWeatherElement = oldList[oldItemPosition]
-        val newWeatherElement = newList[newItemPosition]
-        return oldWeatherElement.day == newWeatherElement.day
-                && oldWeatherElement.temp == newWeatherElement.temp
+    override fun areContentsTheSame(oldItem: WeatherElement, newItem: WeatherElement): Boolean {
+        return oldItem.day == newItem.day
+                && oldItem.temp == newItem.temp
     }
 
 }
