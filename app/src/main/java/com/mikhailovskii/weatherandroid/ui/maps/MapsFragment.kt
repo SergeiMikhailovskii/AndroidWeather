@@ -82,7 +82,10 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
                 val coord = getLocationFromAddress(city.toString())
 
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord))
+                if (coord != null) {
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord))
+                }
+
                 false   // If return value is true keyboard won't pop
             } else {
                 false
@@ -156,7 +159,6 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     private fun getLocationFromAddress(strAddress: String): LatLng? {
         val coder = Geocoder(context)
         val address: List<Address>?
-        var p1: LatLng? = null
 
         address = coder.getFromLocationName(strAddress, 5)
 
@@ -164,9 +166,9 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
             return null
         }
 
-        try {
+        if (address.isNotEmpty()) {
             val location = address[0]
-            p1 = LatLng(location.latitude, location.longitude)
+            val p1 = LatLng(location.latitude, location.longitude)
 
             currentLocation = if (location.locality != null) {
                 "${location.locality}, ${location.countryName}"
@@ -175,11 +177,11 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
             }
 
             city_tv.text = resources.getString(R.string.location_with_emoji, currentLocation)
-        } catch (e: IndexOutOfBoundsException) {
+            return p1
+        } else {
             showErrorToast("City not found")
+            return null
         }
-
-        return p1
     }
 
 }
