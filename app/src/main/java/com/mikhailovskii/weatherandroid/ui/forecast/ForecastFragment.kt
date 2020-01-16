@@ -1,7 +1,6 @@
 package com.mikhailovskii.weatherandroid.ui.forecast
 
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -75,15 +74,29 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         presenter.getCityForecast()
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onCurrentCityWeatherLoaded(response: WeatherResponse?) {
         weather_description_tv.text = response?.overcast?.get(0)?.mainInfo
-        temperature_tv.text = "${response?.weatherTemp?.temp?.minus(273)?.toInt()} ˚C"
-        humidity_value_tv.text = "${response?.weatherTemp?.humidity} %"
+
+        temperature_tv.text = resources.getString(
+            R.string.temperature_in_celsius,
+            response?.weatherTemp?.temp?.minus(273)?.toInt()
+        )
+
+        humidity_value_tv.text =
+            resources.getString(R.string.humidity_percents, response?.weatherTemp?.humidity)
+
         pressure_value_tv.text = "${response?.weatherTemp?.pressure}"
-        feels_like_value_tv.text = "${response?.weatherTemp?.feelsLike?.minus(273)?.toInt()} ˚C"
-        wind_value_tv.text =
-            "${getWindDirection(response?.wind?.degree ?: 0)} ${response?.wind?.speed!!} kph"
+
+        feels_like_value_tv.text = resources.getString(
+            R.string.temperature_in_celsius,
+            response?.weatherTemp?.feelsLike?.minus(273)?.toInt()
+        )
+
+        wind_value_tv.text = resources.getString(
+            R.string.wind_in_kph,
+            getWindDirection(response?.wind?.degree ?: 0),
+            response?.wind?.speed!!.toInt()
+        )
 
         if (response.overcast?.get(0)?.icon!!.contains("02", ignoreCase = true)
             || response.overcast?.get(0)?.icon!!.contains("03", ignoreCase = true)
@@ -110,9 +123,8 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onCityFromPreferencesLoaded(response: String?) {
-        city_tv.text = "\uD83D\uDCCD $response"
+        city_tv.text = resources.getString(R.string.location_with_emoji, response)
     }
 
     override fun onCityFromPreferencesFailed() {

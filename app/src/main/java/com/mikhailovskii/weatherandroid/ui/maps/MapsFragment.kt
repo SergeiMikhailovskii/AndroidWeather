@@ -2,7 +2,6 @@ package com.mikhailovskii.weatherandroid.ui.maps
 
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.graphics.drawable.GradientDrawable
 import android.location.Address
@@ -97,10 +96,9 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         presenter.saveLocationToPreferences(currentLocation)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onCityFromPreferencesLoaded(response: String?) {
         currentLocation = response ?: "Minsk"
-        city_tv.text = "\uD83D\uDCCD $currentLocation"
+        city_tv.text = resources.getString(R.string.location_with_emoji, currentLocation)
     }
 
     override fun onCityFromPreferencesFailed() {
@@ -154,7 +152,6 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun getLocationFromAddress(strAddress: String): LatLng? {
         val coder = Geocoder(context)
         val address: List<Address>?
@@ -176,7 +173,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                 location.countryName
             }
 
-            city_tv.text = "\uD83D\uDCCD $currentLocation"
+            city_tv.text = resources.getString(R.string.location_with_emoji, currentLocation)
         } catch (e: IndexOutOfBoundsException) {
             showErrorToast("City not found")
         }

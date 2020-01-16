@@ -58,4 +58,10 @@
     <string name="location">Location</string>
     <string name="password">Password</string>
 
+    <string name="location_with_emoji">📍 %1$s</string>
+    <string name="temperature_in_celsius">%d ˚C</string>
+    <string name="humidity_percents">%d \%%</string>
+    <string name="wind_in_kph">%1$s %2$d kph</string>
+    <string name="show_price_in_usd">$ %.2f</string>
+
 </resources>

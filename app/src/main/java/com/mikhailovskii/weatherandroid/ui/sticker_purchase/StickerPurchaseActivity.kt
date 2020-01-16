@@ -1,6 +1,5 @@
 package com.mikhailovskii.weatherandroid.ui.sticker_purchase
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -30,7 +29,6 @@ class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.Sti
         presenter.getStickerPackByName(name!!)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onStickerPackByNameLoaded(stickerPack: StickerPack) {
         val stickersList = ArrayList<String>()
 
@@ -41,7 +39,7 @@ class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.Sti
         adapter?.setData(stickersList)
 
         title_tv.text = stickerPack.title
-        buy_btn.text = "${stickerPack.price} $"
+        buy_btn.text = resources.getString(R.string.show_price_in_usd, stickerPack.price)
 
         Glide.with(applicationContext).load(stickersList[0]).into(sticker_iv)
     }
