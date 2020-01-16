@@ -3,7 +3,6 @@ package com.mikhailovskii.weatherandroid.ui.maps
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.graphics.drawable.GradientDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
@@ -41,24 +40,6 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
         activity?.window?.statusBarColor =
             ContextCompat.getColor(context!!, R.color.mapsStatusBar)
-
-
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(
-                ContextCompat.getColor(context!!, R.color.mapsGradientTopLeft),
-                ContextCompat.getColor(context!!, R.color.mapsGradientBottomRight)
-            )
-        )
-
-        scrollView.background = gradientDrawable
-
-        city_et.setBackgroundColor(
-            ContextCompat.getColor(
-                context!!,
-                R.color.mapsCityEditBackground
-            )
-        )
 
         initMapView(savedInstanceState)
 

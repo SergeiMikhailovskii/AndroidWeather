@@ -1,7 +1,6 @@
 package com.mikhailovskii.weatherandroid.ui.settings
 
 
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,16 +30,6 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
             ContextCompat.getColor(context!!, R.color.settingsStatusBar)
 
         presenter.attachView(this)
-
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(
-                ContextCompat.getColor(context!!, R.color.settingsGradientTopLeft),
-                ContextCompat.getColor(context!!, R.color.settingsGradientBottomRight)
-            )
-        )
-
-        scrollView.background = gradientDrawable
 
         save_btn.setOnClickListener {
             val user = User()
