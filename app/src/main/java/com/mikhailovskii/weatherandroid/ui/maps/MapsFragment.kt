@@ -87,15 +87,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     }
 
     override fun onCityFromPreferencesFailed() {
-
-    }
-
-    override fun showEmptyState(value: Boolean) {
-
-    }
-
-    override fun showLoadingIndicator(value: Boolean) {
-
+        showErrorToast("Loading failed")
     }
 
     private fun initMapView(savedInstanceState: Bundle?) {

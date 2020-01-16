@@ -18,6 +18,7 @@ import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
 import com.mikhailovskii.weatherandroid.ui.adapter.WeatherAdapter
 import com.mikhailovskii.weatherandroid.util.getWindDirection
+import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_forecast.*
 import java.util.*
 
@@ -161,15 +162,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     }
 
     override fun onWeatherForecastFailed() {
-
-    }
-
-    override fun showEmptyState(value: Boolean) {
-
-    }
-
-    override fun showLoadingIndicator(value: Boolean) {
-
+        showErrorToast("Loading failed")
     }
 
 }

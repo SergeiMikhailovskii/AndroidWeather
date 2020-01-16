@@ -14,6 +14,7 @@ import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.StickerPack
 import com.mikhailovskii.weatherandroid.ui.adapter.StickersAdapter
 import com.mikhailovskii.weatherandroid.ui.sticker_purchase.StickerPurchaseActivity
+import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_shop.*
 
 class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemClickListener {
@@ -59,15 +60,7 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
     }
 
     override fun onStickerListFailed() {
-
-    }
-
-    override fun showEmptyState(value: Boolean) {
-
-    }
-
-    override fun showLoadingIndicator(value: Boolean) {
-
+        showErrorToast("Loading failed!")
     }
 
     override fun onItemClicked(position: Int, item: StickerPack) {

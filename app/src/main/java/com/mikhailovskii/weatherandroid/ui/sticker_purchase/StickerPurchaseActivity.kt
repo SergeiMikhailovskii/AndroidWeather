@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.StickerPack
 import com.mikhailovskii.weatherandroid.ui.adapter.StickerPackAdapter
+import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.activity_sticker_purchase.*
 
 class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.StickerPurchaseView {
@@ -50,15 +51,7 @@ class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.Sti
     }
 
     override fun onStickerPackByNameFailed() {
-
-    }
-
-    override fun showEmptyState(value: Boolean) {
-
-    }
-
-    override fun showLoadingIndicator(value: Boolean) {
-
+        showErrorToast("Loading failed")
     }
 
     companion object {

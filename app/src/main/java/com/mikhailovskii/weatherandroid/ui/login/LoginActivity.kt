@@ -72,14 +72,6 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         showErrorToast("Login failed")
     }
 
-    override fun showEmptyState(value: Boolean) {
-
-    }
-
-    override fun showLoadingIndicator(value: Boolean) {
-
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
@@ -217,7 +209,6 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         presenter.logInWithGoogle(completedTask.result)
-
     }
 
 }

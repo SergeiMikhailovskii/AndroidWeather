@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.User
+import com.mikhailovskii.weatherandroid.util.showErrorToast
+import com.mikhailovskii.weatherandroid.util.showInfoToast
 import com.mikhailovskii.weatherandroid.util.showSuccessToast
 import kotlinx.android.synthetic.main.fragment_settings.*
 
@@ -62,7 +64,7 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     }
 
     override fun onUserDataFailed() {
-
+        showInfoToast("Saving failed!")
     }
 
     override fun onInitialUserDataLoaded(user: User?) {
@@ -79,15 +81,7 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     }
 
     override fun onInitialUserDataFailed() {
-
-    }
-
-    override fun showEmptyState(value: Boolean) {
-
-    }
-
-    override fun showLoadingIndicator(value: Boolean) {
-
+        showErrorToast("Loading failed!")
     }
 
 }
