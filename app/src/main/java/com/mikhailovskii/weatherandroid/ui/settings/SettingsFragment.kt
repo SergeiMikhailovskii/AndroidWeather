@@ -21,7 +21,6 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
@@ -62,6 +61,11 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
 
         presenter.getInitialUserData()
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.detachView()
     }
 
     override fun onUserDataSaved() {

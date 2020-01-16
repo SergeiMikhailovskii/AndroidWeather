@@ -74,6 +74,11 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         presenter.getCityForecast()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.detachView()
+    }
+
     override fun onCurrentCityWeatherLoaded(response: WeatherResponse?) {
         weather_description_tv.text = response?.overcast?.get(0)?.mainInfo
 

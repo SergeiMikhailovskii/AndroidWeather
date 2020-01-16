@@ -29,6 +29,11 @@ class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.Sti
         presenter.getStickerPackByName(name!!)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
+    }
+
     override fun onStickerPackByNameLoaded(stickerPack: StickerPack) {
         val stickersList = ArrayList<String>()
 

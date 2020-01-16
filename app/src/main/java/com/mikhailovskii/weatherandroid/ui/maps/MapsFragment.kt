@@ -94,6 +94,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.saveLocationToPreferences(currentLocation)
+        presenter.detachView()
     }
 
     override fun onCityFromPreferencesLoaded(response: String?) {

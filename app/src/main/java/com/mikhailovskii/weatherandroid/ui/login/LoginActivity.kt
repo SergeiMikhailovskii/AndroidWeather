@@ -71,6 +71,11 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         presenter.checkUserLogged()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
+    }
+
     override fun onLoggedIn() {
         startActivity(Intent(this, MainActivity::class.java))
     }

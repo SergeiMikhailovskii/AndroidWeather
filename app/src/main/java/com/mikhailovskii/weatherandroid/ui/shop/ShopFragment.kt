@@ -60,6 +60,11 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
         presenter.getStickerList()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.detachView()
+    }
+
     override fun onStickerListLoaded(stickers: List<StickerPack>) {
         adapter?.setData(stickers)
     }
