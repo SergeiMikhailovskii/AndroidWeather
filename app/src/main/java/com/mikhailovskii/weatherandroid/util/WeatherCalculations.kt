@@ -5,34 +5,16 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 fun getWindDirection(degree: Int): String {
-    when {
-        degree > 337.5 -> {
-            return "N"
-        }
-        degree > 292.5 -> {
-            return "NW"
-        }
-        degree > 247.5 -> {
-            return "W"
-        }
-        degree > 202.5 -> {
-            return "SW"
-        }
-        degree > 157.5 -> {
-            return "S"
-        }
-        degree > 122.5 -> {
-            return "SE"
-        }
-        degree > 67.5 -> {
-            return "E"
-        }
-        degree > 22.5 -> {
-            return "NE"
-        }
-        else -> {
-            return "N"
-        }
+    return when {
+        degree > 337.5 -> "N"
+        degree > 292.5 -> "NW"
+        degree > 247.5 -> "W"
+        degree > 202.5 -> "SW"
+        degree > 157.5 -> "S"
+        degree > 122.5 -> "SE"
+        degree > 67.5 -> "E"
+        degree > 22.5 -> "NE"
+        else -> "N"
     }
 }
 
