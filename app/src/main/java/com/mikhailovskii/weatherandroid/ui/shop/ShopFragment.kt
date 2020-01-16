@@ -74,7 +74,7 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
         val intent = Intent(context, StickerPurchaseActivity::class.java)
         intent.putExtra(
             StickerPurchaseActivity.EXTRA_NAME,
-            adapter?.stickersList?.get(position)?.title
+            adapter?.differ?.currentList?.get(position)?.title
         )
         startActivity(intent)
     }

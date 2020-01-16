@@ -3,27 +3,14 @@ package com.mikhailovskii.weatherandroid.ui.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.mikhailovskii.weatherandroid.data.entities.StickerPack
 
-class StickersDiffUtilCallback(
-    private val oldList: List<StickerPack>,
-    private val newList: List<StickerPack>
-) : DiffUtil.Callback() {
+class StickersDiffUtilCallback : DiffUtil.ItemCallback<StickerPack>() {
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = true
+    override fun areItemsTheSame(oldItem: StickerPack, newItem: StickerPack): Boolean = true
 
-    override fun getOldListSize(): Int {
-        return oldList.size
-    }
-
-    override fun getNewListSize(): Int {
-        return newList.size
-    }
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val oldStickerElement = oldList[oldItemPosition]
-        val newStickerElement = newList[newItemPosition]
-        return oldStickerElement.title == newStickerElement.title
-                && oldStickerElement.stickers?.get(0) == newStickerElement.stickers?.get(0)
-                && oldStickerElement.price == newStickerElement.price
+    override fun areContentsTheSame(oldItem: StickerPack, newItem: StickerPack): Boolean {
+        return oldItem.title == newItem.title
+                && oldItem.stickers?.get(0) == newItem.stickers?.get(0)
+                && oldItem.price == newItem.price
     }
 
 }

@@ -9,11 +9,9 @@ import com.bumptech.glide.Glide
 import com.mikhailovskii.weatherandroid.R
 import kotlinx.android.synthetic.main.sticker_layout.view.*
 
-
 class StickerPackAdapter : RecyclerView.Adapter<StickerPackAdapter.ViewHolder>() {
 
-    private val mDiffer: AsyncListDiffer<String> =
-        AsyncListDiffer<String>(this, StickerPackDiffUtilCallback())
+    private val differ = AsyncListDiffer<String>(this, StickerPackDiffUtilCallback())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
@@ -22,15 +20,15 @@ class StickerPackAdapter : RecyclerView.Adapter<StickerPackAdapter.ViewHolder>()
     }
 
     override fun getItemCount(): Int {
-        return mDiffer.currentList.size
+        return differ.currentList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(mDiffer.currentList[position])
+        holder.bindData(differ.currentList[position])
     }
 
     fun setData(stickersList: List<String>) {
-        mDiffer.submitList(stickersList)
+        differ.submitList(stickersList)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
