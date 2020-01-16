@@ -30,12 +30,13 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        presenter.attachView(this)
         return inflater.inflate(R.layout.fragment_forecast, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        presenter.attachView(this)
 
         activity?.window?.statusBarColor =
             ContextCompat.getColor(context!!, R.color.forecastStatusBar)
