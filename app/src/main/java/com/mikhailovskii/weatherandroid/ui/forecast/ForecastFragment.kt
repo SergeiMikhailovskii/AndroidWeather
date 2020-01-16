@@ -2,7 +2,6 @@ package com.mikhailovskii.weatherandroid.ui.forecast
 
 
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -45,16 +44,6 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         adapter = WeatherAdapter()
         weather_list.adapter = adapter
-
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(
-                ContextCompat.getColor(context!!, R.color.forecastGradientTopLeft),
-                ContextCompat.getColor(context!!, R.color.forecastGradientBottomRight)
-            )
-        )
-
-        scrollView.background = gradientDrawable
 
         val calendar = Calendar.getInstance(TimeZone.getDefault())
         val date = "${calendar.getDisplayName(
