@@ -2,7 +2,6 @@ package com.mikhailovskii.weatherandroid.ui.shop
 
 
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,16 +45,6 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
                 DividerItemDecoration.VERTICAL
             )
         )
-
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(
-                ContextCompat.getColor(context!!, R.color.shopGradientTopLeft),
-                ContextCompat.getColor(context!!, R.color.shopGradientBottomRight)
-            )
-        )
-
-        stickers_list.background = gradientDrawable
 
         presenter.getStickerList()
     }
