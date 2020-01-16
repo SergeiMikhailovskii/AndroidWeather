@@ -1,11 +1,9 @@
 package com.mikhailovskii.weatherandroid.ui.login
 
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -42,16 +40,6 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
         presenter.attachView(this)
 
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(
-                ContextCompat.getColor(applicationContext, R.color.forecastGradientTopLeft),
-                ContextCompat.getColor(applicationContext, R.color.forecastGradientBottomRight)
-            )
-        )
-
-        scrollView.background = gradientDrawable
-
         sign_in_btn.setOnClickListener {
             val bundle = Bundle()
             bundle.putString(LoginPresenter.LOGIN_KEY, login_til.text.toString())
@@ -68,7 +56,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         // Twitter
         initTwitterAuthorization()
 
-        presenter.checkUserLogged()
+//        presenter.checkUserLogged()
     }
 
     override fun onDestroy() {
