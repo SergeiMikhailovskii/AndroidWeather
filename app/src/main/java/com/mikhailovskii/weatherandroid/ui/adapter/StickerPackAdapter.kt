@@ -3,15 +3,17 @@ package com.mikhailovskii.weatherandroid.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mikhailovskii.weatherandroid.R
 import kotlinx.android.synthetic.main.sticker_layout.view.*
 
+
 class StickerPackAdapter : RecyclerView.Adapter<StickerPackAdapter.ViewHolder>() {
 
-    var stickersList: List<String> = ArrayList()
+    private val mDiffer: AsyncListDiffer<String> =
+        AsyncListDiffer<String>(this, StickerPackDiffUtilCallback())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
@@ -20,18 +22,15 @@ class StickerPackAdapter : RecyclerView.Adapter<StickerPackAdapter.ViewHolder>()
     }
 
     override fun getItemCount(): Int {
-        return stickersList.size
+        return mDiffer.currentList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(stickersList[position])
+        holder.bindData(mDiffer.currentList[position])
     }
 
     fun setData(stickersList: List<String>) {
-        val stickerPackDiffResult =
-            DiffUtil.calculateDiff(StickerPackDiffUtilCallback(this.stickersList, stickersList))
-        this.stickersList = stickersList
-        stickerPackDiffResult.dispatchUpdatesTo(this)
+        mDiffer.submitList(stickersList)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

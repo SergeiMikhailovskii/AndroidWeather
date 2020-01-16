@@ -20,7 +20,7 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
     override fun getCurrentCityWeather() {
         CoroutineScope(Dispatchers.IO).launch {
             var city =
-                Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
+                Preference.user?.location ?: "Minsk"
             city = city.replace("\\s".toRegex(), "")
 
             val response = weatherApi.getCurrentCityWeather(BuildConfig.WEATHER_API_KEY, city)
@@ -36,14 +36,14 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
 
     override fun getCityFromPreferences() {
         val location =
-            Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
+            Preference.user?.location ?: "Minsk"
         view?.onCityFromPreferencesLoaded(location)
     }
 
     override fun getCityForecast() {
         CoroutineScope(Dispatchers.IO).launch {
             var city =
-                Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
+                Preference.user?.location ?: "Minsk"
             city = city.replace("\\s".toRegex(), "")
 
             val response = weatherApi.getCityForecast(BuildConfig.WEATHER_API_KEY, city)

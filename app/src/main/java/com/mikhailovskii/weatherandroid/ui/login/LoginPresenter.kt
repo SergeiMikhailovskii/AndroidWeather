@@ -8,7 +8,6 @@ import com.facebook.Profile
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.database.*
-import com.mikhailovskii.weatherandroid.AndroidWeatherApp
 import com.mikhailovskii.weatherandroid.data.entities.User
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 import com.mikhailovskii.weatherandroid.util.Preference
@@ -44,7 +43,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                         Timber.i("LOGIN ${userData?.login}")
                     }
 
-                    Preference.getInstance(AndroidWeatherApp.appContext).user = user
+                    Preference.user = user
 
                     view?.onLoggedIn()
 
@@ -70,7 +69,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
         )
         database.child("users").push().setValue(user)
 
-        Preference.getInstance(AndroidWeatherApp.appContext).user = user
+        Preference.user = user
 
         view?.onLoggedIn()
     }
@@ -93,7 +92,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                     val user = User(login = name, facebookKey = id, icon = icon)
                     database.child("users").push().setValue(user)
 
-                    Preference.getInstance(AndroidWeatherApp.appContext).user = user
+                    Preference.user = user
 
                     view?.onLoggedIn()
 
@@ -113,13 +112,13 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
         )
         database.child("users").push().setValue(user)
 
-        Preference.getInstance(AndroidWeatherApp.appContext).user = user
+        Preference.user = user
 
         view?.onLoggedIn()
     }
 
     override fun checkUserLogged() {
-        if (Preference.getInstance(AndroidWeatherApp.appContext).user != null) {
+        if (Preference.user != null) {
             view?.onLoggedIn()
         }
     }

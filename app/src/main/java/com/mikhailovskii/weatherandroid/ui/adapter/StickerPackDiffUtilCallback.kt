@@ -2,18 +2,10 @@ package com.mikhailovskii.weatherandroid.ui.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 
-class StickerPackDiffUtilCallback(
-    private val oldList: List<String>,
-    private val newList: List<String>
-) : DiffUtil.Callback() {
+class StickerPackDiffUtilCallback : DiffUtil.ItemCallback<String>() {
 
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean = true
+    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean = true
 
-    override fun getOldListSize(): Int = oldList.size
-
-    override fun getNewListSize(): Int = newList.size
-
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-        oldList[oldItemPosition] == newList[newItemPosition]
+    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean = oldItem == newItem
 
 }
