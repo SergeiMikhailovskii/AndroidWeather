@@ -31,12 +31,13 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        presenter.attachView(this)
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        presenter.attachView(this)
 
         activity?.window?.statusBarColor =
             ContextCompat.getColor(context!!, R.color.mapsStatusBar)
