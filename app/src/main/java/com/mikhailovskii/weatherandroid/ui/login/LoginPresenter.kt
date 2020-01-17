@@ -7,9 +7,7 @@ import com.facebook.GraphRequest
 import com.facebook.Profile
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.Query
+import com.google.firebase.firestore.FirebaseFirestore
 import com.mikhailovskii.weatherandroid.data.entities.User
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 import com.mikhailovskii.weatherandroid.util.Preference
@@ -17,8 +15,7 @@ import com.twitter.sdk.android.core.Result
 
 class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.LoginPresenter {
 
-    private var database: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private lateinit var query: Query
+    private var database = FirebaseFirestore.getInstance()
 
     override fun saveUserData(bundle: Bundle) {
 
@@ -27,38 +24,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
 
         val user = User(login = login, password = password)
 
-//        query = database.child("users").orderByChild("login").equalTo(login)
-//        query.addListenerForSingleValueEvent(object : ValueEventListener {
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                Timber.e(error.toException())
-//            }
-//
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//
-//                if (snapshot.exists()) {
-//                    val users = snapshot.children
-//
-//                    users.forEach { data ->
-//                        val userData = data.getValue(User::class.java)
-//                        Timber.i("LOGIN ${userData?.login}")
-//                    }
-//
-//                    Preference.user = user
-//
-//                    view?.onLoggedIn()
-//
-//                } else {
-//                    Timber.e("NO SUCH USER $login $password")
-//
-//                    database.child("users").push().setValue(user)
-//
-//                    view?.onLoginFailed()
-//                }
-//
-//            }
-//
-//        })
+        database.collection("users").document().set(user)
 
         Preference.user = user
         view?.onLoggedIn()
@@ -71,7 +37,6 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             twitterKey = result?.data?.idStr,
             icon = result?.data?.profileImageUrl
         )
-        database.child("users").push().setValue(user)
 
         Preference.user = user
 
@@ -94,7 +59,6 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                     }
 
                     val user = User(login = name, facebookKey = id, icon = icon)
-                    database.child("users").push().setValue(user)
 
                     Preference.user = user
 
@@ -114,7 +78,6 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             googleKey = result?.idToken,
             icon = result?.photoUrl.toString()
         )
-        database.child("users").push().setValue(user)
 
         Preference.user = user
 
