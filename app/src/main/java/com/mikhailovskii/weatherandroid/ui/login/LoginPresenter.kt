@@ -7,12 +7,13 @@ import com.facebook.GraphRequest
 import com.facebook.Profile
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
 import com.mikhailovskii.weatherandroid.data.entities.User
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 import com.mikhailovskii.weatherandroid.util.Preference
 import com.twitter.sdk.android.core.Result
-import timber.log.Timber
 
 class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.LoginPresenter {
 
@@ -26,38 +27,41 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
 
         val user = User(login = login, password = password)
 
-        query = database.child("users").orderByChild("login").equalTo(login)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+//        query = database.child("users").orderByChild("login").equalTo(login)
+//        query.addListenerForSingleValueEvent(object : ValueEventListener {
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                Timber.e(error.toException())
+//            }
+//
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//
+//                if (snapshot.exists()) {
+//                    val users = snapshot.children
+//
+//                    users.forEach { data ->
+//                        val userData = data.getValue(User::class.java)
+//                        Timber.i("LOGIN ${userData?.login}")
+//                    }
+//
+//                    Preference.user = user
+//
+//                    view?.onLoggedIn()
+//
+//                } else {
+//                    Timber.e("NO SUCH USER $login $password")
+//
+//                    database.child("users").push().setValue(user)
+//
+//                    view?.onLoginFailed()
+//                }
+//
+//            }
+//
+//        })
 
-            override fun onCancelled(error: DatabaseError) {
-                Timber.e(error.toException())
-            }
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                if (snapshot.exists()) {
-                    val users = snapshot.children
-
-                    users.forEach { data ->
-                        val userData = data.getValue(User::class.java)
-                        Timber.i("LOGIN ${userData?.login}")
-                    }
-
-                    Preference.user = user
-
-                    view?.onLoggedIn()
-
-                } else {
-                    Timber.e("NO SUCH USER $login $password")
-
-                    database.child("users").push().setValue(user)
-
-                    view?.onLoginFailed()
-                }
-
-            }
-
-        })
+        Preference.user = user
+        view?.onLoggedIn()
 
     }
 

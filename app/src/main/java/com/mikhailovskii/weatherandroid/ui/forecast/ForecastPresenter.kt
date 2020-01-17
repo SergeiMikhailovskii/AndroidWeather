@@ -1,6 +1,5 @@
 package com.mikhailovskii.weatherandroid.ui.forecast
 
-import com.mikhailovskii.weatherandroid.AndroidWeatherApp
 import com.mikhailovskii.weatherandroid.BuildConfig
 import com.mikhailovskii.weatherandroid.data.api.weather.WeatherAPIFactory
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
@@ -24,13 +23,18 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
             city = city.replace("\\s".toRegex(), "")
 
             val response = weatherApi.getCurrentCityWeather(BuildConfig.WEATHER_API_KEY, city)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    val result = response.body()
+            val result = response.body()
 
+            if (response.isSuccessful) {
+                withContext(Dispatchers.Main) {
                     view?.onCurrentCityWeatherLoaded(result)
                 }
+            } else {
+                withContext(Dispatchers.Main) {
+                    view?.onCurrentCityWeatherFailed()
+                }
             }
+
         }
     }
 
@@ -47,21 +51,25 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
             city = city.replace("\\s".toRegex(), "")
 
             val response = weatherApi.getCityForecast(BuildConfig.WEATHER_API_KEY, city)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    val result = response.body()
-                    val list = ArrayList<WeatherElement>()
-                    result?.weatherList?.forEach { element ->
-                        val temp = element.weatherTemp?.temp?.toInt()?.minus(273)
-                        val date = element.date
+            val result = response.body()
 
-                        list.add(WeatherElement(day = getDateFromSeconds(date ?: 0), temp = temp))
-                    }
+            if (response.isSuccessful) {
+                val list = ArrayList<WeatherElement>()
+                result?.weatherList?.forEach { element ->
+                    val temp = element.weatherTemp?.temp?.toInt()?.minus(273)
+                    val date = element.date
+
+                    list.add(WeatherElement(day = getDateFromSeconds(date ?: 0), temp = temp))
+                }
+                withContext(Dispatchers.Main) {
                     view?.onWeatherForecastLoaded(list)
-                } else {
+                }
+            } else {
+                withContext(Dispatchers.Main) {
                     view?.onWeatherForecastFailed()
                 }
             }
+
         }
     }
 
