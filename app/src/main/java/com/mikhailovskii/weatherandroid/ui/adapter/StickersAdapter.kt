@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.StickerPack
-import com.mikhailovskii.weatherandroid.util.showInfoToast
+import com.mikhailovskii.weatherandroid.util.showSuccessToast
 import kotlinx.android.synthetic.main.sticker_element.view.*
 
 class StickersAdapter(
@@ -55,7 +55,7 @@ class StickersAdapter(
                 itemView.resources.getString(R.string.show_price_in_usd, element.price)
 
             itemView.buy_btn.setOnClickListener {
-                showInfoToast("Purchase succeed!")
+                showSuccessToast("Purchase succeed!")
             }
 
             itemView.setOnClickListener {

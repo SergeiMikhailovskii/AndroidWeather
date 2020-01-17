@@ -18,7 +18,7 @@ import com.google.firebase.auth.OAuthProvider
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.ui.main.MainActivity
 import com.mikhailovskii.weatherandroid.util.showErrorToast
-import com.mikhailovskii.weatherandroid.util.showInfoToast
+import com.mikhailovskii.weatherandroid.util.showSuccessToast
 import com.mikhailovskii.weatherandroid.util.showWarningToast
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
@@ -199,7 +199,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
-            showInfoToast(account.displayName.toString())
+            showSuccessToast(account.displayName.toString())
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else {
