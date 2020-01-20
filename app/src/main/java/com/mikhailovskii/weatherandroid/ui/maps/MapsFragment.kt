@@ -119,21 +119,6 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         }
     }
 
-    private fun initMapsWithPermission(googleMap: GoogleMap) {
-        googleMap.isIndoorEnabled = true
-
-        val uiSettings = googleMap.uiSettings
-        uiSettings.isIndoorLevelPickerEnabled = true
-        uiSettings.isMapToolbarEnabled = true
-        uiSettings.isCompassEnabled = true
-        uiSettings.isZoomControlsEnabled = true
-
-        val latLng = getLocationFromAddress(currentLocation)
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10.0f))
-        googleMap.isMyLocationEnabled = true
-        map_view.onResume()
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -157,6 +142,21 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                 }
             }
         }
+    }
+
+    private fun initMapsWithPermission(googleMap: GoogleMap) {
+        googleMap.isIndoorEnabled = true
+
+        val uiSettings = googleMap.uiSettings
+        uiSettings.isIndoorLevelPickerEnabled = true
+        uiSettings.isMapToolbarEnabled = true
+        uiSettings.isCompassEnabled = true
+        uiSettings.isZoomControlsEnabled = true
+
+        val latLng = getLocationFromAddress(currentLocation)
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10.0f))
+        googleMap.isMyLocationEnabled = true
+        map_view.onResume()
     }
 
     private fun getLocationFromAddress(strAddress: String): LatLng? {
