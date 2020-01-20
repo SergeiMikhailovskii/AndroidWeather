@@ -12,6 +12,7 @@ import com.mikhailovskii.weatherandroid.data.entities.User
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 import com.mikhailovskii.weatherandroid.util.Preference
 import com.twitter.sdk.android.core.Result
+import timber.log.Timber
 
 class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.LoginPresenter {
 
@@ -33,6 +34,8 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                     view?.onLoggedIn()
                 }
             }
+        }.addOnFailureListener {
+            view?.onLoginFailed()
         }
     }
 
@@ -43,9 +46,33 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             icon = result?.data?.profileImageUrl
         )
 
-        Preference.user = user
+        database.collection("users").get().addOnSuccessListener { databaseResult ->
+            var isUserPresents = false
 
-        view?.onLoggedIn()
+            loop@ for (document in databaseResult) {
+                val databaseUser = document.toObject(User::class.java)
+
+                if (databaseUser.login == result?.data?.name
+                    && databaseUser.twitterKey == result?.data?.idStr
+                    && databaseUser.icon == result?.data?.profileImageUrl
+                ) {
+                    isUserPresents = true
+                    break@loop
+                }
+            }
+
+            if (!isUserPresents) {
+                database.collection("users").document().set(user).addOnSuccessListener {
+                    Timber.d("Twitter info saved")
+                }.addOnFailureListener { e ->
+                    Timber.e("Error twitter save: $e")
+                }
+            }
+            Preference.user = user
+            view?.onLoggedIn()
+        }.addOnFailureListener {
+            view?.onLoginFailed()
+        }
     }
 
     override fun logInWithFacebook(result: LoginResult?) {
