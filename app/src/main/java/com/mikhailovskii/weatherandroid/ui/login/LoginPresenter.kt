@@ -68,6 +68,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                     Timber.e("Error twitter save: $e")
                 }
             }
+
             Preference.user = user
             view?.onLoggedIn()
         }.addOnFailureListener {
@@ -92,10 +93,34 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
 
                     val user = User(login = name, facebookKey = id, icon = icon)
 
-                    Preference.user = user
+                    database.collection("users").get().addOnSuccessListener { databaseResult ->
+                        var isUserPresents = false
 
-                    view?.onLoggedIn()
+                        loop@ for (document in databaseResult) {
+                            val databaseUser = document.toObject(User::class.java)
 
+                            if (databaseUser.login == user.login
+                                && databaseUser.facebookKey == user.facebookKey
+                                && databaseUser.icon == user.icon
+                            ) {
+                                isUserPresents = true
+                                break@loop
+                            }
+                        }
+
+                        if (!isUserPresents) {
+                            database.collection("users").document().set(user).addOnSuccessListener {
+                                Timber.d(("Facebook info saved"))
+                            }.addOnFailureListener { e ->
+                                Timber.e("Error facebook save: $e")
+                            }
+                        }
+
+                        Preference.user = user
+                        view?.onLoggedIn()
+                    }.addOnFailureListener {
+                        view?.onLoginFailed()
+                    }
                 }
             }
 
