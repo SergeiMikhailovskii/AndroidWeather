@@ -22,13 +22,18 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
         val login = bundle.getString(LOGIN_KEY)
         val password = bundle.getString(PASSWORD_KEY)
 
-        val user = User(login = login, password = password)
+        database.collection("users").get().addOnSuccessListener { result ->
+            for (document in result) {
+                var user = document.toObject(User::class.java)
 
-        database.collection("users").document().set(user)
+                if (user.login == login && user.password == password) {
+                    user = User(login = login, password = password)
 
-        Preference.user = user
-        view?.onLoggedIn()
-
+                    Preference.user = user
+                    view?.onLoggedIn()
+                }
+            }
+        }
     }
 
     override fun logInWithTwitter(result: Result<com.twitter.sdk.android.core.models.User>?) {
