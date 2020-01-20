@@ -34,6 +34,11 @@ class StickerPackAdapter : RecyclerView.Adapter<StickerPackAdapter.ViewHolder>()
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bindData(image: String) {
+            itemView.sticker_layout.layoutParams.width =
+                (itemView.context.resources.displayMetrics.widthPixels * 0.5 - 32).toInt()
+            itemView.sticker_layout.layoutParams.height =
+                (itemView.context.resources.displayMetrics.widthPixels * 0.5 - 32).toInt()
+
             Glide.with(itemView.context).load(image).into(itemView.sticker_iv)
         }
 
