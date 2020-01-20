@@ -136,9 +136,34 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             icon = result?.photoUrl.toString()
         )
 
-        Preference.user = user
+        database.collection("users").get().addOnSuccessListener { databaseResult ->
+            var isUserPresents = false
 
-        view?.onLoggedIn()
+            loop@ for (document in databaseResult) {
+                val databaseUser = document.toObject(User::class.java)
+
+                if (databaseUser.login == user.login
+                    && databaseUser.googleKey == user.googleKey
+                    && databaseUser.icon == user.icon
+                ) {
+                    isUserPresents = true
+                    break@loop
+                }
+            }
+
+            if (!isUserPresents) {
+                database.collection("users").document().set(user).addOnSuccessListener {
+                    Timber.d(("Facebook info saved"))
+                }.addOnFailureListener { e ->
+                    Timber.e("Error facebook save: $e")
+                }
+            }
+
+            Preference.user = user
+            view?.onLoggedIn()
+        }.addOnFailureListener {
+            view?.onLoginFailed()
+        }
     }
 
     override fun checkUserLogged() {
