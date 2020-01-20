@@ -18,9 +18,7 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
 
     override fun getCurrentCityWeather() {
         CoroutineScope(Dispatchers.IO).launch {
-            var city =
-                Preference.user?.location ?: "Minsk"
-            city = city.replace("\\s".toRegex(), "")
+            val city = Preference.user?.location ?: "Minsk"
 
             val response = weatherApi.getCurrentCityWeather(BuildConfig.WEATHER_API_KEY, city)
             val result = response.body()
