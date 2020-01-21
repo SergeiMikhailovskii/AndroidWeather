@@ -25,3 +25,5 @@ fun getDateFromSeconds(seconds: Long): String {
 
     return simpleDateFormat.format(date)
 }
+
+fun convertKelvinToCelsius(kelvin: Double): Double = kelvin - DIFFERENCE_KELVIN_CELSIUS

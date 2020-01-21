@@ -17,7 +17,7 @@ import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
 import com.mikhailovskii.weatherandroid.ui.adapter.WeatherAdapter
-import com.mikhailovskii.weatherandroid.util.DIFFERENCE_KELVIN_CELSIUS
+import com.mikhailovskii.weatherandroid.util.convertKelvinToCelsius
 import com.mikhailovskii.weatherandroid.util.getWindDirection
 import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_forecast.*
@@ -72,22 +72,19 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     }
 
     override fun onCurrentCityWeatherLoaded(response: WeatherResponse?) {
+        val temperature = convertKelvinToCelsius(response?.weatherTemp?.temp ?: 0.0).toInt()
+        val feelsLike = convertKelvinToCelsius(response?.weatherTemp?.feelsLike ?: 0.0).toInt()
+
         weather_description_tv.text = response?.overcast?.get(0)?.mainInfo
 
-        temperature_tv.text = resources.getString(
-            R.string.temperature_in_celsius,
-            response?.weatherTemp?.temp?.minus(DIFFERENCE_KELVIN_CELSIUS)?.toInt()
-        )
+        temperature_tv.text = resources.getString(R.string.temperature_in_celsius, temperature)
 
         humidity_value_tv.text =
             resources.getString(R.string.humidity_percents, response?.weatherTemp?.humidity)
 
         pressure_value_tv.text = "${response?.weatherTemp?.pressure}"
 
-        feels_like_value_tv.text = resources.getString(
-            R.string.temperature_in_celsius,
-            response?.weatherTemp?.feelsLike?.minus(DIFFERENCE_KELVIN_CELSIUS)?.toInt()
-        )
+        feels_like_value_tv.text = resources.getString(R.string.temperature_in_celsius, feelsLike)
 
         wind_value_tv.text = resources.getString(
             R.string.wind_in_kph,
