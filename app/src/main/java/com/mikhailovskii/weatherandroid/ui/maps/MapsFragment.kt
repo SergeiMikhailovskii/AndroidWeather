@@ -17,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.mikhailovskii.weatherandroid.R
+import com.mikhailovskii.weatherandroid.util.PERMISSION_CODE
 import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_maps.*
 import java.util.*
@@ -110,7 +111,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                         arrayOf(
                             Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.ACCESS_COARSE_LOCATION
-                        ), 100
+                        ), PERMISSION_CODE
                     )
                 } else {
                     initMapsWithPermission(googleMap)
@@ -125,7 +126,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         grantResults: IntArray
     ) {
         when (requestCode) {
-            100 -> {
+            PERMISSION_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     googleMap.isIndoorEnabled = true
 
