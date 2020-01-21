@@ -64,4 +64,6 @@
     <string name="wind_in_kph">%1$s %2$d kph</string>
     <string name="show_price_in_usd">$ %.2f</string>
 
+    <string name="default_location">Minsk, Belarus</string>
+
 </resources>

@@ -85,7 +85,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     }
 
     override fun onCityFromPreferencesLoaded(response: String?) {
-        currentLocation = response ?: "Minsk"
+        currentLocation = response ?: resources.getString(R.string.default_location)
         city_tv.text = resources.getString(R.string.location_with_emoji, currentLocation)
     }
 
