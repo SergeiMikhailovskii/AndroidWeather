@@ -22,6 +22,10 @@ android {
 
         buildConfigField("String", "WEATHER_API_KEY", apikeyProperties['WEATHER_API_KEY'])
         resValue("string", "MAPS_API_KEY", apikeyProperties['MAPS_API_KEY'])
+        resValue("string", "twitter_api_key", apikeyProperties['TWITTER_API_KEY'])
+        resValue("string", "twitter_api_secret", apikeyProperties['TWITTER_API_SECRET'])
+        resValue("string", "facebook_app_id", apikeyProperties['FACEBOOK_APP_ID'])
+        resValue("string", "fb_login_protocol_scheme", apikeyProperties['FB_LOGIN_PROTOCOL_SCHEME'])
     }
 
     buildTypes {
