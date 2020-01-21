@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
+import com.mikhailovskii.weatherandroid.util.QUARTER_SCREEN
 import kotlinx.android.synthetic.main.weather_element.view.*
 
 class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
@@ -39,7 +40,7 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
         fun bindData(element: WeatherElement) {
             itemView.weather_element_layout.layoutParams.width =
-                (itemView.context.resources.displayMetrics.widthPixels * 0.25).toInt()
+                (itemView.context.resources.displayMetrics.widthPixels * QUARTER_SCREEN).toInt()
             itemView.day_tv.text = element.day
             itemView.value_tv.text =
                 itemView.resources.getString(R.string.temperature_in_celsius, element.temp)
