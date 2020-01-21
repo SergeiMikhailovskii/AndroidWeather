@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.util.PERMISSION_CODE
+import com.mikhailovskii.weatherandroid.util.ZOOM_LEVEL
 import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_maps.*
 import java.util.*
@@ -137,7 +138,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                     uiSettings.isZoomControlsEnabled = true
 
                     val latLng = getLocationFromAddress(currentLocation)
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10.0f))
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL))
                     googleMap.isMyLocationEnabled = true
                     map_view.onResume()
                 }

@@ -8,4 +8,6 @@ const val BASE_MARGIN = 16
 
 const val PERMISSION_CODE = 100
 
+const val ZOOM_LEVEL = 10.0f
+
 const val USERS_COLLECTION = "users"
