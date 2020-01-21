@@ -69,7 +69,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     }
 
     override fun onLoginFailed() {
-        showErrorToast("Login failed")
+        showErrorToast(getString(R.string.login_failed))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -163,12 +163,12 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
             override fun onCancel() {
                 Timber.d("facebook:onCancel")
-                showWarningToast("Cancel")
+                showWarningToast(getString(R.string.facebook_cancel))
             }
 
             override fun onError(error: FacebookException?) {
                 Timber.e("facebook:onError $error")
-                showErrorToast("Error")
+                showErrorToast(getString(R.string.facebook_error))
             }
 
         })
@@ -203,7 +203,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else {
-            showWarningToast("Not signed in")
+            showWarningToast(getString(R.string.not_signed_in))
         }
     }
 

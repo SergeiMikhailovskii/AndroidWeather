@@ -65,5 +65,14 @@
     <string name="show_price_in_usd">$ %.2f</string>
 
     <string name="default_location">Minsk, Belarus</string>
+    <string name="login_failed">Login failed</string>
+    <string name="loading_failed">Loading failed</string>
+    <string name="facebook_cancel">Cancel</string>
+    <string name="facebook_error">Error</string>
+    <string name="not_signed_in">Not signed in</string>
+    <string name="city_not_found">City not found</string>
+    <string name="data_updated">Data updated!</string>
+    <string name="saving_failed">Saving failed!</string>
+    <string name="purchase_succeed">Purchase succeed!</string>
 
 </resources>

@@ -90,7 +90,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     }
 
     override fun onCityFromPreferencesFailed() {
-        showErrorToast("Loading failed")
+        showErrorToast(getString(R.string.loading_failed))
     }
 
     private fun initMapView(savedInstanceState: Bundle?) {
@@ -184,7 +184,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
             city_tv.text = resources.getString(R.string.location_with_emoji, currentLocation)
             return latLngLocation
         } else {
-            showErrorToast("City not found")
+            showErrorToast(getString(R.string.city_not_found))
             return null
         }
     }

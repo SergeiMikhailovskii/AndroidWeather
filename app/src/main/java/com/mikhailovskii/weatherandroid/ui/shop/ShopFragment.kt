@@ -60,7 +60,7 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
     }
 
     override fun onStickerListFailed() {
-        showErrorToast("Loading failed!")
+        showErrorToast(getString(R.string.loading_failed))
     }
 
     override fun onItemClicked(position: Int, item: StickerPack) {

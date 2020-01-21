@@ -55,7 +55,7 @@ class StickersAdapter(
                 itemView.resources.getString(R.string.show_price_in_usd, element.price)
 
             itemView.buy_btn.setOnClickListener {
-                showSuccessToast("Purchase succeed!")
+                showSuccessToast(itemView.context.getString(R.string.purchase_succeed))
             }
 
             itemView.setOnClickListener {

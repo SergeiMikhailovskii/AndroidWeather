@@ -163,7 +163,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     }
 
     override fun onWeatherForecastFailed() {
-        showErrorToast("Loading failed")
+        showErrorToast(getString(R.string.loading_failed))
     }
 
 }

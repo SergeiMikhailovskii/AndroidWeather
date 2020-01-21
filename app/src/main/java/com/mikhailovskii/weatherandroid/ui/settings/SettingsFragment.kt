@@ -59,11 +59,11 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     }
 
     override fun onUserDataSaved() {
-        showSuccessToast("Data updated!")
+        showSuccessToast(getString(R.string.data_updated))
     }
 
     override fun onUserDataFailed() {
-        showSuccessToast("Saving failed!")
+        showSuccessToast(getString(R.string.saving_failed))
     }
 
     override fun onInitialUserDataLoaded(user: User?) {
@@ -80,7 +80,7 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     }
 
     override fun onInitialUserDataFailed() {
-        showErrorToast("Loading failed!")
+        showErrorToast(getString(R.string.loading_failed))
     }
 
 }

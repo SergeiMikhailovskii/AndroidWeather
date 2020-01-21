@@ -51,7 +51,7 @@ class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.Sti
     }
 
     override fun onStickerPackByNameFailed() {
-        showErrorToast("Loading failed")
+        showErrorToast(getString(R.string.loading_failed))
     }
 
     companion object {
