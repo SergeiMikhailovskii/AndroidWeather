@@ -38,8 +38,10 @@ class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.Sti
     override fun onStickerPackByNameLoaded(stickerPack: StickerPack) {
         val stickersList = ArrayList<String>()
 
-        for (sticker in stickerPack.stickers!!) {
-            stickersList.add(sticker)
+        if (stickerPack.stickers != null && stickerPack.stickers?.isNotEmpty() == true) {
+            for (sticker in stickerPack.stickers!!) {
+                stickersList.add(sticker)
+            }
         }
 
         adapter?.setData(stickersList)
