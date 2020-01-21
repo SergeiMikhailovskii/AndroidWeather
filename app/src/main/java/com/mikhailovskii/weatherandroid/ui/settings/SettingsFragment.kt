@@ -28,7 +28,7 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.window?.statusBarColor =
-            ContextCompat.getColor(context!!, R.color.settingsStatusBar)
+            ContextCompat.getColor(requireContext(), R.color.settingsStatusBar)
 
         presenter.attachView(this)
 

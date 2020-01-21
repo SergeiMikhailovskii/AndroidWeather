@@ -42,7 +42,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         presenter.attachView(this)
 
         activity?.window?.statusBarColor =
-            ContextCompat.getColor(context!!, R.color.mapsStatusBar)
+            ContextCompat.getColor(requireContext(), R.color.mapsStatusBar)
 
         initMapView(savedInstanceState)
 
@@ -100,11 +100,11 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                 this.googleMap = googleMap!!
 
                 if (ActivityCompat.checkSelfPermission(
-                        context!!,
+                        requireContext(),
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(
-                        context!!,
+                        requireContext(),
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {

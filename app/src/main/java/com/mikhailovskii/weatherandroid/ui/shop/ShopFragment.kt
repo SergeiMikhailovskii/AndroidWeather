@@ -35,7 +35,7 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
         presenter.attachView(this)
 
         activity?.window?.statusBarColor =
-            ContextCompat.getColor(context!!, R.color.shopStatusBar)
+            ContextCompat.getColor(requireContext(), R.color.shopStatusBar)
 
         stickers_list.layoutManager = LinearLayoutManager(context)
         adapter = StickersAdapter(this)

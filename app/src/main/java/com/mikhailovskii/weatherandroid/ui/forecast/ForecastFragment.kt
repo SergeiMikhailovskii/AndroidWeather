@@ -40,7 +40,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         presenter.attachView(this)
 
         activity?.window?.statusBarColor =
-            ContextCompat.getColor(context!!, R.color.forecastStatusBar)
+            ContextCompat.getColor(requireContext(), R.color.forecastStatusBar)
 
         weather_list.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
