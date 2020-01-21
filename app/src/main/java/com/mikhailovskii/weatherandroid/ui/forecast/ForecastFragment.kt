@@ -17,6 +17,7 @@ import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
 import com.mikhailovskii.weatherandroid.ui.adapter.WeatherAdapter
+import com.mikhailovskii.weatherandroid.util.DIFFERENCE_KELVIN_CELSIUS
 import com.mikhailovskii.weatherandroid.util.getWindDirection
 import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_forecast.*
@@ -75,7 +76,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
         temperature_tv.text = resources.getString(
             R.string.temperature_in_celsius,
-            response?.weatherTemp?.temp?.minus(273)?.toInt()
+            response?.weatherTemp?.temp?.minus(DIFFERENCE_KELVIN_CELSIUS)?.toInt()
         )
 
         humidity_value_tv.text =
@@ -85,7 +86,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
         feels_like_value_tv.text = resources.getString(
             R.string.temperature_in_celsius,
-            response?.weatherTemp?.feelsLike?.minus(273)?.toInt()
+            response?.weatherTemp?.feelsLike?.minus(DIFFERENCE_KELVIN_CELSIUS)?.toInt()
         )
 
         wind_value_tv.text = resources.getString(
