@@ -173,7 +173,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
         if (address.isNotEmpty()) {
             val location = address[0]
-            val p1 = LatLng(location.latitude, location.longitude)
+            val latLngLocation = LatLng(location.latitude, location.longitude)
 
             currentLocation = if (location.locality != null) {
                 "${location.locality}, ${location.countryName}"
@@ -182,7 +182,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
             }
 
             city_tv.text = resources.getString(R.string.location_with_emoji, currentLocation)
-            return p1
+            return latLngLocation
         } else {
             showErrorToast("City not found")
             return null
