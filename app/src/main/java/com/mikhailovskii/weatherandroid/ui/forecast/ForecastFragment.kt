@@ -89,10 +89,10 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         wind_value_tv.text = resources.getString(
             R.string.wind_in_kph,
             getWindDirection(response?.wind?.degree ?: 0),
-            response?.wind?.speed!!.toInt()
+            (response?.wind?.speed ?: 0.0).toInt()
         )
 
-        if (response.overcast?.get(0)?.icon!!.contains("02", ignoreCase = true)
+        if (response?.overcast?.get(0)?.icon!!.contains("02", ignoreCase = true)
             || response.overcast?.get(0)?.icon!!.contains("03", ignoreCase = true)
             || response.overcast?.get(0)?.icon!!.contains("04", ignoreCase = true)
         ) {
