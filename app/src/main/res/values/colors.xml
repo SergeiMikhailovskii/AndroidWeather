@@ -25,4 +25,7 @@
 
     <color name="loginGradientTopLeft">#69C3E6</color>
     <color name="loginGradientBottomRight">#556F9F</color>
+
+    <color name="buyButtonBackground">#FF82A9</color>
+    <color name="stickerPurchaseActivityBackground">#7F95D1</color>
 </resources>
