@@ -18,7 +18,7 @@ fun AppCompatActivity.replaceFragment(
 
     if (!supportFragmentManager.isStateSaved) {
         if (addBackToStack) {
-            fragmentTransaction.addToBackStack(transactionFragment.javaClass.simpleName)
+            fragmentTransaction.addToBackStack(null)
         }
 
         fragmentTransaction
