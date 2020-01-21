@@ -45,7 +45,7 @@ class StickersAdapter(
 
         fun bindData(element: StickerPack, onItemClickListener: OnItemClickListener) {
 
-            if (element.stickers?.isNotEmpty()!!) {
+            if (element.stickers?.isNotEmpty() == true) {
                 Glide.with(itemView.context).load(element.stickers?.get(0))
                     .into(itemView.sticker_iv)
             }
