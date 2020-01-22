@@ -6,9 +6,9 @@ import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.api.weather.WeatherAPIFactory
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
+import com.mikhailovskii.weatherandroid.util.DateUtils
 import com.mikhailovskii.weatherandroid.util.Preference
 import com.mikhailovskii.weatherandroid.util.WeatherUtils
-import com.mikhailovskii.weatherandroid.util.getDateFromSeconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -62,7 +62,12 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
                         .toInt()
                     val date = element.date
 
-                    list.add(WeatherElement(day = getDateFromSeconds(date ?: 0), temp = temp))
+                    list.add(
+                        WeatherElement(
+                            day = DateUtils.getDateFromSeconds(date ?: 0),
+                            temp = temp
+                        )
+                    )
                 }
                 withContext(Dispatchers.Main) {
                     view?.onWeatherForecastLoaded(list)
