@@ -57,9 +57,7 @@ class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.Sti
     }
 
     companion object {
-
         const val EXTRA_NAME = "EXTRA_NAME"
-
     }
 
 }

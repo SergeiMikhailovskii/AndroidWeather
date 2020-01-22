@@ -26,9 +26,7 @@ class AndroidWeatherApp : Application() {
     }
 
     companion object {
-
         lateinit var instance: AndroidWeatherApp
         lateinit var appContext: Context
-
     }
 }

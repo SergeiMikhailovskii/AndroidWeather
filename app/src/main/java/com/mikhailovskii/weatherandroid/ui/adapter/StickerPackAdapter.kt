@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mikhailovskii.weatherandroid.R
-import com.mikhailovskii.weatherandroid.util.BASE_MARGIN
-import com.mikhailovskii.weatherandroid.util.HALF_SCREEN
 import kotlinx.android.synthetic.main.sticker_layout.view.*
 
 class StickerPackAdapter : RecyclerView.Adapter<StickerPackAdapter.ViewHolder>() {
@@ -45,6 +43,11 @@ class StickerPackAdapter : RecyclerView.Adapter<StickerPackAdapter.ViewHolder>()
             Glide.with(itemView.context).load(image).into(itemView.sticker_iv)
         }
 
+    }
+
+    companion object {
+        private const val HALF_SCREEN = 0.5
+        private const val BASE_MARGIN = 16
     }
 
 }

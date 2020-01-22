@@ -7,7 +7,7 @@ import com.mikhailovskii.weatherandroid.data.api.weather.WeatherAPIFactory
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 import com.mikhailovskii.weatherandroid.util.Preference
-import com.mikhailovskii.weatherandroid.util.convertKelvinToCelsius
+import com.mikhailovskii.weatherandroid.util.WeatherUtils.Companion.convertKelvinToCelsius
 import com.mikhailovskii.weatherandroid.util.getDateFromSeconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

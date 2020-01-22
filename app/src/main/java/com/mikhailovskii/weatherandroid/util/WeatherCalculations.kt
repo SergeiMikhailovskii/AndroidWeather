@@ -26,4 +26,11 @@ fun getDateFromSeconds(seconds: Long): String {
     return simpleDateFormat.format(date)
 }
 
-fun convertKelvinToCelsius(kelvin: Double): Double = kelvin - DIFFERENCE_KELVIN_CELSIUS
+class WeatherUtils {
+
+    companion object {
+        private const val KELVIN_TO_CELSIUS_COEFFICIENT = 273
+
+        fun convertKelvinToCelsius(kelvin: Double): Double = kelvin - KELVIN_TO_CELSIUS_COEFFICIENT
+    }
+}

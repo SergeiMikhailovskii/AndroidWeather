@@ -11,7 +11,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.mikhailovskii.weatherandroid.data.entities.User
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 import com.mikhailovskii.weatherandroid.util.Preference
-import com.mikhailovskii.weatherandroid.util.USERS_COLLECTION
 import com.twitter.sdk.android.core.Result
 import timber.log.Timber
 
@@ -47,32 +46,34 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             icon = result?.data?.profileImageUrl
         )
 
-        database.collection(USERS_COLLECTION).get().addOnSuccessListener { databaseResult ->
-            var isUserPresents = false
+        database.collection(USERS_COLLECTION).get()
+            .addOnSuccessListener { databaseResult ->
+                var isUserPresents = false
 
-            loop@ for (document in databaseResult) {
-                val databaseUser = document.toObject(User::class.java)
+                loop@ for (document in databaseResult) {
+                    val databaseUser = document.toObject(User::class.java)
 
-                if (databaseUser.login == result?.data?.name
-                    && databaseUser.twitterKey == result?.data?.idStr
-                    && databaseUser.icon == result?.data?.profileImageUrl
-                ) {
-                    isUserPresents = true
-                    break@loop
+                    if (databaseUser.login == result?.data?.name
+                        && databaseUser.twitterKey == result?.data?.idStr
+                        && databaseUser.icon == result?.data?.profileImageUrl
+                    ) {
+                        isUserPresents = true
+                        break@loop
+                    }
                 }
-            }
 
-            if (!isUserPresents) {
-                database.collection(USERS_COLLECTION).document().set(user).addOnSuccessListener {
-                    Timber.d("Twitter info saved")
-                }.addOnFailureListener { e ->
-                    Timber.e("Error twitter save: $e")
+                if (!isUserPresents) {
+                    database.collection(USERS_COLLECTION).document().set(user)
+                        .addOnSuccessListener {
+                            Timber.d("Twitter info saved")
+                        }.addOnFailureListener { e ->
+                        Timber.e("Error twitter save: $e")
+                    }
                 }
-            }
 
-            Preference.user = user
-            view?.onLoggedIn()
-        }.addOnFailureListener {
+                Preference.user = user
+                view?.onLoggedIn()
+            }.addOnFailureListener {
             view?.onLoginFailed()
         }
     }
@@ -122,8 +123,8 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                             Preference.user = user
                             view?.onLoggedIn()
                         }.addOnFailureListener {
-                        view?.onLoginFailed()
-                    }
+                            view?.onLoginFailed()
+                        }
                 }
             }
 
@@ -139,32 +140,34 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             icon = result?.photoUrl.toString()
         )
 
-        database.collection(USERS_COLLECTION).get().addOnSuccessListener { databaseResult ->
-            var isUserPresents = false
+        database.collection(USERS_COLLECTION).get()
+            .addOnSuccessListener { databaseResult ->
+                var isUserPresents = false
 
-            loop@ for (document in databaseResult) {
-                val databaseUser = document.toObject(User::class.java)
+                loop@ for (document in databaseResult) {
+                    val databaseUser = document.toObject(User::class.java)
 
-                if (databaseUser.login == user.login
-                    && databaseUser.googleKey == user.googleKey
-                    && databaseUser.icon == user.icon
-                ) {
-                    isUserPresents = true
-                    break@loop
+                    if (databaseUser.login == user.login
+                        && databaseUser.googleKey == user.googleKey
+                        && databaseUser.icon == user.icon
+                    ) {
+                        isUserPresents = true
+                        break@loop
+                    }
                 }
-            }
 
-            if (!isUserPresents) {
-                database.collection(USERS_COLLECTION).document().set(user).addOnSuccessListener {
-                    Timber.d(("Facebook info saved"))
-                }.addOnFailureListener { e ->
-                    Timber.e("Error facebook save: $e")
+                if (!isUserPresents) {
+                    database.collection(USERS_COLLECTION).document().set(user)
+                        .addOnSuccessListener {
+                            Timber.d(("Facebook info saved"))
+                        }.addOnFailureListener { e ->
+                        Timber.e("Error facebook save: $e")
+                    }
                 }
-            }
 
-            Preference.user = user
-            view?.onLoggedIn()
-        }.addOnFailureListener {
+                Preference.user = user
+                view?.onLoggedIn()
+            }.addOnFailureListener {
             view?.onLoginFailed()
         }
     }
@@ -178,6 +181,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
     companion object {
         private const val FB_ID_PERMISSION = "id"
         private const val FB_EMAIL_PERMISSION = "email"
+        private const val USERS_COLLECTION = "users"
 
         const val LOGIN_KEY = "login"
         const val PASSWORD_KEY = "password"
