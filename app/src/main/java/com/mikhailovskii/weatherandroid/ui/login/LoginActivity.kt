@@ -1,7 +1,6 @@
 package com.mikhailovskii.weatherandroid.ui.login
 
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +18,7 @@ import com.google.firebase.auth.OAuthProvider
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.ui.main.MainActivity
 import com.mikhailovskii.weatherandroid.util.showErrorToast
-import com.mikhailovskii.weatherandroid.util.showInfoToast
+import com.mikhailovskii.weatherandroid.util.showSuccessToast
 import com.mikhailovskii.weatherandroid.util.showWarningToast
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
@@ -41,13 +40,6 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
         presenter.attachView(this)
 
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(0xff69c3e6.toInt(), 0xff556f9f.toInt())
-        )
-
-        scrollView.background = gradientDrawable
-
         sign_in_btn.setOnClickListener {
             val bundle = Bundle()
             bundle.putString(LoginPresenter.LOGIN_KEY, login_til.text.toString())
@@ -67,20 +59,17 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         presenter.checkUserLogged()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.detachView()
+    }
+
     override fun onLoggedIn() {
         startActivity(Intent(this, MainActivity::class.java))
     }
 
     override fun onLoginFailed() {
-        showErrorToast("Login failed")
-    }
-
-    override fun showEmptyState(value: Boolean) {
-
-    }
-
-    override fun showLoadingIndicator(value: Boolean) {
-
+        showErrorToast(getString(R.string.login_failed))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -174,12 +163,12 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
             override fun onCancel() {
                 Timber.d("facebook:onCancel")
-                showWarningToast("Cancel")
+                showWarningToast(getString(R.string.facebook_cancel))
             }
 
             override fun onError(error: FacebookException?) {
                 Timber.e("facebook:onError $error")
-                showErrorToast("Error")
+                showErrorToast(getString(R.string.facebook_error))
             }
 
         })
@@ -210,17 +199,16 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
-            showInfoToast(account.displayName.toString())
+            showSuccessToast(account.displayName.toString())
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         } else {
-            showWarningToast("Not signed in")
+            showWarningToast(getString(R.string.not_signed_in))
         }
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         presenter.logInWithGoogle(completedTask.result)
-
     }
 
 }

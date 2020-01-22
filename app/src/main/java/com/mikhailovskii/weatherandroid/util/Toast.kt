@@ -12,14 +12,6 @@ fun showSuccessToast(text: String) {
     Toasty.success(AndroidWeatherApp.appContext, text, Toast.LENGTH_SHORT, true).show()
 }
 
-fun showInfoToast(text: String) {
-    Toasty.info(AndroidWeatherApp.appContext, text, Toast.LENGTH_SHORT, true).show()
-}
-
 fun showWarningToast(text: String) {
     Toasty.warning(AndroidWeatherApp.appContext, text, Toast.LENGTH_SHORT, true).show()
-}
-
-fun showNormalToast(text: String) {
-    Toasty.normal(AndroidWeatherApp.appContext, text).show()
 }

@@ -5,6 +5,7 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/forecast_background_gradient"
     tools:context=".ui.forecast.ForecastFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout

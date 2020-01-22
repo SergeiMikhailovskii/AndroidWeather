@@ -1,18 +1,18 @@
 package com.mikhailovskii.weatherandroid.ui.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.mikhailovskii.weatherandroid.AndroidWeatherApp
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
+import com.mikhailovskii.weatherandroid.util.displayMetrics
 import kotlinx.android.synthetic.main.weather_element.view.*
 
 class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
-    val weatherList = ArrayList<WeatherElement>()
+    private val differ = AsyncListDiffer<WeatherElement>(this, WeatherDiffUtilCallback())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
@@ -21,11 +21,11 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return weatherList.size
+        return differ.currentList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindData(weatherList[position])
+        holder.bindData(differ.currentList[position])
     }
 
     override fun getItemId(position: Int): Long {
@@ -33,21 +33,23 @@ class WeatherAdapter : RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
     }
 
     fun setData(weatherList: List<WeatherElement>) {
-        this.weatherList.clear()
-        this.weatherList.addAll(weatherList)
-        notifyDataSetChanged()
+        differ.submitList(weatherList)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        @SuppressLint("SetTextI18n")
         fun bindData(element: WeatherElement) {
             itemView.weather_element_layout.layoutParams.width =
-                (AndroidWeatherApp.appContext.resources.displayMetrics.widthPixels * 0.25).toInt()
+                (itemView.displayMetrics.widthPixels * QUARTER_SCREEN).toInt()
             itemView.day_tv.text = element.day
-            itemView.value_tv.text = "${element.temp} ˚C"
+            itemView.value_tv.text =
+                itemView.resources.getString(R.string.temperature_in_celsius, element.temp)
         }
 
+    }
+
+    companion object {
+        private const val QUARTER_SCREEN = 0.25
     }
 
 }

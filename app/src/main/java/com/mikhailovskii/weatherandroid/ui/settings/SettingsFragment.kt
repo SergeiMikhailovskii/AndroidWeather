@@ -1,14 +1,15 @@
 package com.mikhailovskii.weatherandroid.ui.settings
 
 
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.User
+import com.mikhailovskii.weatherandroid.util.showErrorToast
 import com.mikhailovskii.weatherandroid.util.showSuccessToast
 import kotlinx.android.synthetic.main.fragment_settings.*
 
@@ -20,23 +21,16 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.window?.statusBarColor = 0xffa35043.toInt()
+        activity?.window?.statusBarColor =
+            ContextCompat.getColor(requireContext(), R.color.settingsStatusBar)
 
         presenter.attachView(this)
-
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(0xffa35043.toInt(), 0xffcd7d5c.toInt())
-        )
-
-        scrollView.background = gradientDrawable
 
         save_btn.setOnClickListener {
             val user = User()
@@ -59,12 +53,17 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.detachView()
+    }
+
     override fun onUserDataSaved() {
-        showSuccessToast("Data updated!")
+        showSuccessToast(getString(R.string.data_updated))
     }
 
     override fun onUserDataFailed() {
-
+        showSuccessToast(getString(R.string.saving_failed))
     }
 
     override fun onInitialUserDataLoaded(user: User?) {
@@ -81,15 +80,7 @@ class SettingsFragment : Fragment(), SettingsContract.SettingsView {
     }
 
     override fun onInitialUserDataFailed() {
-
-    }
-
-    override fun showEmptyState(value: Boolean) {
-
-    }
-
-    override fun showLoadingIndicator(value: Boolean) {
-
+        showErrorToast(getString(R.string.loading_failed))
     }
 
 }

@@ -2,20 +2,19 @@ package com.mikhailovskii.weatherandroid.ui.shop
 
 
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mikhailovskii.weatherandroid.R
-import com.mikhailovskii.weatherandroid.data.diffutil.StickersDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.StickerPack
 import com.mikhailovskii.weatherandroid.ui.adapter.StickersAdapter
 import com.mikhailovskii.weatherandroid.ui.sticker_purchase.StickerPurchaseActivity
+import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_shop.*
 
 class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemClickListener {
@@ -27,14 +26,16 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        presenter.attachView(this)
         return inflater.inflate(R.layout.fragment_shop, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.window?.statusBarColor = 0xff3f5fa4.toInt()
+        presenter.attachView(this)
+
+        activity?.window?.statusBarColor =
+            ContextCompat.getColor(requireContext(), R.color.shopStatusBar)
 
         stickers_list.layoutManager = LinearLayoutManager(context)
         adapter = StickersAdapter(this)
@@ -46,42 +47,27 @@ class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemCl
             )
         )
 
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(0xff3f5fa4.toInt(), 0xff17253e.toInt())
-        )
-
-        stickers_list.background = gradientDrawable
-
         presenter.getStickerList()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.detachView()
+    }
+
     override fun onStickerListLoaded(stickers: List<StickerPack>) {
-        val stickersDiffUtilCallback = StickersDiffUtilCallback(stickers, adapter?.stickersList!!)
-        val stickerDiffResult = DiffUtil.calculateDiff(stickersDiffUtilCallback)
         adapter?.setData(stickers)
-        adapter?.let {
-            stickerDiffResult.dispatchUpdatesTo(it)
-        }
     }
 
     override fun onStickerListFailed() {
-
-    }
-
-    override fun showEmptyState(value: Boolean) {
-
-    }
-
-    override fun showLoadingIndicator(value: Boolean) {
-
+        showErrorToast(getString(R.string.loading_failed))
     }
 
     override fun onItemClicked(position: Int, item: StickerPack) {
         val intent = Intent(context, StickerPurchaseActivity::class.java)
         intent.putExtra(
             StickerPurchaseActivity.EXTRA_NAME,
-            adapter?.stickersList?.get(position)?.title
+            adapter?.differ?.currentList?.get(position)?.title
         )
         startActivity(intent)
     }

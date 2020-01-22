@@ -1,26 +1,24 @@
 package com.mikhailovskii.weatherandroid.ui.forecast
 
 
-import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.mikhailovskii.weatherandroid.R
-import com.mikhailovskii.weatherandroid.data.diffutil.WeatherDiffUtilCallback
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
 import com.mikhailovskii.weatherandroid.ui.adapter.WeatherAdapter
-import com.mikhailovskii.weatherandroid.util.getWindDirection
+import com.mikhailovskii.weatherandroid.util.WeatherUtils
+import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_forecast.*
 import java.util.*
 
@@ -33,26 +31,21 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        presenter.attachView(this)
         return inflater.inflate(R.layout.fragment_forecast, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.window?.statusBarColor = 0xff0f7d71.toInt()
+        presenter.attachView(this)
+
+        activity?.window?.statusBarColor =
+            ContextCompat.getColor(requireContext(), R.color.forecastStatusBar)
 
         weather_list.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         adapter = WeatherAdapter()
         weather_list.adapter = adapter
-
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(0xff0f7d71.toInt(), 0xff0e725b.toInt())
-        )
-
-        scrollView.background = gradientDrawable
 
         val calendar = Calendar.getInstance(TimeZone.getDefault())
         val date = "${calendar.getDisplayName(
@@ -72,17 +65,35 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
         presenter.getCityForecast()
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun onCurrentCityWeatherLoaded(response: WeatherResponse?) {
-        weather_description_tv.text = response?.overcast?.get(0)?.mainInfo
-        temperature_tv.text = "${response?.weatherTemp?.temp?.minus(273)?.toInt()} ˚C"
-        humidity_value_tv.text = "${response?.weatherTemp?.humidity} %"
-        pressure_value_tv.text = "${response?.weatherTemp?.pressure}"
-        feels_like_value_tv.text = "${response?.weatherTemp?.feelsLike?.minus(273)?.toInt()} ˚C"
-        wind_value_tv.text =
-            "${getWindDirection(response?.wind?.degree ?: 0)} ${response?.wind?.speed!!} kph"
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.detachView()
+    }
 
-        if (response.overcast?.get(0)?.icon!!.contains("02", ignoreCase = true)
+    override fun onCurrentCityWeatherLoaded(response: WeatherResponse?) {
+        val temperature =
+            WeatherUtils.convertKelvinToCelsius(response?.weatherTemp?.temp ?: 0.0).toInt()
+        val feelsLike =
+            WeatherUtils.convertKelvinToCelsius(response?.weatherTemp?.feelsLike ?: 0.0).toInt()
+
+        weather_description_tv.text = response?.overcast?.get(0)?.mainInfo
+
+        temperature_tv.text = resources.getString(R.string.temperature_in_celsius, temperature)
+
+        humidity_value_tv.text =
+            resources.getString(R.string.humidity_percents, response?.weatherTemp?.humidity)
+
+        pressure_value_tv.text = "${response?.weatherTemp?.pressure}"
+
+        feels_like_value_tv.text = resources.getString(R.string.temperature_in_celsius, feelsLike)
+
+        wind_value_tv.text = resources.getString(
+            R.string.wind_in_kph,
+            WeatherUtils.getWindDirection(response?.wind?.degree ?: 0),
+            (response?.wind?.speed ?: 0.0).toInt()
+        )
+
+        if (response?.overcast?.get(0)?.icon!!.contains("02", ignoreCase = true)
             || response.overcast?.get(0)?.icon!!.contains("03", ignoreCase = true)
             || response.overcast?.get(0)?.icon!!.contains("04", ignoreCase = true)
         ) {
@@ -107,9 +118,8 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onCityFromPreferencesLoaded(response: String?) {
-        city_tv.text = "\uD83D\uDCCD $response"
+        city_tv.text = resources.getString(R.string.location_with_emoji, response)
     }
 
     override fun onCityFromPreferencesFailed() {
@@ -117,12 +127,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     }
 
     override fun onWeatherForecastLoaded(weatherList: List<WeatherElement>) {
-        val weatherDiffUtilCallback = WeatherDiffUtilCallback(weatherList, adapter?.weatherList!!)
-        val weatherDiffResult = DiffUtil.calculateDiff(weatherDiffUtilCallback)
         adapter?.setData(weatherList)
-        adapter?.let {
-            weatherDiffResult.dispatchUpdatesTo(it)
-        }
 
         val entries = ArrayList<Entry>()
 
@@ -156,15 +161,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     }
 
     override fun onWeatherForecastFailed() {
-
-    }
-
-    override fun showEmptyState(value: Boolean) {
-
-    }
-
-    override fun showLoadingIndicator(value: Boolean) {
-
+        showErrorToast(getString(R.string.loading_failed))
     }
 
 }

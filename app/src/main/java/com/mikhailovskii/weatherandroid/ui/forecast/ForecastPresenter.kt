@@ -1,11 +1,14 @@
 package com.mikhailovskii.weatherandroid.ui.forecast
 
 import com.mikhailovskii.weatherandroid.AndroidWeatherApp
+import com.mikhailovskii.weatherandroid.BuildConfig
+import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.api.weather.WeatherAPIFactory
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
+import com.mikhailovskii.weatherandroid.util.DateUtils
 import com.mikhailovskii.weatherandroid.util.Preference
-import com.mikhailovskii.weatherandroid.util.getDateFromSeconds
+import com.mikhailovskii.weatherandroid.util.WeatherUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,46 +21,63 @@ class ForecastPresenter : BasePresenter<ForecastContract.ForecastView>(),
 
     override fun getCurrentCityWeather() {
         CoroutineScope(Dispatchers.IO).launch {
-            var city = Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
-            city = city.replace("\\s".toRegex(), "")
+            val city = Preference.user?.location ?: AndroidWeatherApp.appContext
+                .resources.getString(R.string.default_location)
 
-            val response = weatherApi.getCurrentCityWeather(city)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    val result = response.body()
+            val response = weatherApi.getCurrentCityWeather(BuildConfig.WEATHER_API_KEY, city)
+            val result = response.body()
 
+            if (response.isSuccessful) {
+                withContext(Dispatchers.Main) {
                     view?.onCurrentCityWeatherLoaded(result)
                 }
+            } else {
+                withContext(Dispatchers.Main) {
+                    view?.onCurrentCityWeatherFailed()
+                }
             }
+
         }
     }
 
     override fun getCityFromPreferences() {
-        val location = Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
+        val location = Preference.user?.location ?: AndroidWeatherApp.appContext
+            .resources.getString(R.string.default_location)
+
         view?.onCityFromPreferencesLoaded(location)
     }
 
     override fun getCityForecast() {
         CoroutineScope(Dispatchers.IO).launch {
-            var city = Preference.getInstance(AndroidWeatherApp.appContext).user?.location ?: "Minsk"
-            city = city.replace("\\s".toRegex(), "")
+            val city = Preference.user?.location ?: AndroidWeatherApp.appContext
+                .resources.getString(R.string.default_location)
 
-            val response = weatherApi.getCityForecast(city)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    val result = response.body()
-                    val list = ArrayList<WeatherElement>()
-                    result?.weatherList?.forEach { element ->
-                        val temp = element.weatherTemp?.temp?.toInt()?.minus(273)
-                        val date = element.date
+            val response = weatherApi.getCityForecast(BuildConfig.WEATHER_API_KEY, city)
+            val result = response.body()
 
-                        list.add(WeatherElement(day = getDateFromSeconds(date ?: 0), temp = temp))
-                    }
+            if (response.isSuccessful) {
+                val list = ArrayList<WeatherElement>()
+                result?.weatherList?.forEach { element ->
+                    val temp = WeatherUtils.convertKelvinToCelsius(element.weatherTemp?.temp ?: 0.0)
+                        .toInt()
+                    val date = element.date
+
+                    list.add(
+                        WeatherElement(
+                            day = DateUtils.getDateFromSeconds(date ?: 0),
+                            temp = temp
+                        )
+                    )
+                }
+                withContext(Dispatchers.Main) {
                     view?.onWeatherForecastLoaded(list)
-                } else {
+                }
+            } else {
+                withContext(Dispatchers.Main) {
                     view?.onWeatherForecastFailed()
                 }
             }
+
         }
     }
 

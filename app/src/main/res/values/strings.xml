@@ -11,10 +11,6 @@
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
 
-    <!--    Facebook-->
-    <string name="facebook_app_id">744178116083202</string>
-    <string name="fb_login_protocol_scheme">fb744178116083202</string>
-
     <!--    Bottom Menu-->
     <string name="forecast">Forecast</string>
     <string name="shop">Shop</string>
@@ -24,10 +20,6 @@
     <!--    Map screen-->
     <string name="city_name_sample">📍 Munich, Bayern</string>
     <string name="date_sample">December 18.12.2019</string>
-
-    <!--    Twitter-->
-    <string name="twitter_api_key" translatable="false">vkuSEp0mMdmCiOIAvSQLrKfM2</string>
-    <string name="twitter_api_secret" translatable="false">mXBMgDXxOUPy1SwiFlSf4JYJTsDCzG9aRoCf5vE8rJs1Z9X9rK</string>
 
     <!--    Forecast-->
     <string name="weather_description_sample">Clear sky</string>
@@ -45,17 +37,34 @@
     <string name="third_day_sample">Thursday</string>
     <string name="munich">Munich</string>
     <string name="buy">Buy</string>
-    <string name="change_location">Change location</string>
-    <string name="change_stickers_pack">Change stickers pack</string>
-    <string name="change_unit">Change unit</string>
+    <string name="change_location"><b>Change location</b></string>
+    <string name="change_stickers_pack"><b>Change stickers pack</b></string>
+    <string name="change_unit"><b>Change unit</b></string>
     <string name="celsius">˚C</string>
     <string name="fahrenheit">˚F</string>
-    <string name="change_account_info">Change account info</string>
+    <string name="change_account_info"><b>Change account info</b></string>
     <string name="login">Login</string>
     <string name="user">User</string>
     <string name="change_password">Change password</string>
     <string name="save">Save</string>
     <string name="location">Location</string>
     <string name="password">Password</string>
+
+    <string name="location_with_emoji">📍 %1$s</string>
+    <string name="temperature_in_celsius">%d ˚C</string>
+    <string name="humidity_percents">%d \%%</string>
+    <string name="wind_in_kph">%1$s %2$d kph</string>
+    <string name="show_price_in_usd">$ %.2f</string>
+
+    <string name="default_location">Minsk, Belarus</string>
+    <string name="login_failed">Login failed</string>
+    <string name="loading_failed">Loading failed</string>
+    <string name="facebook_cancel">Cancel</string>
+    <string name="facebook_error">Error</string>
+    <string name="not_signed_in">Not signed in</string>
+    <string name="city_not_found">City not found</string>
+    <string name="data_updated">Data updated!</string>
+    <string name="saving_failed">Saving failed!</string>
+    <string name="purchase_succeed">Purchase succeed!</string>
 
 </resources>

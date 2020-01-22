@@ -3,5 +3,29 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
     <color name="white">#FFFFFF</color>
+
+    <color name="shopStatusBar">#3F5FA4</color>
+    <color name="shopGradientTopLeft">#3F5FA4</color>
+    <color name="shopGradientBottomRight">#17253E</color>
+
+    <color name="mapsStatusBar">#69C8EA</color>
+    <color name="mapsGradientTopLeft">#69C8EA</color>
+    <color name="mapsGradientBottomRight">#66C0E1</color>
+    <color name="mapsCityEditBackground">#69C0E6</color>
+
+    <color name="forecastStatusBar">#0F7F71</color>
+    <color name="forecastGradientTopLeft">#0F7D71</color>
+    <color name="forecastGradientBottomRight">#0E725B</color>
+
+    <color name="settingsStatusBar">#A35043</color>
+    <color name="settingsGradientTopLeft">#A35043</color>
+    <color name="settingsGradientBottomRight">#CD7D5C</color>
+
+    <color name="loginGradientTopLeft">#69C3E6</color>
+    <color name="loginGradientBottomRight">#556F9F</color>
+
+    <color name="buyButtonBackground">#FF82A9</color>
+    <color name="stickerPurchaseActivityBackground">#7F95D1</color>
 </resources>

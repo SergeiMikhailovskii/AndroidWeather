@@ -7,8 +7,7 @@ import com.facebook.GraphRequest
 import com.facebook.Profile
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.database.*
-import com.mikhailovskii.weatherandroid.AndroidWeatherApp
+import com.google.firebase.firestore.FirebaseFirestore
 import com.mikhailovskii.weatherandroid.data.entities.User
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 import com.mikhailovskii.weatherandroid.util.Preference
@@ -17,49 +16,27 @@ import timber.log.Timber
 
 class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.LoginPresenter {
 
-    private var database: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private lateinit var query: Query
+    private var database = FirebaseFirestore.getInstance()
 
     override fun saveUserData(bundle: Bundle) {
 
         val login = bundle.getString(LOGIN_KEY)
         val password = bundle.getString(PASSWORD_KEY)
 
-        val user = User(login = login, password = password)
+        database.collection(USERS_COLLECTION).get().addOnSuccessListener { result ->
+            for (document in result) {
+                var user = document.toObject(User::class.java)
 
-        query = database.child("users").orderByChild("login").equalTo(login)
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
+                if (user.login == login && user.password == password) {
+                    user = User(login = login, password = password)
 
-            override fun onCancelled(error: DatabaseError) {
-                Timber.e(error.toException())
-            }
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-
-                if (snapshot.exists()) {
-                    val users = snapshot.children
-
-                    users.forEach { data ->
-                        val userData = data.getValue(User::class.java)
-                        Timber.i("LOGIN ${userData?.login}")
-                    }
-
-                    Preference.getInstance(AndroidWeatherApp.appContext).user = user
-
+                    Preference.user = user
                     view?.onLoggedIn()
-
-                } else {
-                    Timber.e("NO SUCH USER $login $password")
-
-                    database.child("users").push().setValue(user)
-
-                    view?.onLoginFailed()
                 }
-
             }
-
-        })
-
+        }.addOnFailureListener {
+            view?.onLoginFailed()
+        }
     }
 
     override fun logInWithTwitter(result: Result<com.twitter.sdk.android.core.models.User>?) {
@@ -68,11 +45,37 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             twitterKey = result?.data?.idStr,
             icon = result?.data?.profileImageUrl
         )
-        database.child("users").push().setValue(user)
 
-        Preference.getInstance(AndroidWeatherApp.appContext).user = user
+        database.collection(USERS_COLLECTION).get()
+            .addOnSuccessListener { databaseResult ->
+                var isUserPresents = false
 
-        view?.onLoggedIn()
+                loop@ for (document in databaseResult) {
+                    val databaseUser = document.toObject(User::class.java)
+
+                    if (databaseUser.login == result?.data?.name
+                        && databaseUser.twitterKey == result?.data?.idStr
+                        && databaseUser.icon == result?.data?.profileImageUrl
+                    ) {
+                        isUserPresents = true
+                        break@loop
+                    }
+                }
+
+                if (!isUserPresents) {
+                    database.collection(USERS_COLLECTION).document().set(user)
+                        .addOnSuccessListener {
+                            Timber.d("Twitter info saved")
+                        }.addOnFailureListener { e ->
+                        Timber.e("Error twitter save: $e")
+                    }
+                }
+
+                Preference.user = user
+                view?.onLoggedIn()
+            }.addOnFailureListener {
+            view?.onLoginFailed()
+        }
     }
 
     override fun logInWithFacebook(result: LoginResult?) {
@@ -91,12 +94,37 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                     }
 
                     val user = User(login = name, facebookKey = id, icon = icon)
-                    database.child("users").push().setValue(user)
 
-                    Preference.getInstance(AndroidWeatherApp.appContext).user = user
+                    database.collection(USERS_COLLECTION).get()
+                        .addOnSuccessListener { databaseResult ->
+                            var isUserPresents = false
 
-                    view?.onLoggedIn()
+                            loop@ for (document in databaseResult) {
+                                val databaseUser = document.toObject(User::class.java)
 
+                                if (databaseUser.login == user.login
+                                    && databaseUser.facebookKey == user.facebookKey
+                                    && databaseUser.icon == user.icon
+                                ) {
+                                    isUserPresents = true
+                                    break@loop
+                                }
+                            }
+
+                            if (!isUserPresents) {
+                                database.collection(USERS_COLLECTION).document().set(user)
+                                    .addOnSuccessListener {
+                                        Timber.d(("Facebook info saved"))
+                                    }.addOnFailureListener { e ->
+                                        Timber.e("Error facebook save: $e")
+                                    }
+                            }
+
+                            Preference.user = user
+                            view?.onLoggedIn()
+                        }.addOnFailureListener {
+                            view?.onLoginFailed()
+                        }
                 }
             }
 
@@ -111,15 +139,41 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             googleKey = result?.idToken,
             icon = result?.photoUrl.toString()
         )
-        database.child("users").push().setValue(user)
 
-        Preference.getInstance(AndroidWeatherApp.appContext).user = user
+        database.collection(USERS_COLLECTION).get()
+            .addOnSuccessListener { databaseResult ->
+                var isUserPresents = false
 
-        view?.onLoggedIn()
+                loop@ for (document in databaseResult) {
+                    val databaseUser = document.toObject(User::class.java)
+
+                    if (databaseUser.login == user.login
+                        && databaseUser.googleKey == user.googleKey
+                        && databaseUser.icon == user.icon
+                    ) {
+                        isUserPresents = true
+                        break@loop
+                    }
+                }
+
+                if (!isUserPresents) {
+                    database.collection(USERS_COLLECTION).document().set(user)
+                        .addOnSuccessListener {
+                            Timber.d(("Facebook info saved"))
+                        }.addOnFailureListener { e ->
+                        Timber.e("Error facebook save: $e")
+                    }
+                }
+
+                Preference.user = user
+                view?.onLoggedIn()
+            }.addOnFailureListener {
+            view?.onLoginFailed()
+        }
     }
 
     override fun checkUserLogged() {
-        if (Preference.getInstance(AndroidWeatherApp.appContext).user != null) {
+        if (Preference.user != null) {
             view?.onLoggedIn()
         }
     }
@@ -127,6 +181,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
     companion object {
         private const val FB_ID_PERMISSION = "id"
         private const val FB_EMAIL_PERMISSION = "email"
+        private const val USERS_COLLECTION = "users"
 
         const val LOGIN_KEY = "login"
         const val PASSWORD_KEY = "password"

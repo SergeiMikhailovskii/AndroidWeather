@@ -2,9 +2,7 @@ package com.mikhailovskii.weatherandroid.ui.maps
 
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.graphics.drawable.GradientDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
@@ -13,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -32,23 +31,16 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        presenter.attachView(this)
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.window?.statusBarColor = 0xff69c8ea.toInt()
+        presenter.attachView(this)
 
-        val gradientDrawable = GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(0xff69c8ea.toInt(), 0xff66c0e1.toInt())
-        )
-
-        scrollView.background = gradientDrawable
-
-        city_et.setBackgroundColor(0xff69C0E6.toInt())
+        activity?.window?.statusBarColor =
+            ContextCompat.getColor(requireContext(), R.color.mapsStatusBar)
 
         initMapView(savedInstanceState)
 
@@ -72,7 +64,10 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
 
                 val coord = getLocationFromAddress(city.toString())
 
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord))
+                if (coord != null) {
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord))
+                }
+
                 false   // If return value is true keyboard won't pop
             } else {
                 false
@@ -84,24 +79,16 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.saveLocationToPreferences(currentLocation)
+        presenter.detachView()
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onCityFromPreferencesLoaded(response: String?) {
-        currentLocation = response ?: "Minsk"
-        city_tv.text = "\uD83D\uDCCD $currentLocation"
+        currentLocation = response ?: resources.getString(R.string.default_location)
+        city_tv.text = resources.getString(R.string.location_with_emoji, currentLocation)
     }
 
     override fun onCityFromPreferencesFailed() {
-
-    }
-
-    override fun showEmptyState(value: Boolean) {
-
-    }
-
-    override fun showLoadingIndicator(value: Boolean) {
-
+        showErrorToast(getString(R.string.loading_failed))
     }
 
     private fun initMapView(savedInstanceState: Bundle?) {
@@ -111,11 +98,11 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                 this.googleMap = googleMap!!
 
                 if (ActivityCompat.checkSelfPermission(
-                        context!!,
+                        requireContext(),
                         Manifest.permission.ACCESS_FINE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(
-                        context!!,
+                        requireContext(),
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
@@ -123,31 +110,63 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                         arrayOf(
                             Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.ACCESS_COARSE_LOCATION
-                        ), 100
+                        ), PERMISSION_CODE
                     )
+                } else {
+                    initMapsWithPermission(googleMap)
                 }
-
-                googleMap.isIndoorEnabled = true
-
-                val uiSettings = googleMap.uiSettings
-                uiSettings.isIndoorLevelPickerEnabled = true
-                uiSettings.isMapToolbarEnabled = true
-                uiSettings.isCompassEnabled = true
-                uiSettings.isZoomControlsEnabled = true
-
-                val latLng = getLocationFromAddress(currentLocation)
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10.0f))
-                googleMap.isMyLocationEnabled = true
-                map_view.onResume()
             }
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            PERMISSION_CODE -> {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    googleMap.isIndoorEnabled = true
+
+                    val uiSettings = googleMap.uiSettings
+                    uiSettings.isIndoorLevelPickerEnabled = true
+                    uiSettings.isMapToolbarEnabled = true
+                    uiSettings.isCompassEnabled = true
+                    uiSettings.isZoomControlsEnabled = true
+
+                    val latLng = getLocationFromAddress(currentLocation)
+                    googleMap.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            latLng,
+                            ZOOM_LEVEL
+                        )
+                    )
+                    googleMap.isMyLocationEnabled = true
+                    map_view.onResume()
+                }
+            }
+        }
+    }
+
+    private fun initMapsWithPermission(googleMap: GoogleMap) {
+        googleMap.isIndoorEnabled = true
+
+        val uiSettings = googleMap.uiSettings
+        uiSettings.isIndoorLevelPickerEnabled = true
+        uiSettings.isMapToolbarEnabled = true
+        uiSettings.isCompassEnabled = true
+        uiSettings.isZoomControlsEnabled = true
+
+        val latLng = getLocationFromAddress(currentLocation)
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10.0f))
+        googleMap.isMyLocationEnabled = true
+        map_view.onResume()
+    }
+
     private fun getLocationFromAddress(strAddress: String): LatLng? {
         val coder = Geocoder(context)
         val address: List<Address>?
-        var p1: LatLng? = null
 
         address = coder.getFromLocationName(strAddress, 5)
 
@@ -155,9 +174,9 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
             return null
         }
 
-        try {
+        if (address.isNotEmpty()) {
             val location = address[0]
-            p1 = LatLng(location.latitude, location.longitude)
+            val latLngLocation = LatLng(location.latitude, location.longitude)
 
             currentLocation = if (location.locality != null) {
                 "${location.locality}, ${location.countryName}"
@@ -165,12 +184,17 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
                 location.countryName
             }
 
-            city_tv.text = "\uD83D\uDCCD $currentLocation"
-        } catch (e: IndexOutOfBoundsException) {
-            showErrorToast("City not found")
+            city_tv.text = resources.getString(R.string.location_with_emoji, currentLocation)
+            return latLngLocation
+        } else {
+            showErrorToast(getString(R.string.city_not_found))
+            return null
         }
+    }
 
-        return p1
+    companion object {
+        private const val PERMISSION_CODE = 100
+        private const val ZOOM_LEVEL = 10.0f
     }
 
 }

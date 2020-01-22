@@ -4,9 +4,14 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+
     defaultConfig {
         applicationId "com.mikhailovskii.weatherandroid"
         minSdkVersion 21
@@ -14,13 +19,22 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "WEATHER_API_KEY", apikeyProperties['WEATHER_API_KEY'])
+        resValue("string", "MAPS_API_KEY", apikeyProperties['MAPS_API_KEY'])
+        resValue("string", "twitter_api_key", apikeyProperties['TWITTER_API_KEY'])
+        resValue("string", "twitter_api_secret", apikeyProperties['TWITTER_API_SECRET'])
+        resValue("string", "facebook_app_id", apikeyProperties['FACEBOOK_APP_ID'])
+        resValue("string", "fb_login_protocol_scheme", apikeyProperties['FB_LOGIN_PROTOCOL_SCHEME'])
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         targetCompatibility = "8"
         sourceCompatibility = "8"
@@ -37,7 +51,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.1.0"
 
     // Firebase
-    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    implementation 'com.google.firebase:firebase-analytics:17.2.2'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.google.firebase:firebase-database:19.2.0'
