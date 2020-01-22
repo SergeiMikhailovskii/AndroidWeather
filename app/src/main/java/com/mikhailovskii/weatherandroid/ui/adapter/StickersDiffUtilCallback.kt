@@ -12,7 +12,9 @@ class StickersDiffUtilCallback : DiffUtil.ItemCallback<StickerPack>() {
             (oldItem.title == newItem.title
                     && oldItem.stickers?.get(0) == newItem.stickers?.get(0)
                     && oldItem.price == newItem.price)
-        } else if (oldItem.stickers?.isEmpty() == true && newItem.stickers?.isEmpty() == true) {
+        } else if ((oldItem.stickers == null && newItem.stickers == null)
+            || (oldItem.stickers?.isEmpty() == true && newItem.stickers?.isEmpty() == true)
+        ) {
             (oldItem.title == newItem.title
                     && oldItem.price == newItem.price)
         } else false
