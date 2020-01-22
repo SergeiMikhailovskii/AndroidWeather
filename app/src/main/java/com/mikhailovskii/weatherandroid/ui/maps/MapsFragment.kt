@@ -128,7 +128,7 @@ class MapsFragment : Fragment(), MapsContract.MapsView {
     ) {
         when (requestCode) {
             PERMISSION_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     googleMap.isIndoorEnabled = true
 
                     val uiSettings = googleMap.uiSettings
