@@ -17,8 +17,7 @@ import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherElement
 import com.mikhailovskii.weatherandroid.data.entities.weather.WeatherResponse
 import com.mikhailovskii.weatherandroid.ui.adapter.WeatherAdapter
-import com.mikhailovskii.weatherandroid.util.WeatherUtils.Companion.convertKelvinToCelsius
-import com.mikhailovskii.weatherandroid.util.WeatherUtils.Companion.getWindDirection
+import com.mikhailovskii.weatherandroid.util.WeatherUtils
 import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_forecast.*
 import java.util.*
@@ -72,8 +71,10 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
     }
 
     override fun onCurrentCityWeatherLoaded(response: WeatherResponse?) {
-        val temperature = convertKelvinToCelsius(response?.weatherTemp?.temp ?: 0.0).toInt()
-        val feelsLike = convertKelvinToCelsius(response?.weatherTemp?.feelsLike ?: 0.0).toInt()
+        val temperature =
+            WeatherUtils.convertKelvinToCelsius(response?.weatherTemp?.temp ?: 0.0).toInt()
+        val feelsLike =
+            WeatherUtils.convertKelvinToCelsius(response?.weatherTemp?.feelsLike ?: 0.0).toInt()
 
         weather_description_tv.text = response?.overcast?.get(0)?.mainInfo
 
@@ -88,7 +89,7 @@ class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
         wind_value_tv.text = resources.getString(
             R.string.wind_in_kph,
-            getWindDirection(response?.wind?.degree ?: 0),
+            WeatherUtils.getWindDirection(response?.wind?.degree ?: 0),
             (response?.wind?.speed ?: 0.0).toInt()
         )
 
