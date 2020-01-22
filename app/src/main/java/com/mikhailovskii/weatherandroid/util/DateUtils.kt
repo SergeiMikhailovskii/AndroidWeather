@@ -1,19 +1,16 @@
 package com.mikhailovskii.weatherandroid.util
 
-import android.annotation.SuppressLint
-import java.text.SimpleDateFormat
+import android.text.format.DateFormat
 import java.util.*
 
 class DateUtils {
 
     companion object {
 
-        @SuppressLint("SimpleDateFormat")
         fun getDateFromSeconds(seconds: Long): String {
-            val simpleDateFormat = SimpleDateFormat("E HH:mm")
             val date = Date(seconds * 1000)
 
-            return simpleDateFormat.format(date)
+            return DateFormat.format("E hh:mm", date).toString()
         }
 
     }
