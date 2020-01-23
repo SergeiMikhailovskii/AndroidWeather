@@ -7,9 +7,15 @@ interface ChooseLocationContract {
 
     interface ChooseLocationView : MvpView {
 
+        fun onLocationSaved()
+
+        fun onLocationFailed()
+
     }
 
     interface ChooseLocationPresenter : MvpPresenter<ChooseLocationView> {
+
+        fun saveLocation()
 
     }
 
