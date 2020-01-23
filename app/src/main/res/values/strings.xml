@@ -66,5 +66,9 @@
     <string name="data_updated">Data updated!</string>
     <string name="saving_failed">Saving failed!</string>
     <string name="purchase_succeed">Purchase succeed!</string>
+    <string name="enter_the_location_which_weather_you_want_to_observe">Enter the location which weather you want to observe</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="next">Next</string>
 
 </resources>
