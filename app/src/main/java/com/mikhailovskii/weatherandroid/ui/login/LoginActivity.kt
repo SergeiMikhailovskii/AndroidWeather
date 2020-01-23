@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
 import com.mikhailovskii.weatherandroid.R
+import com.mikhailovskii.weatherandroid.ui.choose_location.ChooseLocationActivity
 import com.mikhailovskii.weatherandroid.ui.main.MainActivity
 import com.mikhailovskii.weatherandroid.util.showErrorToast
 import com.mikhailovskii.weatherandroid.util.showSuccessToast
@@ -64,8 +65,12 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
         presenter.detachView()
     }
 
-    override fun onLoggedIn() {
+    override fun onLoggedInWithFilledInfo() {
         startActivity(Intent(this, MainActivity::class.java))
+    }
+
+    override fun onLoggedInWithEmptyLocation() {
+        startActivity(Intent(this, ChooseLocationActivity::class.java))
     }
 
     override fun onLoginFailed() {
@@ -200,7 +205,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
             showSuccessToast(account.displayName.toString())
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, ChooseLocationActivity::class.java)
             startActivity(intent)
         } else {
             showWarningToast(getString(R.string.not_signed_in))
