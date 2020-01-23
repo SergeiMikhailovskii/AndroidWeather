@@ -5,7 +5,7 @@ import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 class ChooseLocationPresenter : ChooseLocationContract.ChooseLocationPresenter,
     BasePresenter<ChooseLocationContract.ChooseLocationView>() {
 
-    override fun saveLocation() {
+    override fun saveLocation(location: String) {
 
     }
 

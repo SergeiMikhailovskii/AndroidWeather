@@ -15,7 +15,7 @@ interface ChooseLocationContract {
 
     interface ChooseLocationPresenter : MvpPresenter<ChooseLocationView> {
 
-        fun saveLocation()
+        fun saveLocation(location: String)
 
     }
 
