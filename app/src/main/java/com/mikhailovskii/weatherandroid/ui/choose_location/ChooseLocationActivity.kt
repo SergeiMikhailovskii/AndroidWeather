@@ -38,6 +38,7 @@ class ChooseLocationActivity : AppCompatActivity(), ChooseLocationContract.Choos
 
     override fun onLocationSaved() {
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     override fun onLocationFailed() {

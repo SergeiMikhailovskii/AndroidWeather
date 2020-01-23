@@ -24,7 +24,7 @@ class ChooseLocationPresenter : ChooseLocationContract.ChooseLocationPresenter,
         database.collection(USERS_COLLECTION).whereEqualTo(LOGIN_FIELD, user?.login).get()
             .addOnSuccessListener { databaseResult ->
 
-                val map: Map<String, String> = hashMapOf(LOCATION to user?.location!!)
+                val map: Map<String, String> = hashMapOf(LOCATION to (user?.location ?: ""))
 
                 for (document in databaseResult) {
                     database.collection(USERS_COLLECTION).document(document.id).update(map)

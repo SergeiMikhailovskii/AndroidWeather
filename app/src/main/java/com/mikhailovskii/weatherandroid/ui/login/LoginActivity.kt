@@ -67,10 +67,12 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
 
     override fun onLoggedInWithFilledInfo() {
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     override fun onLoggedInWithEmptyLocation() {
         startActivity(Intent(this, ChooseLocationActivity::class.java))
+        finish()
     }
 
     override fun onLoginFailed() {
