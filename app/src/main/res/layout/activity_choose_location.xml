@@ -35,6 +35,7 @@
         android:layout_marginEnd="16dp"
         android:text="@string/enter_the_location_which_weather_you_want_to_observe"
         android:textAlignment="center"
+        android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +49,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/country"
+        android:textColorHint="@color/white"
         app:errorEnabled="true"
+        app:errorTextColor="@android:color/holo_red_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/description_tv">
@@ -58,7 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:textColor="@color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,7 +74,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/city"
+        android:textColorHint="@color/white"
         app:errorEnabled="true"
+        app:errorTextColor="@android:color/holo_red_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/country_til">
@@ -80,7 +86,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textCapWords"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:textColor="@color/white" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,7 +110,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:background="#CD0046"
         android:text="@string/next"
+        android:textColor="@color/white"
+        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline3"
         app:layout_constraintStart_toStartOf="@id/guideline2" />
