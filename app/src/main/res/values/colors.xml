@@ -28,4 +28,8 @@
 
     <color name="buyButtonBackground">#FF82A9</color>
     <color name="stickerPurchaseActivityBackground">#7F95D1</color>
+
+    <color name="chooseLocationGradientTopLeft">#CDF4DC</color>
+    <color name="chooseLocationGradientTopRight">#01949A</color>
+
 </resources>
