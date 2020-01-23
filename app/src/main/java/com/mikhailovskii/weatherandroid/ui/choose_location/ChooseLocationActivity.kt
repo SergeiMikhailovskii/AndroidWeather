@@ -28,7 +28,7 @@ class ChooseLocationActivity : AppCompatActivity(), ChooseLocationContract.Choos
                     return@setOnClickListener
                 }
                 else -> {
-                    val location = "${country_tiet.text.toString()}, ${city_tiet.text.toString()}"
+                    val location = "${city_tiet.text.toString()}, ${country_tiet.text.toString()}"
                     presenter.saveLocation(location)
                 }
             }
