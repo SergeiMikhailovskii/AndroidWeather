@@ -205,6 +205,56 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.8" />
 
+        <TextView
+            android:id="@+id/add_account_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/add_account"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/save_btn" />
+
+        <ImageButton
+            android:id="@+id/twitter_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_button"
+            android:scaleType="centerCrop"
+            android:src="@drawable/twitter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_account_tv"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/facebook_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_button"
+            android:scaleType="centerCrop"
+            android:src="@drawable/facebook"
+            app:layout_constraintStart_toEndOf="@id/twitter_btn"
+            app:layout_constraintTop_toBottomOf="@id/add_account_tv"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/google_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_button"
+            android:scaleType="centerCrop"
+            android:src="@drawable/gmail"
+            app:layout_constraintStart_toEndOf="@id/facebook_btn"
+            app:layout_constraintTop_toBottomOf="@id/add_account_tv"
+            tools:ignore="ContentDescription" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

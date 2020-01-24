@@ -66,5 +66,6 @@
     <string name="data_updated">Data updated!</string>
     <string name="saving_failed">Saving failed!</string>
     <string name="purchase_succeed">Purchase succeed!</string>
+    <string name="add_account">Add account</string>
 
 </resources>
