@@ -36,7 +36,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@color/mapsCityEditBackground"
-        android:hint="@string/munich"
+        android:hint="@string/default_city"
         android:imeOptions="actionGo"
         android:inputType="textCapSentences"
         app:layout_constraintEnd_toEndOf="parent"

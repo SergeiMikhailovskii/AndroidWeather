@@ -5,8 +5,8 @@
     <string name="sign_in_sign_up">Sign in / Sign up</string>
     <string name="enter_your_login">Enter your login</string>
     <string name="sign_in">Sign in</string>
-    <string name="forgot_your_password">Forgot your password?</string>
-    <string name="or_login_with">or login with</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="login_alternative">or login with</string>
     <string name="twitter">Twitter</string>
     <string name="facebook">Facebook</string>
     <string name="google">Google</string>
@@ -35,7 +35,7 @@
     <string name="first_day_sample">Tuesday</string>
     <string name="second_day_sample">Wednesday</string>
     <string name="third_day_sample">Thursday</string>
-    <string name="munich">Munich</string>
+    <string name="default_city">Munich</string>
     <string name="buy">Buy</string>
     <string name="change_location"><b>Change location</b></string>
     <string name="change_stickers_pack"><b>Change stickers pack</b></string>
@@ -66,10 +66,10 @@
     <string name="data_updated">Data updated!</string>
     <string name="saving_failed">Saving failed!</string>
     <string name="purchase_succeed">Purchase succeed!</string>
-    <string name="enter_the_location_which_weather_you_want_to_observe">Enter the location which weather you want to observe</string>
+    <string name="location_description">Enter the location which weather you want to observe</string>
     <string name="country">Country</string>
     <string name="city">City</string>
     <string name="next">Next</string>
-    <string name="fill_the_field">Fill the field</string>
+    <string name="empty_input">Fill the field</string>
 
 </resources>

@@ -19,16 +19,17 @@ class ChooseLocationActivity : AppCompatActivity(), ChooseLocationContract.Choos
 
         next_btn.setOnClickListener {
             when {
-                country_tiet.text?.isBlank() == true -> {
-                    country_til.error = getString(R.string.fill_the_field)
+                country_tiet.text == null || country_tiet.text?.isBlank() == true -> {
+                    country_til.error = getString(R.string.empty_input)
                     return@setOnClickListener
                 }
-                city_tiet.text?.isBlank() == true -> {
-                    city_til.error = getString(R.string.fill_the_field)
+                city_tiet.text == null || city_tiet.text?.isBlank() == true -> {
+                    city_til.error = getString(R.string.empty_input)
                     return@setOnClickListener
                 }
                 else -> {
-                    val location = "${city_tiet.text.toString()}, ${country_tiet.text.toString()}"
+                    val location =
+                        "${city_tiet.text.toString()}, ${country_tiet.text.toString()}"
                     presenter.saveLocation(location)
                 }
             }
