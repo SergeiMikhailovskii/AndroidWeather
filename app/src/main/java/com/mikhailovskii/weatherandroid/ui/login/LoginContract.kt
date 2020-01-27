@@ -12,7 +12,9 @@ interface LoginContract {
 
     interface LoginView : MvpView {
 
-        fun onLoggedIn()
+        fun onLoggedInWithFilledInfo()
+
+        fun onLoggedInWithEmptyLocation()
 
         fun onLoginFailed()
 

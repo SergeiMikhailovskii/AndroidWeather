@@ -12,4 +12,8 @@
         <item name="android:windowBackground">@drawable/login_background_gradient</item>
     </style>
 
+    <style name="ChooseLocationTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/choose_location_background_gradient</item>
+    </style>
+
 </resources>

@@ -18,6 +18,10 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute">
 
+        <activity
+            android:name=".ui.choose_location.ChooseLocationActivity"
+            android:theme="@style/ChooseLocationTheme" />
+
         <activity android:name=".ui.sticker_purchase.StickerPurchaseActivity" />
 
         <uses-library android:name="com.google.android.maps" />
@@ -60,6 +64,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
     </application>

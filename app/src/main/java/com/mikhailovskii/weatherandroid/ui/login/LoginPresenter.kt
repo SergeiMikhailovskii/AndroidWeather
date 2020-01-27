@@ -31,7 +31,12 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                     user = User(login = login, password = password)
 
                     Preference.user = user
-                    view?.onLoggedIn()
+
+                    if (user.location?.isNotBlank() == true) {
+                        view?.onLoggedInWithFilledInfo()
+                    } else {
+                        view?.onLoggedInWithEmptyLocation()
+                    }
                 }
             }
         }.addOnFailureListener {
@@ -67,15 +72,15 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                         .addOnSuccessListener {
                             Timber.d("Twitter info saved")
                         }.addOnFailureListener { e ->
-                        Timber.e("Error twitter save: $e")
-                    }
+                            Timber.e("Error twitter save: $e")
+                        }
                 }
 
                 Preference.user = user
-                view?.onLoggedIn()
+                view?.onLoggedInWithFilledInfo()
             }.addOnFailureListener {
-            view?.onLoginFailed()
-        }
+                view?.onLoginFailed()
+            }
     }
 
     override fun logInWithFacebook(result: LoginResult?) {
@@ -121,7 +126,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                             }
 
                             Preference.user = user
-                            view?.onLoggedIn()
+                            view?.onLoggedInWithFilledInfo()
                         }.addOnFailureListener {
                             view?.onLoginFailed()
                         }
@@ -161,20 +166,24 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                         .addOnSuccessListener {
                             Timber.d(("Facebook info saved"))
                         }.addOnFailureListener { e ->
-                        Timber.e("Error facebook save: $e")
-                    }
+                            Timber.e("Error facebook save: $e")
+                        }
                 }
 
                 Preference.user = user
-                view?.onLoggedIn()
+                view?.onLoggedInWithFilledInfo()
             }.addOnFailureListener {
-            view?.onLoginFailed()
-        }
+                view?.onLoginFailed()
+            }
     }
 
     override fun checkUserLogged() {
         if (Preference.user != null) {
-            view?.onLoggedIn()
+            if (Preference.user?.location?.isNotBlank() == true) {
+                view?.onLoggedInWithFilledInfo()
+            } else {
+                view?.onLoggedInWithEmptyLocation()
+            }
         }
     }
 
