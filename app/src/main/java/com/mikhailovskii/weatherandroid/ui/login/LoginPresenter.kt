@@ -7,41 +7,23 @@ import com.facebook.GraphRequest
 import com.facebook.Profile
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.firebase.firestore.FirebaseFirestore
 import com.mikhailovskii.weatherandroid.data.entities.User
+import com.mikhailovskii.weatherandroid.data.firebase.FirebaseLoginCallback
+import com.mikhailovskii.weatherandroid.data.firebase.FirebaseModel
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 import com.mikhailovskii.weatherandroid.util.Preference
 import com.twitter.sdk.android.core.Result
-import timber.log.Timber
 
-class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.LoginPresenter {
-
-    private var database = FirebaseFirestore.getInstance()
+class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.LoginPresenter,
+    FirebaseLoginCallback {
 
     override fun saveUserData(bundle: Bundle) {
 
-        val login = bundle.getString(LOGIN_KEY)
-        val password = bundle.getString(PASSWORD_KEY)
+        val login = bundle.getString(LOGIN_KEY) ?: ""
+        val password = bundle.getString(PASSWORD_KEY) ?: ""
+        Preference.user = User(login = login, password = password)
 
-        database.collection(USERS_COLLECTION).get().addOnSuccessListener { result ->
-            for (document in result) {
-                var user = document.toObject(User::class.java)
-
-                if (user.login == login && user.password == password) {
-                    user = User(login = login, password = password)
-
-                    Preference.user = user
-
-                    if (user.location?.isNotBlank() == true) {
-                        view?.onLoggedInWithFilledInfo()
-                    } else {
-                        view?.onLoggedInWithEmptyLocation()
-                    }
-                }
-            }
-        }.addOnFailureListener {
-            view?.onLoginFailed()
-        }
+        FirebaseModel().baseLogInUser(login, password, this)
     }
 
     override fun logInWithTwitter(result: Result<com.twitter.sdk.android.core.models.User>?) {
@@ -51,36 +33,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             icon = result?.data?.profileImageUrl
         )
 
-        database.collection(USERS_COLLECTION).get()
-            .addOnSuccessListener { databaseResult ->
-                var isUserPresents = false
-
-                loop@ for (document in databaseResult) {
-                    val databaseUser = document.toObject(User::class.java)
-
-                    if (databaseUser.login == result?.data?.name
-                        && databaseUser.twitterKey == result?.data?.idStr
-                        && databaseUser.icon == result?.data?.profileImageUrl
-                    ) {
-                        isUserPresents = true
-                        break@loop
-                    }
-                }
-
-                if (!isUserPresents) {
-                    database.collection(USERS_COLLECTION).document().set(user)
-                        .addOnSuccessListener {
-                            Timber.d("Twitter info saved")
-                        }.addOnFailureListener { e ->
-                            Timber.e("Error twitter save: $e")
-                        }
-                }
-
-                Preference.user = user
-                view?.onLoggedInWithFilledInfo()
-            }.addOnFailureListener {
-                view?.onLoginFailed()
-            }
+        FirebaseModel().logInWithTwitter(result, user, this)
     }
 
     override fun logInWithFacebook(result: LoginResult?) {
@@ -99,37 +52,9 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                     }
 
                     val user = User(login = name, facebookKey = id, icon = icon)
+                    Preference.user = user
 
-                    database.collection(USERS_COLLECTION).get()
-                        .addOnSuccessListener { databaseResult ->
-                            var isUserPresents = false
-
-                            loop@ for (document in databaseResult) {
-                                val databaseUser = document.toObject(User::class.java)
-
-                                if (databaseUser.login == user.login
-                                    && databaseUser.facebookKey == user.facebookKey
-                                    && databaseUser.icon == user.icon
-                                ) {
-                                    isUserPresents = true
-                                    break@loop
-                                }
-                            }
-
-                            if (!isUserPresents) {
-                                database.collection(USERS_COLLECTION).document().set(user)
-                                    .addOnSuccessListener {
-                                        Timber.d(("Facebook info saved"))
-                                    }.addOnFailureListener { e ->
-                                        Timber.e("Error facebook save: $e")
-                                    }
-                            }
-
-                            Preference.user = user
-                            view?.onLoggedInWithFilledInfo()
-                        }.addOnFailureListener {
-                            view?.onLoginFailed()
-                        }
+                    FirebaseModel().logInWithFacebook(user, this)
                 }
             }
 
@@ -145,36 +70,9 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             icon = result?.photoUrl.toString()
         )
 
-        database.collection(USERS_COLLECTION).get()
-            .addOnSuccessListener { databaseResult ->
-                var isUserPresents = false
+        Preference.user = user
 
-                loop@ for (document in databaseResult) {
-                    val databaseUser = document.toObject(User::class.java)
-
-                    if (databaseUser.login == user.login
-                        && databaseUser.googleKey == user.googleKey
-                        && databaseUser.icon == user.icon
-                    ) {
-                        isUserPresents = true
-                        break@loop
-                    }
-                }
-
-                if (!isUserPresents) {
-                    database.collection(USERS_COLLECTION).document().set(user)
-                        .addOnSuccessListener {
-                            Timber.d(("Facebook info saved"))
-                        }.addOnFailureListener { e ->
-                            Timber.e("Error facebook save: $e")
-                        }
-                }
-
-                Preference.user = user
-                view?.onLoggedInWithFilledInfo()
-            }.addOnFailureListener {
-                view?.onLoginFailed()
-            }
+        FirebaseModel().logInWithGoogle(user, this)
     }
 
     override fun checkUserLogged() {
@@ -187,10 +85,21 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
         }
     }
 
+    override fun onLoggedInWithFilledInfo() {
+        view?.onLoggedInWithFilledInfo()
+    }
+
+    override fun onLoggedInWithEmptyLocation() {
+        view?.onLoggedInWithEmptyLocation()
+    }
+
+    override fun onLoginFailed() {
+        view?.onLoginFailed()
+    }
+
     companion object {
         private const val FB_ID_PERMISSION = "id"
         private const val FB_EMAIL_PERMISSION = "email"
-        private const val USERS_COLLECTION = "users"
 
         const val LOGIN_KEY = "login"
         const val PASSWORD_KEY = "password"
