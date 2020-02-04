@@ -23,7 +23,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
         val password = bundle.getString(PASSWORD_KEY) ?: ""
         Preference.user = User(login = login, password = password)
 
-        FirebaseModel().baseLogInUser(login, password, this)
+        FirebaseModel().logInWithPassword(login, password, this)
     }
 
     override fun logInWithTwitter(result: Result<com.twitter.sdk.android.core.models.User>?) {
@@ -33,7 +33,12 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             icon = result?.data?.profileImageUrl
         )
 
-        FirebaseModel().logInWithTwitter(result, user, this)
+        FirebaseModel().logInWithSocialNetwork(
+            social = FirebaseModel.TWITTER,
+            result = result,
+            user = user,
+            callback = this
+        )
     }
 
     override fun logInWithFacebook(result: LoginResult?) {
@@ -54,7 +59,12 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                     val user = User(login = name, facebookKey = id, icon = icon)
                     Preference.user = user
 
-                    FirebaseModel().logInWithFacebook(user, this)
+                    FirebaseModel().logInWithSocialNetwork(
+                        social = FirebaseModel.FACEBOOK,
+                        user = user,
+                        callback = this,
+                        result = null
+                    )
                 }
             }
 
@@ -72,7 +82,12 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
 
         Preference.user = user
 
-        FirebaseModel().logInWithGoogle(user, this)
+        FirebaseModel().logInWithSocialNetwork(
+            social = FirebaseModel.GOOGLE,
+            user = user,
+            callback = this,
+            result = null
+        )
     }
 
     override fun checkUserLogged() {

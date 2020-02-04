@@ -39,7 +39,7 @@ class FirebaseModel {
             }
     }
 
-    fun baseLogInUser(login: String, password: String, callback: FirebaseLoginCallback?) {
+    fun logInWithPassword(login: String, password: String, callback: FirebaseLoginCallback?) {
         db.collection(USERS_COLLECTION).get().addOnSuccessListener { result ->
             result.forEach { document ->
                 var user = document.toObject(User::class.java)
@@ -59,30 +59,42 @@ class FirebaseModel {
         }
     }
 
-    fun logInWithTwitter(
-        result: Result<com.twitter.sdk.android.core.models.User>?,
+    fun logInWithSocialNetwork(
+        social: String,
         user: User,
-        callback: FirebaseLoginCallback?
+        callback: FirebaseLoginCallback?,
+        result: Result<com.twitter.sdk.android.core.models.User>?
     ) {
         db.collection(USERS_COLLECTION).get().addOnSuccessListener { databaseResult ->
-            var isUserPresents = false
+            var isUserPresent = false
 
             databaseResult.forEach { document ->
                 val databaseUser = document.toObject(User::class.java)
 
-                if (databaseUser.login == result?.data?.name
-                    && databaseUser.twitterKey == result?.data?.idStr
-                    && databaseUser.icon == result?.data?.profileImageUrl
+                val twitterCondition = databaseUser.login == result?.data?.name
+                        && databaseUser.twitterKey == result?.data?.idStr
+                        && databaseUser.icon == result?.data?.profileImageUrl
+
+                val facebookCondition = databaseUser.login == user.login
+                        && databaseUser.facebookKey == user.facebookKey
+                        && databaseUser.icon == user.icon
+
+                val googleCondition = databaseUser.login == user.login
+                        && databaseUser.googleKey == user.googleKey
+                        && databaseUser.icon == user.icon
+
+                if ((social == TWITTER && twitterCondition)
+                    || (social == FACEBOOK && facebookCondition)
+                    || (social == GOOGLE && googleCondition)
                 ) {
-                    isUserPresents = true
+                    isUserPresent = true
                     return@forEach
                 }
             }
-
-            if (!isUserPresents) {
+            if (!isUserPresent) {
                 db.collection(USERS_COLLECTION).document().set(user)
                     .addOnSuccessListener {
-                        Timber.d("Twitter info saved")
+                        Timber.d("$social info saved")
                     }.addOnFailureListener { e ->
                         Timber.e("Error twitter save: $e")
                     }
@@ -92,71 +104,8 @@ class FirebaseModel {
         }.addOnFailureListener {
             callback?.onLoginFailed()
         }
-
     }
 
-    fun logInWithFacebook(user: User, callback: FirebaseLoginCallback?) {
-        db.collection(USERS_COLLECTION).get()
-            .addOnSuccessListener { databaseResult ->
-                var isUserPresents = false
-
-                databaseResult.forEach { document ->
-                    val databaseUser = document.toObject(User::class.java)
-
-                    if (databaseUser.login == user.login
-                        && databaseUser.facebookKey == user.facebookKey
-                        && databaseUser.icon == user.icon
-                    ) {
-                        isUserPresents = true
-                        return@forEach
-                    }
-                }
-
-                if (!isUserPresents) {
-                    db.collection(USERS_COLLECTION).document().set(user)
-                        .addOnSuccessListener {
-                            Timber.d(("Facebook info saved"))
-                        }.addOnFailureListener { e ->
-                            Timber.e("Error facebook save: $e")
-                        }
-                }
-
-                callback?.onLoggedInWithFilledInfo()
-            }.addOnFailureListener {
-                callback?.onLoginFailed()
-            }
-    }
-
-    fun logInWithGoogle(user: User, callback: FirebaseLoginCallback?) {
-        db.collection(USERS_COLLECTION).get().addOnSuccessListener { databaseResult ->
-            var isUserPresents = false
-
-            databaseResult.forEach { document ->
-                val databaseUser = document.toObject(User::class.java)
-
-                if (databaseUser.login == user.login
-                    && databaseUser.googleKey == user.googleKey
-                    && databaseUser.icon == user.icon
-                ) {
-                    isUserPresents = true
-                    return@forEach
-                }
-            }
-
-            if (!isUserPresents) {
-                db.collection(USERS_COLLECTION).document().set(user)
-                    .addOnSuccessListener {
-                        Timber.d(("Facebook info saved"))
-                    }.addOnFailureListener { e ->
-                        Timber.e("Error facebook save: $e")
-                    }
-            }
-
-            callback?.onLoggedInWithFilledInfo()
-        }.addOnFailureListener {
-            callback?.onLoginFailed()
-        }
-    }
 
     fun getStickerPackByName(name: String, callback: FirebaseDataCallback<StickerPack>?) {
         db.collection(STICKERS_COLLECTION)
@@ -183,6 +132,10 @@ class FirebaseModel {
         private const val TITLE_FIELD = "title"
         private const val LOGIN_FIELD = "LOGIN"
         private const val LOCATION = "location"
+
+        const val TWITTER = "TWITTER"
+        const val FACEBOOK = "FACEBOOK"
+        const val GOOGLE = "GOOGLE"
     }
 
 }
