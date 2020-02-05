@@ -14,10 +14,7 @@ class FirebaseModel {
         db.collection("stickers").get().addOnSuccessListener { result ->
             val stickerPackList = ArrayList<StickerPack>()
 
-            result.forEach { document ->
-                val stickerPack = document.toObject(StickerPack::class.java)
-                stickerPackList.add(stickerPack)
-            }
+            result.forEach { stickerPackList.add(it.toObject(StickerPack::class.java)) }
 
             callback?.onFirebaseDataLoaded(stickerPackList)
         }.addOnFailureListener {
@@ -32,8 +29,8 @@ class FirebaseModel {
 
                 val map: Map<String, String> = hashMapOf(LOCATION to (user?.location ?: ""))
 
-                databaseResult.forEach { document ->
-                    db.collection(USERS_COLLECTION).document(document.id).update(map)
+                databaseResult.forEach {
+                    db.collection(USERS_COLLECTION).document(it.id).update(map)
                 }
 
             }
@@ -59,48 +56,66 @@ class FirebaseModel {
         }
     }
 
-    fun logInWithSocialNetwork(
-        social: String,
+    fun logInWithTwitter(
+        result: Result<com.twitter.sdk.android.core.models.User>?,
+        user: User,
+        callback: FirebaseLoginCallback?
+    ) {
+        logInWithSocialNetwork(user, callback) { databaseUser ->
+            databaseUser.login == result?.data?.name
+                    && databaseUser.twitterKey == result?.data?.idStr
+                    && databaseUser.icon == result?.data?.profileImageUrl
+        }
+    }
+
+    fun logInWithFacebook(user: User, callback: FirebaseLoginCallback?) {
+        logInWithSocialNetwork(user, callback) { databaseUser ->
+            databaseUser.login == user.login
+                    && databaseUser.facebookKey == user.facebookKey
+                    && databaseUser.icon == user.icon
+        }
+
+    }
+
+    fun logInWithGoogle(user: User, callback: FirebaseLoginCallback?) {
+        logInWithSocialNetwork(user, callback) { databaseUser ->
+            databaseUser.login == user.login
+                    && databaseUser.googleKey == user.googleKey
+                    && databaseUser.icon == user.icon
+        }
+    }
+
+    private fun logInWithSocialNetwork(
         user: User,
         callback: FirebaseLoginCallback?,
-        result: Result<com.twitter.sdk.android.core.models.User>?
+        checkUser: (user: User) -> Boolean
     ) {
         db.collection(USERS_COLLECTION).get().addOnSuccessListener { databaseResult ->
             var isUserPresent = false
 
             databaseResult.forEach { document ->
-                val databaseUser = document.toObject(User::class.java)
 
-                val twitterCondition = databaseUser.login == result?.data?.name
-                        && databaseUser.twitterKey == result?.data?.idStr
-                        && databaseUser.icon == result?.data?.profileImageUrl
-
-                val facebookCondition = databaseUser.login == user.login
-                        && databaseUser.facebookKey == user.facebookKey
-                        && databaseUser.icon == user.icon
-
-                val googleCondition = databaseUser.login == user.login
-                        && databaseUser.googleKey == user.googleKey
-                        && databaseUser.icon == user.icon
-
-                if ((social == TWITTER && twitterCondition)
-                    || (social == FACEBOOK && facebookCondition)
-                    || (social == GOOGLE && googleCondition)
-                ) {
+                if (checkUser(document.toObject(User::class.java))) {
                     isUserPresent = true
                     return@forEach
                 }
             }
+
             if (!isUserPresent) {
                 db.collection(USERS_COLLECTION).document().set(user)
                     .addOnSuccessListener {
-                        Timber.d("$social info saved")
+                        Timber.d("Social info saved")
                     }.addOnFailureListener { e ->
                         Timber.e("Error twitter save: $e")
                     }
             }
 
-            callback?.onLoggedInWithFilledInfo()
+            if (user.location?.isNotBlank() == true) {
+                callback?.onLoggedInWithFilledInfo()
+            } else {
+                callback?.onLoggedInWithEmptyLocation()
+            }
+
         }.addOnFailureListener {
             callback?.onLoginFailed()
         }

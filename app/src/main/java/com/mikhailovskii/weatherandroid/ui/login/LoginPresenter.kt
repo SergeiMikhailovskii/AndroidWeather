@@ -33,12 +33,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
             icon = result?.data?.profileImageUrl
         )
 
-        FirebaseModel().logInWithSocialNetwork(
-            social = FirebaseModel.TWITTER,
-            result = result,
-            user = user,
-            callback = this
-        )
+        FirebaseModel().logInWithTwitter(result, user, this)
     }
 
     override fun logInWithFacebook(result: LoginResult?) {
@@ -59,12 +54,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
                     val user = User(login = name, facebookKey = id, icon = icon)
                     Preference.user = user
 
-                    FirebaseModel().logInWithSocialNetwork(
-                        social = FirebaseModel.FACEBOOK,
-                        user = user,
-                        callback = this,
-                        result = null
-                    )
+                    FirebaseModel().logInWithFacebook(user, this)
                 }
             }
 
@@ -82,12 +72,7 @@ class LoginPresenter : BasePresenter<LoginContract.LoginView>(), LoginContract.L
 
         Preference.user = user
 
-        FirebaseModel().logInWithSocialNetwork(
-            social = FirebaseModel.GOOGLE,
-            user = user,
-            callback = this,
-            result = null
-        )
+        FirebaseModel().logInWithGoogle(user, this)
     }
 
     override fun checkUserLogged() {
