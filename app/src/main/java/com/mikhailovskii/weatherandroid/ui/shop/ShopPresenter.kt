@@ -1,24 +1,29 @@
 package com.mikhailovskii.weatherandroid.ui.shop
 
-import com.google.firebase.firestore.FirebaseFirestore
 import com.mikhailovskii.weatherandroid.data.entities.StickerPack
+import com.mikhailovskii.weatherandroid.data.firebase.FirebaseDataCallback
+import com.mikhailovskii.weatherandroid.data.firebase.FirebaseModel
 import com.mikhailovskii.weatherandroid.ui.base.BasePresenter
 
 class ShopPresenter : BasePresenter<ShopContract.ShopView>(), ShopContract.ShopPresenter {
 
-    private val db = FirebaseFirestore.getInstance()
-
     override fun getStickerList() {
-        db.collection("stickers").get().addOnSuccessListener { result ->
-            val stickerPackList = ArrayList<StickerPack>()
+        FirebaseModel().getStickersCollectionList(object :
+            FirebaseDataCallback<ArrayList<StickerPack>> {
 
-            for (document in result) {
-                val stickerPack = document.toObject(StickerPack::class.java)
-                stickerPackList.add(stickerPack)
+            override fun onFirebaseDataLoaded(data: ArrayList<StickerPack>) {
+                if (data.isNotEmpty()) {
+                    view?.onStickerListLoaded(data)
+                } else {
+                    view?.onStickerListFailed()
+                }
             }
 
-            view?.onStickerListLoaded(stickerPackList)
-        }
+            override fun onFirebaseDataFailed() {
+                view?.onStickerListFailed()
+            }
+
+        })
     }
 
 }
