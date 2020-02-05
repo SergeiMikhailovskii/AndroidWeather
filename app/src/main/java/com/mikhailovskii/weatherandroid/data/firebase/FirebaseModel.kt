@@ -127,11 +127,9 @@ class FirebaseModel {
             .whereEqualTo(TITLE_FIELD, name)
             .get()
             .addOnSuccessListener { result ->
-                if (result.isEmpty) {
-                    result.forEach { document ->
-                        val stickerPack = document.toObject(StickerPack::class.java)
-                        callback?.onFirebaseDataLoaded(stickerPack)
-                    }
+                if (!result.isEmpty) {
+                    val stickerPack = result.iterator().next().toObject(StickerPack::class.java)
+                    callback?.onFirebaseDataLoaded(stickerPack)
                 } else {
                     callback?.onFirebaseDataFailed()
                 }
@@ -147,10 +145,6 @@ class FirebaseModel {
         private const val TITLE_FIELD = "title"
         private const val LOGIN_FIELD = "LOGIN"
         private const val LOCATION = "location"
-
-        const val TWITTER = "TWITTER"
-        const val FACEBOOK = "FACEBOOK"
-        const val GOOGLE = "GOOGLE"
     }
 
 }
