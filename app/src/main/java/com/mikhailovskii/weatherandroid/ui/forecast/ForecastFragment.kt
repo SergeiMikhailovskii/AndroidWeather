@@ -20,11 +20,12 @@ import com.mikhailovskii.weatherandroid.ui.adapter.WeatherAdapter
 import com.mikhailovskii.weatherandroid.util.WeatherUtils
 import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_forecast.*
+import org.koin.android.scope.currentScope
 import java.util.*
 
 class ForecastFragment : Fragment(), ForecastContract.ForecastView {
 
-    private val presenter = ForecastPresenter()
+    private val presenter by currentScope.inject<ForecastContract.ForecastPresenter>()
     private var adapter: WeatherAdapter? = null
 
     override fun onCreateView(

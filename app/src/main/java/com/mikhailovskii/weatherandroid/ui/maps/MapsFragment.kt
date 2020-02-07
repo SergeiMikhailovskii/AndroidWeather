@@ -19,12 +19,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_maps.*
+import org.koin.android.scope.currentScope
 import java.util.*
 
 class MapsFragment : Fragment(), MapsContract.MapsView {
 
     private lateinit var googleMap: GoogleMap
-    private val presenter = MapsPresenter()
+    private val presenter by currentScope.inject<MapsContract.MapsPresenter>()
     private var currentLocation = ""
 
     override fun onCreateView(

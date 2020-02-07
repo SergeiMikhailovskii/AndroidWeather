@@ -6,10 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mikhailovskii.weatherandroid.R
 import com.mikhailovskii.weatherandroid.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_choose_location.*
+import org.koin.android.scope.currentScope
 
 class ChooseLocationActivity : AppCompatActivity(), ChooseLocationContract.ChooseLocationView {
 
-    private val presenter = ChooseLocationPresenter()
+    private val presenter by currentScope.inject<ChooseLocationContract.ChooseLocationPresenter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

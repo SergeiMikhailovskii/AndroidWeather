@@ -25,6 +25,7 @@ import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import com.twitter.sdk.android.core.models.User
 import kotlinx.android.synthetic.main.activity_login.*
+import org.koin.android.scope.currentScope
 import timber.log.Timber
 
 class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
@@ -33,7 +34,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.LoginView {
     private var mAuth: FirebaseAuth? = null
     private val RC_SIGN_IN = 9001
     private var twitterAuthClient: TwitterAuthClient? = null
-    private val presenter = LoginPresenter()
+    private val presenter by currentScope.inject<LoginContract.LoginPresenter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
