@@ -16,10 +16,11 @@ import com.mikhailovskii.weatherandroid.ui.adapter.StickersAdapter
 import com.mikhailovskii.weatherandroid.ui.sticker_purchase.StickerPurchaseActivity
 import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.fragment_shop.*
+import org.koin.android.scope.currentScope
 
 class ShopFragment : Fragment(), ShopContract.ShopView, StickersAdapter.OnItemClickListener {
 
-    private val presenter = ShopPresenter()
+    private val presenter by currentScope.inject<ShopContract.ShopPresenter>()
     private var adapter: StickersAdapter? = null
 
     override fun onCreateView(

@@ -9,10 +9,11 @@ import com.mikhailovskii.weatherandroid.data.entities.StickerPack
 import com.mikhailovskii.weatherandroid.ui.adapter.StickerPackAdapter
 import com.mikhailovskii.weatherandroid.util.showErrorToast
 import kotlinx.android.synthetic.main.activity_sticker_purchase.*
+import org.koin.android.scope.currentScope
 
 class StickerPurchaseActivity : AppCompatActivity(), StickerPurchaseContract.StickerPurchaseView {
 
-    private val presenter = StickerPurchasePresenter()
+    private val presenter by currentScope.inject<StickerPurchaseContract.StickerPurchasePresenter>()
     private var adapter: StickerPackAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

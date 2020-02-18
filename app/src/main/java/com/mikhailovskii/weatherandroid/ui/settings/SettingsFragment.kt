@@ -12,10 +12,11 @@ import com.mikhailovskii.weatherandroid.data.entities.User
 import com.mikhailovskii.weatherandroid.util.showErrorToast
 import com.mikhailovskii.weatherandroid.util.showSuccessToast
 import kotlinx.android.synthetic.main.fragment_settings.*
+import org.koin.android.scope.currentScope
 
 class SettingsFragment : Fragment(), SettingsContract.SettingsView {
 
-    private val presenter = SettingsPresenter()
+    private val presenter by currentScope.inject<SettingsContract.SettingsPresenter>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
